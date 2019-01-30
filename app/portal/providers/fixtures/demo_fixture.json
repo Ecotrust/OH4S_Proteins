@@ -1,0 +1,751 @@
+[
+{
+  "model": "auth.user",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$120000$GSR0tYc32o9A$NOhnKd0SMqdgy2U0h1e04fjzU+/ey/Bpkjs6xqlJXNI=",
+    "last_login": "2019-01-29T23:13:22.018Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "rhodges@ecotrust.org",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2019-01-29T23:12:58.950Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "providers.politicalregion",
+  "pk": 1,
+  "fields": {
+    "initialism": "OR",
+    "name": "Oregon",
+    "country": "USA",
+    "regionType": "State"
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 1,
+  "fields": {
+    "name": "Baker",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 2,
+  "fields": {
+    "name": "Benton",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 3,
+  "fields": {
+    "name": "Clackamas",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 4,
+  "fields": {
+    "name": "Clatsop",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 5,
+  "fields": {
+    "name": "Columbia",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 6,
+  "fields": {
+    "name": "Coos",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 7,
+  "fields": {
+    "name": "Crook",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 8,
+  "fields": {
+    "name": "Curry",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 9,
+  "fields": {
+    "name": "Deschutes",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 10,
+  "fields": {
+    "name": "Douglas",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 11,
+  "fields": {
+    "name": "Gilliam",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 12,
+  "fields": {
+    "name": "Grand",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 13,
+  "fields": {
+    "name": "Harney",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 14,
+  "fields": {
+    "name": "Hood River",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 15,
+  "fields": {
+    "name": "Jackson",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 16,
+  "fields": {
+    "name": "Jefferson",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 17,
+  "fields": {
+    "name": "Josephine",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 18,
+  "fields": {
+    "name": "Klamath",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 19,
+  "fields": {
+    "name": "Lake",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 20,
+  "fields": {
+    "name": "Lane",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 21,
+  "fields": {
+    "name": "Lincoln",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 22,
+  "fields": {
+    "name": "Linn",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 23,
+  "fields": {
+    "name": "Malheur",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 24,
+  "fields": {
+    "name": "Marion",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 25,
+  "fields": {
+    "name": "Morrow",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 26,
+  "fields": {
+    "name": "Multnomah",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 27,
+  "fields": {
+    "name": "Polk",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 28,
+  "fields": {
+    "name": "Sherman",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 29,
+  "fields": {
+    "name": "Tillamook",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 30,
+  "fields": {
+    "name": "Umatilla",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 31,
+  "fields": {
+    "name": "Union",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 32,
+  "fields": {
+    "name": "Wallowa",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 33,
+  "fields": {
+    "name": "Wasco",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 34,
+  "fields": {
+    "name": "Washington",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 35,
+  "fields": {
+    "name": "Wheeler",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 36,
+  "fields": {
+    "name": "Yamhill",
+    "region": 1
+  }
+},
+{
+  "model": "providers.capacitymeasurement",
+  "pk": 1,
+  "fields": {
+    "measurementType": "Weight",
+    "unit": "lbs"
+  }
+},
+{
+  "model": "providers.capacitymeasurement",
+  "pk": 2,
+  "fields": {
+    "measurementType": "Area",
+    "unit": "acres"
+  }
+},
+{
+  "model": "providers.capacitymeasurement",
+  "pk": 3,
+  "fields": {
+    "measurementType": "Volume",
+    "unit": "gallons"
+  }
+},
+{
+  "model": "providers.deliverymethod",
+  "pk": 1,
+  "fields": {
+    "name": "Provider Delivers"
+  }
+},
+{
+  "model": "providers.deliverymethod",
+  "pk": 2,
+  "fields": {
+    "name": "FexEx"
+  }
+},
+{
+  "model": "providers.deliverymethod",
+  "pk": 3,
+  "fields": {
+    "name": "Distributor"
+  }
+},
+{
+  "model": "providers.deliverymethod",
+  "pk": 4,
+  "fields": {
+    "name": "USPS"
+  }
+},
+{
+  "model": "providers.deliverymethod",
+  "pk": 5,
+  "fields": {
+    "name": "UPS"
+  }
+},
+{
+  "model": "providers.distributor",
+  "pk": 1,
+  "fields": {
+    "name": "FSA: Food Services of America",
+    "phone": null,
+    "email": null,
+    "websiteAddress": null,
+    "fax": null,
+    "primaryContactFirstName": null,
+    "primaryContactLastName": null,
+    "businessAddressLine1": null,
+    "businessAddressLine2": null,
+    "businessAddressCity": null,
+    "businessAddressState": null,
+    "businessAddressZipCode": null
+  }
+},
+{
+  "model": "providers.distributor",
+  "pk": 2,
+  "fields": {
+    "name": "Sysco",
+    "phone": null,
+    "email": null,
+    "websiteAddress": null,
+    "fax": null,
+    "primaryContactFirstName": null,
+    "primaryContactLastName": null,
+    "businessAddressLine1": null,
+    "businessAddressLine2": null,
+    "businessAddressCity": null,
+    "businessAddressState": null,
+    "businessAddressZipCode": null
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 1,
+  "fields": {
+    "name": "Meat",
+    "capacityMeasurement": null,
+    "parent": null
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 2,
+  "fields": {
+    "name": "Vegetable",
+    "capacityMeasurement": 2,
+    "parent": null
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 3,
+  "fields": {
+    "name": "Fruit",
+    "capacityMeasurement": 2,
+    "parent": null
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 4,
+  "fields": {
+    "name": "Grain",
+    "capacityMeasurement": 2,
+    "parent": null
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 5,
+  "fields": {
+    "name": "Plant Protein",
+    "capacityMeasurement": 2,
+    "parent": null
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 6,
+  "fields": {
+    "name": "Dairy",
+    "capacityMeasurement": null,
+    "parent": null
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 7,
+  "fields": {
+    "name": "Milk",
+    "capacityMeasurement": 3,
+    "parent": 6
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 8,
+  "fields": {
+    "name": "Beans",
+    "capacityMeasurement": 2,
+    "parent": 5
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 9,
+  "fields": {
+    "name": "Nuts",
+    "capacityMeasurement": 2,
+    "parent": 5
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 10,
+  "fields": {
+    "name": "Hazelnut",
+    "capacityMeasurement": 2,
+    "parent": 9
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 11,
+  "fields": {
+    "name": "Shelled",
+    "capacityMeasurement": 2,
+    "parent": 10
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 12,
+  "fields": {
+    "name": "In Shell",
+    "capacityMeasurement": 2,
+    "parent": 10
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 13,
+  "fields": {
+    "name": "Butter",
+    "capacityMeasurement": 2,
+    "parent": 10
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 14,
+  "fields": {
+    "name": "Raw",
+    "capacityMeasurement": 2,
+    "parent": 11
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 15,
+  "fields": {
+    "name": "Raw",
+    "capacityMeasurement": 2,
+    "parent": 12
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 16,
+  "fields": {
+    "name": "Roasted",
+    "capacityMeasurement": 2,
+    "parent": 11
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 17,
+  "fields": {
+    "name": "Beef",
+    "capacityMeasurement": null,
+    "parent": 1
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 18,
+  "fields": {
+    "name": "Ground",
+    "capacityMeasurement": 1,
+    "parent": 17
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 19,
+  "fields": {
+    "name": "Chicken",
+    "capacityMeasurement": null,
+    "parent": 1
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 20,
+  "fields": {
+    "name": "Breast",
+    "capacityMeasurement": 1,
+    "parent": 19
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 21,
+  "fields": {
+    "name": "Thigh",
+    "capacityMeasurement": 1,
+    "parent": 19
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 22,
+  "fields": {
+    "name": "Whole",
+    "capacityMeasurement": 1,
+    "parent": 19
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 23,
+  "fields": {
+    "name": "Drumstick",
+    "capacityMeasurement": 1,
+    "parent": 19
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 24,
+  "fields": {
+    "name": "Fresh",
+    "capacityMeasurement": 1,
+    "parent": 23
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 25,
+  "fields": {
+    "name": "Frozen",
+    "capacityMeasurement": 1,
+    "parent": 23
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 26,
+  "fields": {
+    "name": "Jerky",
+    "capacityMeasurement": 1,
+    "parent": 17
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 27,
+  "fields": {
+    "name": "Cheese",
+    "capacityMeasurement": 1,
+    "parent": 6
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 28,
+  "fields": {
+    "name": "Seafood",
+    "capacityMeasurement": 1,
+    "parent": 1
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 29,
+  "fields": {
+    "name": "Dover Sole",
+    "capacityMeasurement": 1,
+    "parent": 28
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 30,
+  "fields": {
+    "name": "Frozen",
+    "capacityMeasurement": 1,
+    "parent": 29
+  }
+},
+{
+  "model": "providers.identity",
+  "pk": 1,
+  "fields": {
+    "name": "Minority Owned",
+    "description": ""
+  }
+},
+{
+  "model": "providers.identity",
+  "pk": 2,
+  "fields": {
+    "name": "Women-Owned",
+    "description": ""
+  }
+},
+{
+  "model": "providers.identity",
+  "pk": 3,
+  "fields": {
+    "name": "Veteran-Owned",
+    "description": ""
+  }
+},
+{
+  "model": "providers.identity",
+  "pk": 4,
+  "fields": {
+    "name": "LGBTQ-Owned",
+    "description": ""
+  }
+},
+{
+  "model": "providers.productionpractice",
+  "pk": 1,
+  "fields": {
+    "name": "GAP",
+    "description": "",
+    "definitionLink": null
+  }
+},
+{
+  "model": "providers.productionpractice",
+  "pk": 2,
+  "fields": {
+    "name": "Organic",
+    "description": "",
+    "definitionLink": null
+  }
+},
+{
+  "model": "providers.productionpractice",
+  "pk": 3,
+  "fields": {
+    "name": "Salmon Safe",
+    "description": "",
+    "definitionLink": null
+  }
+},
+{
+  "model": "providers.productionpractice",
+  "pk": 4,
+  "fields": {
+    "name": "No Spray",
+    "description": "",
+    "definitionLink": null
+  }
+}
+]

@@ -11,7 +11,7 @@ class PoliticalRegion(models.Model):
         ('Territory', 'Territory'),
         ('Other', 'Other'),
     )
-    initialism = models.CharField(max_length=4, primary_key=True, verbose_name="Initials", help_text="i.e. 'OR' for 'Oregon'. No periods.")
+    initialism = models.CharField(max_length=4, verbose_name="Initials", help_text="i.e. 'OR' for 'Oregon'. No periods.")
     name = models.CharField(max_length=100, verbose_name="Full Name")
     country = models.CharField(max_length=150, default='USA', help_text="Default is 'USA'")
     regionType = models.CharField(max_length=30, choices=REGION_TYPE_CHOICES, default='State', verbose_name="Type of political region")
@@ -19,7 +19,7 @@ class PoliticalRegion(models.Model):
     def __str__(self):
         if self.country.lower() == 'usa' or 'united states' in self.country.lower():
             if self.regionType == 'State':
-                return "%s: %s" % (self.initialism, self.regionType, self.name, self.country)
+                return "%s: %s" % (self.initialism, self.name)
             else:
                 return "%s: %s of %s" % (self.initialism, self.regionType, self.name)
         return "%s: %s %s, %s" % (self.initialism, self.name, self.regionType, self.country)
@@ -73,6 +73,28 @@ class Distributor(models.Model):
     class Meta:
         ordering = ('name',)
 
+class Identity(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True, default=None)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('name',)
+        verbose_name_plural = "identities"
+
+class ProductionPractice(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(null=True, blank=True, default=None)
+    definitionLink = models.URLField(max_length=255, null=True, blank=True, default=None, help_text="If an official definition is online, copy the URL here.")
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ('name',)
+
 class Provider(models.Model):
     TERNARY_YES_NO_CHOICES = (
         ('Unknown', 'Unknown'),
@@ -107,6 +129,10 @@ class Provider(models.Model):
     email = models.EmailField(max_length=255, null=True, blank=True, default=None)
     websiteAddress = models.URLField(max_length=255, null=True, blank=True, default=None, help_text="Try to include either http:// (good) or https:// (better if available)")
 
+    identities = models.ManyToManyField(Identity)
+
+    notes = models.TextField(null=True, blank=True, default=None, verbose_name="Additional Notes")
+
     #######################################################################
     #   The following may need to be "Provider-Product Specific"
     #######################################################################
@@ -118,6 +144,7 @@ class Provider(models.Model):
     orderMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None)
     deliveryMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None)
     distributors = models.ManyToManyField(Distributor)
+    productionPractices = models.ManyToManyField(ProductionPractice)
 
     class Meta:
         verbose_name="provider"
@@ -145,15 +172,15 @@ class CapacityMeasurement(models.Model):
     class Meta:
         ordering = ('measurementType', 'unit')
 
-
 class ProductCategory(models.Model):
     name = models.CharField(max_length=100)
     capacityMeasurement = models.ForeignKey(CapacityMeasurement, null=True, blank=True, default=None, on_delete=models.SET_NULL)
     parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, default=None)
+    # ancestor_count = models.IntegerField(default=0)
 
     def __str__(self):
         if self.parent:
-            return "%s > %s" % (self.parent.name, self.name)
+            return "%s > %s" % (str(self.parent), self.name)
         else:
             return self.name
 
@@ -168,6 +195,24 @@ class ProductCategory(models.Model):
         children = self.get_children()
         children.append(self)
         child_products = Product.objects.filter(category__in=children)
+
+    def get_parents(self):
+        if self.parent:
+            return self.parent.get_parents() + [self.parent]
+        else:
+            return []
+
+    def get_ancestor_count(self):
+        ancestors = self.get_parents()
+        return len(ancestors)
+
+    # def save(self, *args, **kwargs):
+    #     self.ancestor_count = self.get_ancestor_count()
+    #     super(ProductCategory, self).save(*args, **kwargs)
+
+    class Meta:
+        verbose_name_plural = "product categories"
+        # ordering = ('ancestor_count', 'name')
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
@@ -190,6 +235,7 @@ class ProviderProduct(models.Model):
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+    notes = models.TextField(null=True, blank=True, default=None, verbose_name="Additional Notes")
 
     #######################################################################
     #   The following may need to be "Provider Specific"
@@ -202,6 +248,7 @@ class ProviderProduct(models.Model):
     orderMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None)
     deliveryMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None)
     distributors = models.ManyToManyField(Distributor)
+    productionPractices = models.ManyToManyField(ProductionPractice)
 
     def __str__(self):
         return "%s - %s" % (str(self.product), str(self.provider))

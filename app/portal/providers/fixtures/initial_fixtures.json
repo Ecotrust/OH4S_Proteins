@@ -1,0 +1,463 @@
+[
+{
+  "model": "providers.politicalregion",
+  "pk": 1,
+  "fields": {
+    "initialism": "OR",
+    "name": "Oregon",
+    "country": "USA",
+    "regionType": "State"
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 1,
+  "fields": {
+    "name": "Baker",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 2,
+  "fields": {
+    "name": "Benton",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 3,
+  "fields": {
+    "name": "Clackamas",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 4,
+  "fields": {
+    "name": "Clatsop",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 5,
+  "fields": {
+    "name": "Columbia",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 6,
+  "fields": {
+    "name": "Coos",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 7,
+  "fields": {
+    "name": "Crook",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 8,
+  "fields": {
+    "name": "Curry",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 9,
+  "fields": {
+    "name": "Deschutes",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 10,
+  "fields": {
+    "name": "Douglas",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 11,
+  "fields": {
+    "name": "Gilliam",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 12,
+  "fields": {
+    "name": "Grand",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 13,
+  "fields": {
+    "name": "Harney",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 14,
+  "fields": {
+    "name": "Hood River",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 15,
+  "fields": {
+    "name": "Jackson",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 16,
+  "fields": {
+    "name": "Jefferson",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 17,
+  "fields": {
+    "name": "Josephine",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 18,
+  "fields": {
+    "name": "Klamath",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 19,
+  "fields": {
+    "name": "Lake",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 20,
+  "fields": {
+    "name": "Lane",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 21,
+  "fields": {
+    "name": "Lincoln",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 22,
+  "fields": {
+    "name": "Linn",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 23,
+  "fields": {
+    "name": "Malheur",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 24,
+  "fields": {
+    "name": "Marion",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 25,
+  "fields": {
+    "name": "Morrow",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 26,
+  "fields": {
+    "name": "Multnomah",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 27,
+  "fields": {
+    "name": "Polk",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 28,
+  "fields": {
+    "name": "Sherman",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 29,
+  "fields": {
+    "name": "Tillamook",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 30,
+  "fields": {
+    "name": "Umatilla",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 31,
+  "fields": {
+    "name": "Union",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 32,
+  "fields": {
+    "name": "Wallowa",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 33,
+  "fields": {
+    "name": "Wasco",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 34,
+  "fields": {
+    "name": "Washington",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 35,
+  "fields": {
+    "name": "Wheeler",
+    "region": 1
+  }
+},
+{
+  "model": "providers.politicalsubregion",
+  "pk": 36,
+  "fields": {
+    "name": "Yamhill",
+    "region": 1
+  }
+},
+{
+  "model": "providers.capacitymeasurement",
+  "pk": 1,
+  "fields": {
+    "measurementType": "Weight",
+    "unit": "lbs"
+  }
+},
+{
+  "model": "providers.capacitymeasurement",
+  "pk": 2,
+  "fields": {
+    "measurementType": "Area",
+    "unit": "acres"
+  }
+},
+{
+  "model": "providers.capacitymeasurement",
+  "pk": 3,
+  "fields": {
+    "measurementType": "Volume",
+    "unit": "gallons"
+  }
+},
+{
+  "model": "providers.deliverymethod",
+  "pk": 1,
+  "fields": {
+    "name": "Provider Delivers"
+  }
+},
+{
+  "model": "providers.deliverymethod",
+  "pk": 2,
+  "fields": {
+    "name": "FexEx"
+  }
+},
+{
+  "model": "providers.deliverymethod",
+  "pk": 3,
+  "fields": {
+    "name": "Distributor"
+  }
+},
+{
+  "model": "providers.deliverymethod",
+  "pk": 4,
+  "fields": {
+    "name": "USPS"
+  }
+},
+{
+  "model": "providers.deliverymethod",
+  "pk": 5,
+  "fields": {
+    "name": "UPS"
+  }
+},
+{
+  "model": "providers.distributor",
+  "pk": 1,
+  "fields": {
+    "name": "FSA: Food Services of America",
+    "phone": null,
+    "email": null,
+    "websiteAddress": null,
+    "fax": null,
+    "primaryContactFirstName": null,
+    "primaryContactLastName": null,
+    "businessAddressLine1": null,
+    "businessAddressLine2": null,
+    "businessAddressCity": null,
+    "businessAddressState": null,
+    "businessAddressZipCode": null
+  }
+},
+{
+  "model": "providers.distributor",
+  "pk": 2,
+  "fields": {
+    "name": "Sysco",
+    "phone": null,
+    "email": null,
+    "websiteAddress": null,
+    "fax": null,
+    "primaryContactFirstName": null,
+    "primaryContactLastName": null,
+    "businessAddressLine1": null,
+    "businessAddressLine2": null,
+    "businessAddressCity": null,
+    "businessAddressState": null,
+    "businessAddressZipCode": null
+  }
+},
+{
+  "model": "providers.identity",
+  "pk": 1,
+  "fields": {
+    "name": "Minority Owned",
+    "description": ""
+  }
+},
+{
+  "model": "providers.identity",
+  "pk": 2,
+  "fields": {
+    "name": "Women-Owned",
+    "description": ""
+  }
+},
+{
+  "model": "providers.identity",
+  "pk": 3,
+  "fields": {
+    "name": "Veteran-Owned",
+    "description": ""
+  }
+},
+{
+  "model": "providers.identity",
+  "pk": 4,
+  "fields": {
+    "name": "LGBTQ-Owned",
+    "description": ""
+  }
+},
+{
+  "model": "providers.productionpractice",
+  "pk": 1,
+  "fields": {
+    "name": "GAP",
+    "description": "",
+    "definitionLink": null
+  }
+},
+{
+  "model": "providers.productionpractice",
+  "pk": 2,
+  "fields": {
+    "name": "Organic",
+    "description": "",
+    "definitionLink": null
+  }
+},
+{
+  "model": "providers.productionpractice",
+  "pk": 3,
+  "fields": {
+    "name": "Salmon Safe",
+    "description": "",
+    "definitionLink": null
+  }
+},
+{
+  "model": "providers.productionpractice",
+  "pk": 4,
+  "fields": {
+    "name": "No Spray",
+    "description": "",
+    "definitionLink": null
+  }
+}
+]
