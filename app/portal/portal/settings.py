@@ -24,7 +24,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
+    # RDH: It can find properly named static files like the one below on its own.
+    # os.path.join(BASE_DIR, "providers", "static"),
 ]
 
 # Quick-start development settings - unsuitable for production
