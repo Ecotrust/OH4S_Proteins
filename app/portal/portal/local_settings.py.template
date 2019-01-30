@@ -1,3 +1,7 @@
+ALLOWED_HOSTS = [
+  # put your url or IP here
+]
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
