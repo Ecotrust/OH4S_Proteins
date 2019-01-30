@@ -4,7 +4,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$120000$GSR0tYc32o9A$NOhnKd0SMqdgy2U0h1e04fjzU+/ey/Bpkjs6xqlJXNI=",
-    "last_login": "2019-01-30T00:36:41.449Z",
+    "last_login": "2019-01-30T01:26:04.204Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "",
@@ -416,7 +416,8 @@
   "fields": {
     "name": "Meat",
     "capacityMeasurement": null,
-    "parent": null
+    "parent": null,
+    "image": "category_images/meat_82J0wxT.png"
   }
 },
 {
@@ -425,7 +426,8 @@
   "fields": {
     "name": "Vegetable",
     "capacityMeasurement": 2,
-    "parent": null
+    "parent": null,
+    "image": ""
   }
 },
 {
@@ -434,7 +436,8 @@
   "fields": {
     "name": "Fruit",
     "capacityMeasurement": 2,
-    "parent": null
+    "parent": null,
+    "image": ""
   }
 },
 {
@@ -443,7 +446,8 @@
   "fields": {
     "name": "Grain",
     "capacityMeasurement": 2,
-    "parent": null
+    "parent": null,
+    "image": ""
   }
 },
 {
@@ -452,7 +456,8 @@
   "fields": {
     "name": "Plant Protein",
     "capacityMeasurement": 2,
-    "parent": null
+    "parent": null,
+    "image": ""
   }
 },
 {
@@ -461,7 +466,8 @@
   "fields": {
     "name": "Dairy",
     "capacityMeasurement": null,
-    "parent": null
+    "parent": null,
+    "image": ""
   }
 },
 {
@@ -470,7 +476,8 @@
   "fields": {
     "name": "Milk",
     "capacityMeasurement": 3,
-    "parent": 6
+    "parent": 6,
+    "image": ""
   }
 },
 {
@@ -479,7 +486,8 @@
   "fields": {
     "name": "Beans",
     "capacityMeasurement": 2,
-    "parent": 5
+    "parent": 5,
+    "image": ""
   }
 },
 {
@@ -488,7 +496,8 @@
   "fields": {
     "name": "Nuts",
     "capacityMeasurement": 2,
-    "parent": 5
+    "parent": 5,
+    "image": ""
   }
 },
 {
@@ -497,7 +506,8 @@
   "fields": {
     "name": "Hazelnut",
     "capacityMeasurement": 2,
-    "parent": 9
+    "parent": 9,
+    "image": ""
   }
 },
 {
@@ -506,7 +516,8 @@
   "fields": {
     "name": "Shelled",
     "capacityMeasurement": 2,
-    "parent": 10
+    "parent": 10,
+    "image": ""
   }
 },
 {
@@ -515,7 +526,8 @@
   "fields": {
     "name": "In Shell",
     "capacityMeasurement": 2,
-    "parent": 10
+    "parent": 10,
+    "image": ""
   }
 },
 {
@@ -524,7 +536,8 @@
   "fields": {
     "name": "Butter",
     "capacityMeasurement": 2,
-    "parent": 10
+    "parent": 10,
+    "image": ""
   }
 },
 {
@@ -533,7 +546,8 @@
   "fields": {
     "name": "Raw",
     "capacityMeasurement": 2,
-    "parent": 11
+    "parent": 11,
+    "image": ""
   }
 },
 {
@@ -542,7 +556,8 @@
   "fields": {
     "name": "Raw",
     "capacityMeasurement": 2,
-    "parent": 12
+    "parent": 12,
+    "image": ""
   }
 },
 {
@@ -551,7 +566,8 @@
   "fields": {
     "name": "Roasted",
     "capacityMeasurement": 2,
-    "parent": 11
+    "parent": 11,
+    "image": ""
   }
 },
 {
@@ -560,7 +576,8 @@
   "fields": {
     "name": "Beef",
     "capacityMeasurement": null,
-    "parent": 1
+    "parent": 1,
+    "image": ""
   }
 },
 {
@@ -569,7 +586,8 @@
   "fields": {
     "name": "Ground",
     "capacityMeasurement": 1,
-    "parent": 17
+    "parent": 17,
+    "image": ""
   }
 },
 {
@@ -578,7 +596,8 @@
   "fields": {
     "name": "Chicken",
     "capacityMeasurement": null,
-    "parent": 1
+    "parent": 1,
+    "image": ""
   }
 },
 {
@@ -587,7 +606,8 @@
   "fields": {
     "name": "Breast",
     "capacityMeasurement": 1,
-    "parent": 19
+    "parent": 19,
+    "image": ""
   }
 },
 {
@@ -596,7 +616,8 @@
   "fields": {
     "name": "Thigh",
     "capacityMeasurement": 1,
-    "parent": 19
+    "parent": 19,
+    "image": ""
   }
 },
 {
@@ -605,7 +626,8 @@
   "fields": {
     "name": "Whole",
     "capacityMeasurement": 1,
-    "parent": 19
+    "parent": 19,
+    "image": ""
   }
 },
 {
@@ -614,7 +636,8 @@
   "fields": {
     "name": "Drumstick",
     "capacityMeasurement": 1,
-    "parent": 19
+    "parent": 19,
+    "image": ""
   }
 },
 {
@@ -623,7 +646,8 @@
   "fields": {
     "name": "Fresh",
     "capacityMeasurement": 1,
-    "parent": 23
+    "parent": 23,
+    "image": ""
   }
 },
 {
@@ -632,7 +656,8 @@
   "fields": {
     "name": "Frozen",
     "capacityMeasurement": 1,
-    "parent": 23
+    "parent": 23,
+    "image": ""
   }
 },
 {
@@ -641,7 +666,8 @@
   "fields": {
     "name": "Jerky",
     "capacityMeasurement": 1,
-    "parent": 17
+    "parent": 17,
+    "image": ""
   }
 },
 {
@@ -650,7 +676,8 @@
   "fields": {
     "name": "Cheese",
     "capacityMeasurement": 1,
-    "parent": 6
+    "parent": 6,
+    "image": ""
   }
 },
 {
@@ -659,7 +686,8 @@
   "fields": {
     "name": "Seafood",
     "capacityMeasurement": 1,
-    "parent": 1
+    "parent": 1,
+    "image": ""
   }
 },
 {
@@ -668,7 +696,8 @@
   "fields": {
     "name": "Dover Sole",
     "capacityMeasurement": 1,
-    "parent": 28
+    "parent": 28,
+    "image": ""
   }
 },
 {
@@ -677,7 +706,8 @@
   "fields": {
     "name": "Frozen",
     "capacityMeasurement": 1,
-    "parent": 29
+    "parent": 29,
+    "image": ""
   }
 },
 {

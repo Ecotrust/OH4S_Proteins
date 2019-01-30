@@ -176,7 +176,21 @@ class ProductCategory(models.Model):
     name = models.CharField(max_length=100)
     capacityMeasurement = models.ForeignKey(CapacityMeasurement, null=True, blank=True, default=None, on_delete=models.SET_NULL)
     parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, default=None)
+    image = models.ImageField(null=True, blank=True, default=None, upload_to='category_images')
     # ancestor_count = models.IntegerField(default=0)
+
+    def to_dict(self):
+        if not self.image:
+            image = '/media/category_images/default.png'
+        else:
+            image = '/media/%s' % self.image
+        return {
+            'pk': self.pk,
+            'name': self.name,
+            'capacityMeasurement': self.capacityMeasurement,
+            'parent': self.parent,
+            'image': image,
+        }
 
     def __str__(self):
         if self.parent:
