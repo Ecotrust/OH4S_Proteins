@@ -217,7 +217,7 @@ class ProductCategory(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=255)
     category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT)
-    image = models.ImageField(null=True, blank=True, default=None)
+    image = models.ImageField(null=True, blank=True, default=None, upload_to='product_images')
     description = models.TextField(null=True, blank=True, default=None)
 
     def __str__(self):
