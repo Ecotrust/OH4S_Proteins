@@ -4,7 +4,7 @@
   "pk": 1,
   "fields": {
     "password": "pbkdf2_sha256$120000$GSR0tYc32o9A$NOhnKd0SMqdgy2U0h1e04fjzU+/ey/Bpkjs6xqlJXNI=",
-    "last_login": "2019-01-29T23:13:22.018Z",
+    "last_login": "2019-01-30T00:36:41.449Z",
     "is_superuser": true,
     "username": "admin",
     "first_name": "",
@@ -350,7 +350,7 @@
   "model": "providers.deliverymethod",
   "pk": 2,
   "fields": {
-    "name": "FexEx"
+    "name": "FedEx"
   }
 },
 {

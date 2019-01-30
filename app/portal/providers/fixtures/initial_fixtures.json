@@ -332,7 +332,7 @@
   "model": "providers.deliverymethod",
   "pk": 2,
   "fields": {
-    "name": "FexEx"
+    "name": "FedEx"
   }
 },
 {

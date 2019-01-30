@@ -127,9 +127,9 @@ class Provider(models.Model):
     officePhone = PhoneNumberField(verbose_name="Office Phone")
     cellPhone = PhoneNumberField(blank=True, null=True, default=None, verbose_name="Cell Phone")
     email = models.EmailField(max_length=255, null=True, blank=True, default=None)
-    websiteAddress = models.URLField(max_length=255, null=True, blank=True, default=None, help_text="Try to include either http:// (good) or https:// (better if available)")
+    websiteAddress = models.URLField(max_length=255, null=True, blank=True, default=None, verbose_name="Website Address", help_text="Try to include either http:// (good) or https:// (better if available)")
 
-    identities = models.ManyToManyField(Identity)
+    identities = models.ManyToManyField(Identity, blank=True)
 
     notes = models.TextField(null=True, blank=True, default=None, verbose_name="Additional Notes")
 
@@ -138,13 +138,13 @@ class Provider(models.Model):
     #######################################################################
 
     productLiabilityInsurance = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='This provider has product liability insurance')
-    productLiabilityInsuranceAmount = MoneyField(max_digits=10, decimal_places=0, default_currency='USD', null=True, blank=True, default=None)
-    deliveryMethods = models.ManyToManyField(DeliveryMethod)
-    regionalAvailability = models.ManyToManyField(PoliticalSubregion)
-    orderMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None)
-    deliveryMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None)
-    distributors = models.ManyToManyField(Distributor)
-    productionPractices = models.ManyToManyField(ProductionPractice)
+    productLiabilityInsuranceAmount = MoneyField(max_digits=10, decimal_places=0, default_currency='USD', null=True, blank=True, default=None, verbose_name="Product Liability Insurance Amount")
+    deliveryMethods = models.ManyToManyField(DeliveryMethod, blank=True, verbose_name='Delivery Methods')
+    regionalAvailability = models.ManyToManyField(PoliticalSubregion, blank=True, verbose_name='Counties where product is available')
+    orderMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None, verbose_name='Order Minimum')
+    deliveryMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None, verbose_name='Delivery Minimum')
+    distributors = models.ManyToManyField(Distributor, blank=True)
+    productionPractices = models.ManyToManyField(ProductionPractice, blank=True, verbose_name='Production Practices')
 
     class Meta:
         verbose_name="provider"
@@ -243,12 +243,12 @@ class ProviderProduct(models.Model):
 
     productLiabilityInsurance = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='This provider has product liability insurance')
     productLiabilityInsuranceAmount = MoneyField(max_digits=10, decimal_places=0, default_currency='USD', null=True, blank=True, default=None)
-    deliveryMethods = models.ManyToManyField(DeliveryMethod)
-    regionalAvailability = models.ManyToManyField(PoliticalSubregion)
+    deliveryMethods = models.ManyToManyField(DeliveryMethod, blank=True)
+    regionalAvailability = models.ManyToManyField(PoliticalSubregion, blank=True)
     orderMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None)
     deliveryMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None)
-    distributors = models.ManyToManyField(Distributor)
-    productionPractices = models.ManyToManyField(ProductionPractice)
+    distributors = models.ManyToManyField(Distributor, blank=True)
+    productionPractices = models.ManyToManyField(ProductionPractice, blank=True)
 
     def __str__(self):
         return "%s - %s" % (str(self.product), str(self.provider))
