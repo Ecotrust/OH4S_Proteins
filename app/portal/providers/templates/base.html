@@ -1,0 +1,19 @@
+{% load static %}
+<HTML>
+  <head>
+    <link rel="stylesheet" href="{% static "providers/libraries/bootstrap-4.2.1-dist/css/bootstrap.min.css" %}">
+    {% block additional_header %}
+    {% endblock %}
+  </head>
+  <body>
+    {% include "header.html" %}
+    {% block content %}
+    {% endblock %}
+
+    <link rel="stylesheet" href="{% static "providers/libraries/jquery-3.3.1.min.js" %}">
+    <link rel="stylesheet" href="{% static "providers/libraries/popper.min.js" %}">
+    <link rel="stylesheet" href="{% static "providers/libraries/bootstrap-4.2.1-dist/js/bootstrap.min.js" %}">
+    {% block additional_js %}
+    {% endblock %}
+  </body>
+</HTML>

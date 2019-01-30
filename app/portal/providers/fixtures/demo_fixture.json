@@ -1,23 +1,5 @@
 [
 {
-  "model": "auth.user",
-  "pk": 1,
-  "fields": {
-    "password": "pbkdf2_sha256$120000$GSR0tYc32o9A$NOhnKd0SMqdgy2U0h1e04fjzU+/ey/Bpkjs6xqlJXNI=",
-    "last_login": "2019-01-30T01:26:04.204Z",
-    "is_superuser": true,
-    "username": "admin",
-    "first_name": "",
-    "last_name": "",
-    "email": "rhodges@ecotrust.org",
-    "is_staff": true,
-    "is_active": true,
-    "date_joined": "2019-01-29T23:12:58.950Z",
-    "groups": [],
-    "user_permissions": []
-  }
-},
-{
   "model": "providers.politicalregion",
   "pk": 1,
   "fields": {
@@ -776,6 +758,105 @@
     "name": "No Spray",
     "description": "",
     "definitionLink": null
+  }
+},
+{
+  "model": "providers.provider",
+  "pk": 1,
+  "fields": {
+    "name": "Bruce Ranch",
+    "outreachConductor": "Ryan",
+    "dateInfoAdded": "2019-01-30T23:27:02.859Z",
+    "dateInfoUpdated": "2019-01-30T23:27:02.859Z",
+    "soldToSchoolsBefore": "Unknown",
+    "description": "",
+    "primaryContactFirstName": "Bruce",
+    "primaryContactLastName": "Bruce",
+    "businessAddressLine1": "123 Bruce Lane",
+    "businessAddressLine2": "Apt B",
+    "businessAddressCity": "Bruceville",
+    "businessAddressState": 1,
+    "businessAddressZipCode": "97200",
+    "physicalAddressIsSame": true,
+    "physicalAddressLine1": null,
+    "physicalAddressLine2": null,
+    "physicalAddressCity": null,
+    "physicalAddressState": null,
+    "physicalAddressZipCode": null,
+    "officePhone": "+15415415410",
+    "cellPhone": null,
+    "email": null,
+    "websiteAddress": null,
+    "notes": "",
+    "productLiabilityInsurance": "Unknown",
+    "productLiabilityInsuranceAmount_currency": "USD",
+    "productLiabilityInsuranceAmount": null,
+    "orderMinimum_currency": "USD",
+    "orderMinimum": null,
+    "deliveryMinimum_currency": "USD",
+    "deliveryMinimum": null,
+    "identities": [
+      4,
+      1,
+      3
+    ],
+    "deliveryMethods": [
+      2
+    ],
+    "regionalAvailability": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "distributors": [],
+    "productionPractices": [
+      4
+    ]
+  }
+},
+{
+  "model": "providers.providerproduct",
+  "pk": 1,
+  "fields": {
+    "name": "Bruce's Honey Roasted Hazelnuts",
+    "category": 16,
+    "image": "",
+    "provider": 1,
+    "description": "",
+    "notes": "",
+    "productLiabilityInsurance": "Unknown",
+    "productLiabilityInsuranceAmount_currency": "USD",
+    "productLiabilityInsuranceAmount": null,
+    "orderMinimum_currency": "USD",
+    "orderMinimum": null,
+    "deliveryMinimum_currency": "USD",
+    "deliveryMinimum": null,
+    "deliveryMethods": [
+      2
+    ],
+    "regionalAvailability": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10
+    ],
+    "distributors": [],
+    "productionPractices": [
+      4
+    ]
   }
 }
 ]

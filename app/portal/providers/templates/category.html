@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+    {% block content %}
+    {% if category.parent %}
+      <a href="/providers/category/{{category.parent.pk}}">
+    {% else %}
+      <a href="/providers/">
+    {% endif %}
+        <h2>{{ category.name }}</h2>
+    </a>
+    <div class="container">
+      <!-- child categories -->
+      {% if children|length > 0 %}
+      <div class="row children">
+        <div class="col-12">
+          {% for category in children %}
+            {% if forloop.counter0|divisibleby:4 %}
+              {% if not forloop.first %}
+              </div>
+              {% endif %}
+              <div class="row">
+            {% endif %}
+
+            <div class="col-3">
+              <a href="/providers/category/{{category.pk}}/">
+                <div style="border: 2px solid black; width:100px; height:100px; background-image: url('{{category.image}}');background-position: center; background-repeat: no-repeat; background-size: cover; margin: 5px;">
+                  {{category.name}}
+                </div>
+              </a>
+
+            </div>
+            {% if forloop.last %}
+              </div>
+            {% endif %}
+          {% endfor %}
+          </div>
+      </div>
+      <hr />
+      {% endif %}
+
+      <div class="row">
+        <div class="col-12 well">
+          <h2>Products</h2>
+          {% if provider_products.count > 0 %}
+            {% for product in provider_products %}
+              <div class="row">
+                <div class="col-12">
+                  <a href="/providers/product/{{product.pk}}/">
+                    <div style="border: solid black 1px; border-radius: 4px; padding: 5px;">
+                      {{ product.provider.name }}<br/>
+                      {{ product.name }}
+                    </div>
+                  </div>
+                </a>
+              </div>
+            {% endfor %}
+          {% else %}
+            <p>No products found meeting these criteria</p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {% endblock %}

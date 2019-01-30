@@ -1,13 +1,6 @@
-<HTML>
-  <head>
-    {% load static %}
-    <link rel="stylesheet" href="{% static "providers/libraries/bootstrap-4.2.1-dist/css/bootstrap.min.css" %}">
-    <link rel="stylesheet" href="{% static "providers/libraries/jquery-3.3.1.min.js" %}">
-    <link rel="stylesheet" href="{% static "providers/libraries/popper.min.js" %}">
-    <link rel="stylesheet" href="{% static "providers/libraries/bootstrap-4.2.1-dist/js/bootstrap.min.js" %}">
-  </head>
-  <body>
-    <h1>OH4S Portal</h1>
+{% extends "base.html" %}
+
+    {% block content %}
     <div class="container">
       {% for category in categories %}
         {% if forloop.counter0|divisibleby:4 %}
@@ -30,5 +23,4 @@
         {% endif %}
       {% endfor %}
     </div>
-  </body>
-</HTML>
+    {% endblock %}

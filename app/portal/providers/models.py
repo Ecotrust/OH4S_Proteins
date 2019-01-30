@@ -200,26 +200,40 @@ class ProductCategory(models.Model):
 
     def get_children(self):
         children = ProductCategory.objects.filter(parent=self)
-        children_list = [x for x in children]
+        return children
+
+    def get_decendants(self):
+        children = self.get_children()
+        decendants_list = [x for x in children]
         for child in children:
-            children_list = children_list + child.get_children()
-        return children_list
+            decendants_list = decendants_list + child.get_decendants()
+        return decendants_list
 
     def get_products(self):
-        children = self.get_children()
-        children.append(self)
-        child_products = Product.objects.filter(category__in=children)
+        # TODO: Cache this!
+        decendants = self.get_decendants()
+        decendants.append(self)
+        category_products = Product.objects.filter(category__in=decendants)
+        return category_products
 
-    def get_parents(self):
+    def get_provider_products(self):
+        # TODO: Cache this!
+        decendants = self.get_decendants()
+        decendants.append(self)
+        category_provider_products = ProviderProduct.objects.filter(category__in=decendants)
+        return category_provider_products
+
+    def get_ancestors(self):
         if self.parent:
-            return self.parent.get_parents() + [self.parent]
+            return self.parent.get_ancestors() + [self.parent]
         else:
             return []
 
     def get_ancestor_count(self):
-        ancestors = self.get_parents()
+        ancestors = self.get_ancestors()
         return len(ancestors)
 
+    # TODO: Clear caches on save for this and parents.
     # def save(self, *args, **kwargs):
     #     self.ancestor_count = self.get_ancestor_count()
     #     super(ProductCategory, self).save(*args, **kwargs)
@@ -247,8 +261,12 @@ class ProviderProduct(models.Model):
         ('No', 'No'),
     )
 
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    # product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT)
+    image = models.ImageField(null=True, blank=True, default=None, upload_to='product_images')
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+    description = models.TextField(null=True, blank=True, default=None, help_text="Discription shown in search view")
     notes = models.TextField(null=True, blank=True, default=None, verbose_name="Additional Notes")
 
     #######################################################################
@@ -265,7 +283,25 @@ class ProviderProduct(models.Model):
     productionPractices = models.ManyToManyField(ProductionPractice, blank=True)
 
     def __str__(self):
-        return "%s - %s" % (str(self.product), str(self.provider))
+        return "%s: %s - %s" % (self.name, str(self.category), str(self.provider))
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'category': self.category,
+            'image': self.image,
+            'provider': self.provider,
+            'description': self.description,
+            'notes': self.notes,
+            'productLiabilityInsurance': self.productLiabilityInsurance,
+            'productLiabilityInsuranceAmount': self.productLiabilityInsuranceAmount,
+            'deliveryMethods': self.deliveryMethods,
+            'regionalAvailability': self.regionalAvailability,
+            'orderMinimum': self.orderMinimum,
+            'deliveryMinimum': self.deliveryMinimum,
+            'distributors': self.distributors,
+            'productionPractices': self.productionPractices,
+        }
 
     class Meta:
-        ordering = ('product', 'provider')
+        ordering = ('category', 'provider')
