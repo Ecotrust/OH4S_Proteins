@@ -3,11 +3,10 @@
     {% block content %}
     {% if category.parent %}
       <a href="/providers/category/{{category.parent.pk}}">
-    {% else %}
-      <a href="/providers/">
+        Back to {{ category.parent.name }}
+      </a>
     {% endif %}
         <h2>{{ category.name }}</h2>
-    </a>
     <div class="container">
       <!-- child categories -->
       {% if children|length > 0 %}
