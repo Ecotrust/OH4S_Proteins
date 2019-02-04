@@ -693,6 +693,36 @@
   }
 },
 {
+  "model": "providers.productcategory",
+  "pk": 31,
+  "fields": {
+    "name": "Black Bean",
+    "capacityMeasurement": 2,
+    "parent": 8,
+    "image": "category_images/grumpycat.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 32,
+  "fields": {
+    "name": "Cabbage",
+    "capacityMeasurement": 2,
+    "parent": 2,
+    "image": ""
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 33,
+  "fields": {
+    "name": "Canned",
+    "capacityMeasurement": 2,
+    "parent": 31,
+    "image": ""
+  }
+},
+{
   "model": "providers.identity",
   "pk": 1,
   "fields": {
@@ -822,6 +852,51 @@
   }
 },
 {
+  "model": "providers.provider",
+  "pk": 2,
+  "fields": {
+    "name": "Beyonce's Farm",
+    "outreachConductor": "Angela",
+    "dateInfoAdded": "2019-01-31T20:22:56.740Z",
+    "dateInfoUpdated": "2019-01-31T20:22:56.740Z",
+    "soldToSchoolsBefore": "Unknown",
+    "description": "",
+    "primaryContactFirstName": "Beyonce",
+    "primaryContactLastName": null,
+    "businessAddressLine1": "123",
+    "businessAddressLine2": "apt B",
+    "businessAddressCity": "Ny",
+    "businessAddressState": 1,
+    "businessAddressZipCode": "97000",
+    "physicalAddressIsSame": true,
+    "physicalAddressLine1": null,
+    "physicalAddressLine2": null,
+    "physicalAddressCity": null,
+    "physicalAddressState": null,
+    "physicalAddressZipCode": null,
+    "officePhone": "+14035035030",
+    "cellPhone": null,
+    "email": null,
+    "websiteAddress": null,
+    "notes": "",
+    "productLiabilityInsurance": "Unknown",
+    "productLiabilityInsuranceAmount_currency": "USD",
+    "productLiabilityInsuranceAmount": null,
+    "orderMinimum_currency": "USD",
+    "orderMinimum": null,
+    "deliveryMinimum_currency": "USD",
+    "deliveryMinimum": null,
+    "identities": [
+      1,
+      2
+    ],
+    "deliveryMethods": [],
+    "regionalAvailability": [],
+    "distributors": [],
+    "productionPractices": []
+  }
+},
+{
   "model": "providers.providerproduct",
   "pk": 1,
   "fields": {
@@ -857,6 +932,29 @@
     "productionPractices": [
       4
     ]
+  }
+},
+{
+  "model": "providers.providerproduct",
+  "pk": 2,
+  "fields": {
+    "name": "Beyonce's Black Beans",
+    "category": 31,
+    "image": "product_images/tamagotchi_.jpg",
+    "provider": 2,
+    "description": "",
+    "notes": "",
+    "productLiabilityInsurance": "Unknown",
+    "productLiabilityInsuranceAmount_currency": "USD",
+    "productLiabilityInsuranceAmount": null,
+    "orderMinimum_currency": "USD",
+    "orderMinimum": null,
+    "deliveryMinimum_currency": "USD",
+    "deliveryMinimum": null,
+    "deliveryMethods": [],
+    "regionalAvailability": [],
+    "distributors": [],
+    "productionPractices": []
   }
 }
 ]

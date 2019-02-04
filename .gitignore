@@ -1,5 +1,7 @@
 # Custom Added Ignore Files
 app/portal/static
+app/portal/providers/static/providers/img/oh4s/
+app/portal/providers/static/providers/libraries/bootstrap-4.2.1-dist/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

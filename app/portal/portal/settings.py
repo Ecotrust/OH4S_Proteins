@@ -137,4 +137,8 @@ PHONENUMBER_DEFAULT_REGION = 'US'
 
 STATIC_URL = '/static/'
 
+DEFAULT_PROJECT_TITLE = "Oregon Harvest for Schools"
+DEFAULT_PROJECT_WELCOME = "<h1>Welcome to the Oregon Harvest for Schools Portal</h1><p>A tool to help Oregon school food buyers source Oregon-grown food products.</p>"
+DEFAULT_PROJECT_IMAGE = "providers/img/defaults/logo-oh4s-large.jpg"
+
 from .local_settings import *

@@ -1,26 +1,31 @@
 {% extends "base.html" %}
+{% load static %}
 
-    {% block content %}
-    <div class="container">
-      {% for category in categories %}
-        {% if forloop.counter0|divisibleby:4 %}
-          {% if not forloop.first %}
-          </div>
-          {% endif %}
-          <div class="row">
-        {% endif %}
+{% block additional_header %}
+<link rel="stylesheet" href="{% static "providers/css/categories.css" %}">
+{% endblock %}
 
-        <div class="col-3">
-          <a href="/providers/category/{{category.pk}}/">
-            <div style="border: 2px solid black; width:100px; height:100px; background-image: url('{{category.image}}');background-position: center; background-repeat: no-repeat; background-size: cover; margin: 5px;">
-              <div style="background: rgba(0,0,0,0.5); bottom:0; color: white; text-align: center; font-weight:bold;">{{category.name}}</div>
+{% block content %}
+<div class="container">
+  <div class="well categories-container">
+    <div class="row">
+      <div class="col-12">
+        <h3>Select a product to find Oregon suppliers that want to work with schools</h3>
+        <hr />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 categories-flex-container">
+        {% for category in categories %}
+          <a class="category-link" href="/providers/category/{{category.pk}}/">
+            <div class="category-container">
+              <img class="category-image" src="{{category.image}}">
+              <div class="category-name">{{category.name}}</div>
             </div>
           </a>
-
-        </div>
-        {% if forloop.last %}
-          </div>
-        {% endif %}
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
-    {% endblock %}
+  </div>
+</div>
+{% endblock %}

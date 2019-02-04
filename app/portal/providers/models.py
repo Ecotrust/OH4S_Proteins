@@ -2,6 +2,16 @@ from django.db import models
 from phonenumber_field.modelfields import PhoneNumberField
 from djmoney.models.fields import MoneyField
 
+class Project(models.Model):
+    name = models.CharField(max_length=255, default="Oregon Harvest For Schools")
+    welcome = models.TextField(null=True, blank=True, default=None)
+    logo = models.ImageField(null=True, blank=True, default=None, upload_to='logo_images')
+
+    def __str__(self):
+        return self.name
+
+# Filter Model? Can we let Admin craft her own filters? Seems unlikely...
+
 class PoliticalRegion(models.Model):
     REGION_TYPE_CHOICES = (
         ('State', 'State'),

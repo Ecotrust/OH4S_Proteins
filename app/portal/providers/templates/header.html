@@ -1,3 +1,13 @@
-<a href="/providers/">
-  <h1>OH4S Portal</h1>
-</a>
+{% load static %}
+<div class="container header">
+  <div class="row">
+    <div class="col-2">
+      <a href="/providers/">
+        <img class="project-logo" src="{% static PROJECT_IMAGE %}">
+      </a>
+    </div>
+    <div class="col-10">
+      {{ PROJECT_WELCOME|safe }}
+    </div>
+  </div>
+</div>
