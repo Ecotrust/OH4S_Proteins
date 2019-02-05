@@ -76,7 +76,6 @@ hr {
 }
 
 .product-link {
-  /* position: absolute; */
   display: flex;
 }
 
@@ -88,5 +87,4 @@ hr {
   margin: 0.15rem;
   min-width: 15rem;
   background-color: white;
-  /* position: relative; */
 }

@@ -404,26 +404,6 @@
 },
 {
   "model": "providers.productcategory",
-  "pk": 2,
-  "fields": {
-    "name": "Vegetable",
-    "capacityMeasurement": 2,
-    "parent": null,
-    "image": ""
-  }
-},
-{
-  "model": "providers.productcategory",
-  "pk": 3,
-  "fields": {
-    "name": "Fruit",
-    "capacityMeasurement": 2,
-    "parent": null,
-    "image": ""
-  }
-},
-{
-  "model": "providers.productcategory",
   "pk": 4,
   "fields": {
     "name": "Grain",
@@ -708,7 +688,7 @@
   "fields": {
     "name": "Cabbage",
     "capacityMeasurement": 2,
-    "parent": 2,
+    "parent": null,
     "image": ""
   }
 },
@@ -720,6 +700,396 @@
     "capacityMeasurement": 2,
     "parent": 31,
     "image": ""
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 34,
+  "fields": {
+    "name": "Apples",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/apple.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 35,
+  "fields": {
+    "name": "Asparagus",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/asparagus.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 36,
+  "fields": {
+    "name": "Beets",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/beet.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 37,
+  "fields": {
+    "name": "Blackberries",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/berry.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 38,
+  "fields": {
+    "name": "Blueberries",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/blueberry.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 39,
+  "fields": {
+    "name": "Broccoli",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/broccoli.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 40,
+  "fields": {
+    "name": "Brussels Sprouts",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/brussels_sprouts.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 41,
+  "fields": {
+    "name": "Cabbage",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/cabbage.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 42,
+  "fields": {
+    "name": "Carrots",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/carrot.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 43,
+  "fields": {
+    "name": "Cauliflower",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/cauliflower.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 44,
+  "fields": {
+    "name": "Cherries",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/cherry.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 45,
+  "fields": {
+    "name": "Corn",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/corn.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 46,
+  "fields": {
+    "name": "Cranberries",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/cranberry.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 47,
+  "fields": {
+    "name": "Grapes",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/grape.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 48,
+  "fields": {
+    "name": "Green Beans",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/green_bean.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 49,
+  "fields": {
+    "name": "Kale",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/kale.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 50,
+  "fields": {
+    "name": "Fuzzy Kiwi",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/kiwi.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 51,
+  "fields": {
+    "name": "Kiwi Berries",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/kiwi_berry.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 52,
+  "fields": {
+    "name": "Leeks",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/leek.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 53,
+  "fields": {
+    "name": "Mushrooms",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/mushroom.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 54,
+  "fields": {
+    "name": "Marionberries",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/berry_u8VjE8o.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 55,
+  "fields": {
+    "name": "Onions",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/onion.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 56,
+  "fields": {
+    "name": "Parsnips",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/parsnip.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 57,
+  "fields": {
+    "name": "Peaches",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/peach.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 58,
+  "fields": {
+    "name": "Pears",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/pear.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 59,
+  "fields": {
+    "name": "Peas",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/pea.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 60,
+  "fields": {
+    "name": "Peppers",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/peppers.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 61,
+  "fields": {
+    "name": "Potatoes",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/potato.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 62,
+  "fields": {
+    "name": "Radishes",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/radish.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 63,
+  "fields": {
+    "name": "Raspberries",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/berry_EKOggBg.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 64,
+  "fields": {
+    "name": "Rhubarb",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/rhubarb.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 65,
+  "fields": {
+    "name": "Salad Mix",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/leafy_green.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 66,
+  "fields": {
+    "name": "Spinach",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/spinach.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 67,
+  "fields": {
+    "name": "Strawberries",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/strawberry.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 68,
+  "fields": {
+    "name": "Summer Squash",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/summer_squash.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 69,
+  "fields": {
+    "name": "Tomatoes",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/tomato.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 70,
+  "fields": {
+    "name": "Turnips",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/rutabaga.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 71,
+  "fields": {
+    "name": "Watermelon",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/watermelon.png"
+  }
+},
+{
+  "model": "providers.productcategory",
+  "pk": 72,
+  "fields": {
+    "name": "Winter Squash",
+    "capacityMeasurement": 2,
+    "parent": null,
+    "image": "category_images/winter_squash.png"
   }
 },
 {
