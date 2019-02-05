@@ -36,7 +36,7 @@ def index(request):
     top_tier_categories = ProductCategory.objects.filter(parent=None)
 
     context = {
-        'categories': [x.to_dict() for x in top_tier_categories],
+        'categories': [x.to_dict() for x in top_tier_categories.order_by('name')],
     }
 
     context = header(request, context)
@@ -54,8 +54,8 @@ def category(request, category_id):
     provider_products = category.get_provider_products()
     context = {
         'category': category.to_dict(),
-        'children': [x.to_dict() for x in children],
-        'provider_products': provider_products,
+        'children': [x.to_dict() for x in children.order_by('name')],
+        'provider_products': provider_products.order_by('name'),
     }
     context = header(request, context)
     return render(request, "category.html", context)
