@@ -15,49 +15,61 @@
     <div class="row">
       <div class="col-12">
         <a href="/providers/category/{{category.parent.pk}}">
-          Back to {{ category.parent.name }}
+          Show all <b>{{ category.parent.name }}</b> results
         </a>
       </div>
     </div>
   {% endif %}
-    <div class="categories-container">
+  <div class="categories-container">
     <!-- child categories -->
     {% if children|length > 0 %}
-    <h2>{{ category.name }} Categories</h2>
-    <div class="row">
-      <div class="col-12 categories-flex-container subcategories-flex-container">
-        {% for category in children %}
-          <a class="category-link" href="/providers/category/{{category.pk}}/">
-            <div class="category-container category-container-slim">
-              <img class="category-image" src="{{category.image}}">
-              <div class="category-name">{{category.name}}</div>
-            </div>
-          </a>
-        {% endfor %}
+      <p>{{ category.name }} Categories</p>
+      <div class="row">
+        <div class="col-12 categories-flex-container subcategories-flex-container">
+          {% for child_category in children %}
+            <a class="category-link" href="/providers/category/{{child_category.pk}}/">
+              <div class="category-container category-container-slim">
+                <img class="category-image" src="{{child_category.image}}">
+                <div class="category-name">{{child_category.name}}</div>
+              </div>
+            </a>
+          {% endfor %}
+        </div>
       </div>
-    </div>
 
-    <hr />
+      <hr />
     {% endif %}
 
     <div class="row">
-      <div class="col-12 well">
-        <h2>Products</h2>
+      <div class="col-md-4 order-first order-md-2">
+        <h3>Refine your search</h3>
+      </div>
+      <div class="col-md-8 order-last order-md-1">
         {% if provider_products.count > 0 %}
-          {% for product in provider_products %}
-            <div class="row">
-              <div class="col-12">
-                <a href="/providers/product/{{product.pk}}/">
-                  <div style="border: solid black 1px; border-radius: 4px; padding: 5px;">
-                    {{ product.provider.name }}<br/>
-                    {{ product.name }}
-                  </div>
-                </div>
-              </a>
+          <div class="row-fluid">
+            <div class="col-12 results-count">
+              <p>
+                <img class="results-category-image" src="{{category.image}}">
+                We found <b>{{ provider_products.count }}</b> products for <b>{{category.name }}</b>.
+              </p>
             </div>
-          {% endfor %}
+          </div>
+          <div class="row">
+            <div class="col-12 products-flex-container">
+              {% for product in provider_products %}
+                <a class="product-link" href="/providers/product/{{product.pk}}/">
+                  <div class="product-container">
+                    <div style="product">
+                      {{ product.provider.name }}<br/>
+                      {{ product.name }}
+                    </div>
+                  </div>
+                </a>
+              {% endfor %}
+            </div>
+          </div>
         {% else %}
-          <p>No products found meeting these criteria</p>
+          <p>No providers were found meeting these criteria</p>
         {% endif %}
       </div>
     </div>

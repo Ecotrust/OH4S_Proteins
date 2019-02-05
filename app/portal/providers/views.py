@@ -53,7 +53,7 @@ def category(request, category_id):
     children = category.get_children()
     provider_products = category.get_provider_products()
     context = {
-        'category': category,
+        'category': category.to_dict(),
         'children': [x.to_dict() for x in children],
         'provider_products': provider_products,
     }

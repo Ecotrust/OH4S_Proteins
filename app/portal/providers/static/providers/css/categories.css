@@ -19,9 +19,12 @@ hr {
   justify-content: normal;
 }
 
+.products-flex-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .category-container {
-  /* flex-grow: <number>; */
-  /* height: 5rem; */
   border-radius: 0.2rem;
   border: 0.05rem solid #555;
   background-color: white;
@@ -58,4 +61,32 @@ hr {
 .category-container-slim .category-image {
   width: 4rem;
   margin: 0.25rem;
+}
+
+.results-count {
+  background-color: white;
+  border: 0.05rem solid black;
+  border-radius: 0.2rem;
+  margin: 1rem 0;
+  padding: 1rem 0 0 0.5rem;
+}
+
+.results-category-image {
+  height: 2.4rem
+}
+
+.product-link {
+  /* position: absolute; */
+  display: flex;
+}
+
+.product-container {
+  border: solid black 0.05rem;
+  border-radius: 0.2rem;
+  padding: 0.25rem;
+  width: 25%;
+  margin: 0.15rem;
+  min-width: 15rem;
+  background-color: white;
+  /* position: relative; */
 }
