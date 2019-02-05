@@ -684,16 +684,6 @@
 },
 {
   "model": "providers.productcategory",
-  "pk": 32,
-  "fields": {
-    "name": "Cabbage",
-    "capacityMeasurement": 2,
-    "parent": null,
-    "image": ""
-  }
-},
-{
-  "model": "providers.productcategory",
   "pk": 33,
   "fields": {
     "name": "Canned",
