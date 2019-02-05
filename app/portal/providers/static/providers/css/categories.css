@@ -15,6 +15,10 @@ hr {
   justify-content: center;
 }
 
+.subcategories-flex-container {
+  justify-content: normal;
+}
+
 .category-container {
   /* flex-grow: <number>; */
   /* height: 5rem; */
@@ -28,7 +32,6 @@ hr {
   border: 0.05rem solid #0098a8;
   box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0,152,184,0.2), 0.15rem 0.15rem 0.15rem 0.15rem rgba(0,152,184,0.19);
   margin: 0 0.2rem 0.2rem 0;
-
 }
 
 .category-image {
@@ -50,4 +53,9 @@ hr {
 
 .category-container:hover .category-name {
   background: rgba(0,152,184,0.5);
+}
+
+.category-container-slim .category-image {
+  width: 4rem;
+  margin: 0.25rem;
 }

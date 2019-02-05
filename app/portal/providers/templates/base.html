@@ -7,7 +7,9 @@
     {% endblock %}
   </head>
   <body>
-    {% include "header.html" %}
+    {% block header-content %}
+      {% include "header.html" %}
+    {% endblock %}
     {% block content %}
     {% endblock %}
 
