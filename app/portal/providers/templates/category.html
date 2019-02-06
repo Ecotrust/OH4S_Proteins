@@ -55,7 +55,7 @@
             <div class="card-header" id="product-details-card-header" type="button" data-toggle="collapse" data-target="#collapse-product-category" aria-expanded="true" aria-controls="collapse-product-category">
               ...by Product Details
             </div>
-            <div id="collapse-product-category" class="collapse" aria-labelledby="product-details-card-header">
+            <div id="collapse-product-category" class="collapse show" aria-labelledby="product-details-card-header">
               <div class="fieldWrapper">
                 <label for="{{ filter_form.product_category.id_for_label }}"></label>
                 {{ filter_form.product_category.errors }}
@@ -67,12 +67,12 @@
             <div class="card-header" id="supplier-details-card-header" type="button" data-toggle="collapse" data-target="#collapse-supplier-details" aria-expanded="true" aria-controls="collapse-supplier-details">
               ...by Supplier Details
             </div>
-            <div id="collapse-supplier-details" class="collapse" aria-labelledby="supplier-details-card-header">
+            <div id="collapse-supplier-details" class="collapse show" aria-labelledby="supplier-details-card-header">
               <div class="card subcard">
                 <div class="card-header" id="capacity-card-header" type="button" data-toggle="collapse" data-target="#collapse-capacity" aria-expanded="true" aria-controls="collapse-capacity">
                   Production Capacity
                 </div>
-                <div id="collapse-capacity" class="collapse" aria-labelledby="capacity-card-header">
+                <div id="collapse-capacity" class="collapse show" aria-labelledby="capacity-card-header">
                   <div class="fieldWrapper">
                     <label for="{{ filter_form.capacity.id_for_label }}">Show me sellers who produce or harvest</label>
                     {{ filter_form.capacity.errors }}
@@ -85,7 +85,7 @@
                 <div class="card-header" id="distribution-card-header" type="button" data-toggle="collapse" data-target="#collapse-distribution" aria-expanded="true" aria-controls="collapse-distribution">
                   Distribution Method
                 </div>
-                <div id="collapse-distribution" class="collapse" aria-labelledby="distribution-card-header">
+                <div id="collapse-distribution" class="collapse show" aria-labelledby="distribution-card-header">
                   <div class="fieldWrapper">
                     <label for="{{ filter_form.distribution.id_for_label }}"><!-- {{ filter_form.distribution.label }} --></label>
                     {{ filter_form.distribution.errors }}
@@ -98,7 +98,7 @@
                 <div class="card-header" id="availability-card-header" type="button" data-toggle="collapse" data-target="#collapse-availability" aria-expanded="true" aria-controls="collapse-availability">
                   Availability
                 </div>
-                <div id="collapse-availability" class="collapse" aria-labelledby="availability-card-header">
+                <div id="collapse-availability" class="collapse show" aria-labelledby="availability-card-header">
                   <div class="fieldWrapper">
                     <label for="{{ filter_form.availability.id_for_label }}">{{ filter_form.availability.label }}</label>
                     {{ filter_form.availability.errors }}
