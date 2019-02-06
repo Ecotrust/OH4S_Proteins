@@ -427,7 +427,7 @@
   "pk": 6,
   "fields": {
     "name": "Dairy",
-    "capacityMeasurement": null,
+    "capacityMeasurement": 3,
     "parent": null,
     "image": ""
   }

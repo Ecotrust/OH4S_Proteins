@@ -54,7 +54,10 @@ def category(request, category_id):
     children = [x.to_dict() for x in category.get_children().order_by('name')]
     provider_products = category.get_provider_products()
     product_details = [ (y, y) for y in [x['name'] for x in children ] ]
-    production_capacity_unit = category.capacityMeasurement.unit
+    if category.capacityMeasurement:
+        production_capacity_unit = category.capacityMeasurement.unit
+    else:
+        production_capacity_unit = settings.DEFAULT_CAPACITY_UNIT
     filter_form = FilterForm(product_details=product_details, production_capacity_unit=production_capacity_unit)
     context = {
         'category': category.to_dict(),
