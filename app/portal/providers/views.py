@@ -45,17 +45,22 @@ def index(request):
 
 def category(request, category_id):
     from providers.models import ProductCategory
+    from providers.forms import FilterForm
 
     try:
         category = ProductCategory.objects.get(pk=category_id)
     except Exception as e:
         return index(request)
-    children = category.get_children()
+    children = [x.to_dict() for x in category.get_children().order_by('name')]
     provider_products = category.get_provider_products()
+    product_details = [ (y, y) for y in [x['name'] for x in children ] ]
+    production_capacity_unit = category.capacityMeasurement.unit
+    filter_form = FilterForm(product_details=product_details, production_capacity_unit=production_capacity_unit)
     context = {
         'category': category.to_dict(),
-        'children': [x.to_dict() for x in children.order_by('name')],
+        'children':  children,
         'provider_products': provider_products.order_by('name'),
+        'filter_form': filter_form,
     }
     context = header(request, context)
     return render(request, "category.html", context)

@@ -1,0 +1,10 @@
+{% for product in provider_products %}
+  <a class="product-link" href="/providers/product/{{product.pk}}/">
+    <div class="product-container">
+      <div style="product">
+        {{ product.provider.name }}<br/>
+        {{ product.name }}
+      </div>
+    </div>
+  </a>
+{% endfor %}

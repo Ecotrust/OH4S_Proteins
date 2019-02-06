@@ -43,6 +43,37 @@
     <div class="row">
       <div class="col-md-4 order-first order-md-2">
         <h3>Refine your search</h3>
+        {{ filter_form.non_field_errors }}
+        <h4>...by Product Details</h4>
+
+        <div class="fieldWrapper">
+          <label for="{{ filter_form.product_category.id_for_label }}"></label>
+          {{ filter_form.product_category.errors }}
+          {{ filter_form.product_category }}
+        </div>
+        <h4>...by Supplier Details</h4>
+
+        <h5>Production Capacity</h5>
+        <div class="fieldWrapper">
+          <label for="{{ filter_form.capacity.id_for_label }}">Show me sellers who produce or harvest</label>
+          {{ filter_form.capacity.errors }}
+          {{ filter_form.capacity }} {{ filter_form.capacity.label }}
+        </div>
+
+        <h5>Distribution Method</h5>
+        <div class="fieldWrapper">
+          <label for="{{ filter_form.distribution.id_for_label }}">{{ filter_form.distribution.label }}</label>
+          {{ filter_form.distribution.errors }}
+          {{ filter_form.distribution }}
+        </div>
+
+        <h5>Availability</h5>
+        <div class="fieldWrapper">
+          <label for="{{ filter_form.availability.id_for_label }}">{{ filter_form.availability.label }}</label>
+          {{ filter_form.availability.errors }}
+          {{ filter_form.availability }}
+        </div>
+
       </div>
       <div class="col-md-8 order-last order-md-1">
         {% if provider_products.count > 0 %}
@@ -55,17 +86,8 @@
             </div>
           </div>
           <div class="row">
-            <div class="col-12 products-flex-container">
-              {% for product in provider_products %}
-                <a class="product-link" href="/providers/product/{{product.pk}}/">
-                  <div class="product-container">
-                    <div style="product">
-                      {{ product.provider.name }}<br/>
-                      {{ product.name }}
-                    </div>
-                  </div>
-                </a>
-              {% endfor %}
+            <div class="col-12 products-flex-container" id="product-results-list">
+              {% include "product_results.html" %}
             </div>
           </div>
         {% else %}
@@ -75,4 +97,8 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block additional_js %}
+  <script src="{% static "providers/js/filter.js" %}"></script>
 {% endblock %}
