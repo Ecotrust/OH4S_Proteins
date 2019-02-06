@@ -88,3 +88,11 @@ hr {
   min-width: 15rem;
   background-color: white;
 }
+
+.subcard {
+  margin: 0 1rem;
+}
+
+.subcard .collapse {
+  margin: 0.5rem;
+}
