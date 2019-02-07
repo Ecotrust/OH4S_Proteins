@@ -4,7 +4,9 @@ class FilterForm(forms.Form):
 
     def __init__(self,*args,**kwargs):
         try:
-            self.base_fields['product_category'].choices = kwargs.pop('product_details')
+            product_details_choices = kwargs.pop('product_details')
+            self.base_fields['product_category'].choices = product_details_choices
+            self.base_fields['product_category'].initial = [ x[0] for x in product_details_choices ]
         except Exception as e:
             pass
         try:
