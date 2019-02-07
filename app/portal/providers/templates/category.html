@@ -50,6 +50,7 @@
       <div class="col-lg-4 order-first order-lg-2">
         <h3>Refine your search</h3>
         <form id="filter-form">
+          {% csrf_token %}
           {{ filter_form.non_field_errors }}
           <div class="card">
             <div class="card-header" id="product-details-card-header" type="button" data-toggle="collapse" data-target="#collapse-product-category" aria-expanded="true" aria-controls="collapse-product-category">
@@ -135,5 +136,8 @@
 {% endblock %}
 
 {% block additional_js %}
+  <script>
+    category_id = {{category.pk}};
+  </script>
   <script src="{% static "providers/js/filter.js" %}"></script>
 {% endblock %}

@@ -276,6 +276,8 @@ class ProviderProduct(models.Model):
     category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT)
     image = models.ImageField(null=True, blank=True, default=None, upload_to='product_images')
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
+    capacityValue = models.IntegerField(null=True, blank=True, default=None)
+    capacityMeasurement = models.ForeignKey(CapacityMeasurement, null=True, blank=True, default=None, on_delete=models.SET_NULL)
     description = models.TextField(null=True, blank=True, default=None, help_text="Discription shown in search view")
     notes = models.TextField(null=True, blank=True, default=None, verbose_name="Additional Notes")
 

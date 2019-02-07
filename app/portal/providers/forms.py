@@ -17,8 +17,8 @@ class FilterForm(forms.Form):
         super(FilterForm,self).__init__(*args,**kwargs)
 
     from providers.models import DeliveryMethod, PoliticalSubregion
-    deliveryMethodChoices = [(y, y) for y in ['Any'] + [str(x) for x in DeliveryMethod.objects.all().order_by('name')] ]
-    availabilityChoices = [(y, y) for y in ['Anywhere'] + [str(x) for x in PoliticalSubregion.objects.all().order_by('name')] ]
+    deliveryMethodChoices = [(-1, 'Any')] + [(x.pk, str(x)) for x in DeliveryMethod.objects.all().order_by('name')]
+    availabilityChoices = [(-1, 'Anywhere')] + [(x.pk, str(x)) for x in PoliticalSubregion.objects.all().order_by('name')]
 
     product_category = forms.MultipleChoiceField(
                 widget=forms.CheckboxSelectMultiple,
