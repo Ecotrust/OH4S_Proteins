@@ -161,6 +161,46 @@ class Provider(models.Model):
         verbose_name_plural="providers"
         ordering = ('name', 'dateInfoUpdated',)
 
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'outreachConductor': self.outreachConductor,
+            'dateInfoAdded': self.dateInfoAdded,
+            'dateInfoUpdated': self.dateInfoUpdated,
+            'soldToSchoolsBefore': self.soldToSchoolsBefore,
+            'description': self.description,
+            'primaryContactFirstName': self.primaryContactFirstName,
+            'primaryContactLastName': self.primaryContactLastName,
+            'businessAddressLine1': self.businessAddressLine1,
+            'businessAddressLine2': self.businessAddressLine2,
+            'businessAddressCity': self.businessAddressCity,
+            'businessAddressState': self.businessAddressState,
+            'businessAddressZipCode': self.businessAddressZipCode,
+            'physicalAddressIsSame': self.physicalAddressIsSame,
+            'physicalAddressLine1': self.physicalAddressLine1,
+            'physicalAddressLine2': self.physicalAddressLine2,
+            'physicalAddressCity': self.physicalAddressCity,
+            'physicalAddressState': self.physicalAddressState,
+            'physicalAddressZipCode': self.physicalAddressZipCode,
+            'officePhone': self.officePhone,
+            'cellPhone': self.cellPhone,
+            'email': self.email,
+            'websiteAddress': self.websiteAddress,
+            'identities': self.identities,
+            'notes': self.notes,
+            #######################################################################
+            #   The following may need to be "Provider-Product Specific"
+            #######################################################################
+            'productLiabilityInsurance': self.productLiabilityInsurance,
+            'productLiabilityInsuranceAmount': self.productLiabilityInsuranceAmount,
+            'deliveryMethods': self.deliveryMethods,
+            'regionalAvailability': self.regionalAvailability,
+            'orderMinimum': self.orderMinimum,
+            'deliveryMinimum': self.deliveryMinimum,
+            'distributors': self.distributors,
+            'productionPractices': self.productionPractices,
+        }
+
     def __str__(self):
         return self.name
 

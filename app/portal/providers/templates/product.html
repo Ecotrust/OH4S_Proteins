@@ -4,7 +4,11 @@
     {% if product %}
       <div style="margin: 5px; padding: 5px; border: 1px solid black; border-radius: 4px;">
         {% for key, value in product.items %}
+          {% if key == "provider" %}
+          <p><b>{{key}}</b>: <a href="/providers/provider/{{ value.pk }}/">{{value}}</a></p>
+          {% else %}
           <p><b>{{key}}</b>: {{value}}</p>
+          {% endif %}
         {% endfor %}
       </div>
     {% else %}

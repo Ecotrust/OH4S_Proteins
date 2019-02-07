@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+    {% block content %}
+    {% if provider %}
+      <div style="margin: 5px; padding: 5px; border: 1px solid black; border-radius: 4px;">
+        {% for key, value in provider.items %}
+          <p><b>{{key}}</b>: {{value}}</p>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>Provider not found</p>
+    {% endif %}
+    {% endblock %}
