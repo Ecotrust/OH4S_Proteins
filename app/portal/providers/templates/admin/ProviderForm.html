@@ -1,0 +1,57 @@
+{% extends "admin/change_form.html" %}
+
+{% block extrahead %}
+  {{ block.super }}
+  <script>
+  </script>
+{% endblock %}
+
+{% load i18n admin_urls static %}
+{% block after_field_sets %}
+  <fieldset class="module aligned ">
+    <h2>Products</h2>
+    <table>
+      {% for product in products %}
+        <tr>
+          <td>{{ product.name }}</td>
+          <td>
+            <!-- <a class="related-widget-wrapper-link change-related" data-href-template="/admin/providers/providerproduct/{{ product.pk }}/change/?_to_field=id&amp;_popup=1" title="Change selected product"> -->
+            <a class="related-widget-wrapper-link change-related" href="/admin/providers/providerproduct/{{ product.pk }}/change/?_to_field=id&amp;_popup=1" title="Change selected product">
+              <img src="/static/admin/img/icon-changelink.svg" alt="Change">
+            </a>
+            <a class="related-widget-wrapper-link delete-related" data-href-template="/admin/providers/providerproduct/{{ product.pk }}/delete/?_to_field=id&amp;_popup=1" title="Delete selected product">
+              <img src="/static/admin/img/icon-deletelink.svg" alt="Delete">
+            </a>
+          </td>
+        </tr>
+      {% endfor %}
+      <tr>
+        <td>
+          <a class="related-widget-wrapper-link add-related" href="/admin/providers/providerproduct/add/?_to_field=id&amp;_popup=1;_provider={{ provider.pk }}" title="Add another product">
+            Add Another Product
+          </a>
+        </td>
+      </tr>
+    </table>
+{% endblock %}
+
+<div class="fieldBox field-physicalAddressState">
+
+
+                        <label class="inline" for="id_physicalAddressState">Physical Address State:</label>
+
+                            <div class="related-widget-wrapper">
+    <select name="physicalAddressState" id="id_physicalAddressState">
+  <option value="" selected="">---------</option>
+
+  <option value="1">OR: Oregon</option>
+
+</select>
+
+        <a class="related-widget-wrapper-link change-related" id="change_id_physicalAddressState" data-href-template="/admin/providers/politicalregion/__fk__/change/?_to_field=id&amp;_popup=1" title="Change selected political region"><img src="/static/admin/img/icon-changelink.svg" alt="Change"></a><a class="related-widget-wrapper-link add-related" id="add_id_physicalAddressState" href="/admin/providers/politicalregion/add/?_to_field=id&amp;_popup=1" title="Add another political region"><img src="/static/admin/img/icon-addlink.svg" alt="Add"></a><a class="related-widget-wrapper-link delete-related" id="delete_id_physicalAddressState" data-href-template="/admin/providers/politicalregion/__fk__/delete/?_to_field=id&amp;_popup=1" title="Delete selected political region"><img src="/static/admin/img/icon-deletelink.svg" alt="Delete"></a>
+
+</div>
+
+
+
+                </div>

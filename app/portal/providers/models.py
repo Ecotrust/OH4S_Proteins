@@ -112,21 +112,21 @@ class Provider(models.Model):
         ('No', 'No'),
     )
 
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name="Supplier Name")
     outreachConductor = models.CharField(max_length=255, blank=True, null=True, default=None, verbose_name='Outreach conducted by', help_text="The name of the teammate who reached out to this provider")
     dateInfoAdded = models.DateTimeField(auto_now_add=True, verbose_name='Record created date')
-    dateInfoUpdated = models.DateTimeField(auto_now=True, verbose_name='Record last updated date')
+    dateInfoUpdated = models.DateTimeField(auto_now=True, verbose_name='Date information updated', help_text="This is automatic.")
     soldToSchoolsBefore = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='This provider has sold to schools before')
-    description = models.TextField(blank=True, null=True, default=None)
+    description = models.TextField(blank=True, null=True, default=None, verbose_name="Brief Description", help_text="2-3 Sentences")
     primaryContactFirstName = models.CharField(max_length=100, blank=True, null=True, default=None, verbose_name="Primary contact's first name")
     primaryContactLastName = models.CharField(max_length=100, blank=True, null=True, default=None, verbose_name="Primary contact's last name")
     businessAddressLine1 = models.CharField(max_length=255, verbose_name="Business Address Line 1")
-    businessAddressLine2 = models.CharField(max_length=255, verbose_name="Business Address Line 2")
+    businessAddressLine2 = models.CharField(max_length=255, blank=True, null=True, default=None, verbose_name="Business Address Line 2")
     businessAddressCity = models.CharField(max_length=255, verbose_name="Business Address City")
     businessAddressState = models.ForeignKey(PoliticalRegion, on_delete=models.PROTECT, verbose_name="Business Address State", related_name="providerBusinessAddresses")
     businessAddressZipCode = models.CharField(max_length=25, verbose_name="Business Address Zip Code")
 
-    physicalAddressIsSame = models.BooleanField(default=False, verbose_name="Physical address is the same as business address above")
+    physicalAddressIsSame = models.BooleanField(default=False, verbose_name="Physical address is the same as business address")
 
     physicalAddressLine1 = models.CharField(max_length=255, blank=True, null=True, default=None, verbose_name="Physical Address Line 1")
     physicalAddressLine2 = models.CharField(max_length=255, blank=True, null=True, default=None, verbose_name="Physical Address Line 2")
@@ -150,7 +150,7 @@ class Provider(models.Model):
     productLiabilityInsurance = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='This provider has product liability insurance')
     productLiabilityInsuranceAmount = MoneyField(max_digits=10, decimal_places=0, default_currency='USD', null=True, blank=True, default=None, verbose_name="Product Liability Insurance Amount")
     deliveryMethods = models.ManyToManyField(DeliveryMethod, blank=True, verbose_name='Delivery Methods')
-    regionalAvailability = models.ManyToManyField(PoliticalSubregion, blank=True, verbose_name='Counties where product is available')
+    regionalAvailability = models.ManyToManyField(PoliticalSubregion, blank=True, verbose_name='Regions where product is available')
     orderMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None, verbose_name='Order Minimum')
     deliveryMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None, verbose_name='Delivery Minimum')
     distributors = models.ManyToManyField(Distributor, blank=True)
@@ -312,27 +312,27 @@ class ProviderProduct(models.Model):
     )
 
     # product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255)
-    category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT)
+    name = models.CharField(max_length=255, verbose_name="Product Name")
+    category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT, verbose_name="Product Category")
     image = models.ImageField(null=True, blank=True, default=None, upload_to='product_images')
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
-    capacityValue = models.IntegerField(null=True, blank=True, default=None)
-    capacityMeasurement = models.ForeignKey(CapacityMeasurement, null=True, blank=True, default=None, on_delete=models.SET_NULL)
-    description = models.TextField(null=True, blank=True, default=None, help_text="Discription shown in search view")
+    capacityValue = models.IntegerField(null=True, blank=True, default=None, verbose_name="Capacity (value)")
+    capacityMeasurement = models.ForeignKey(CapacityMeasurement, null=True, blank=True, default=None, on_delete=models.SET_NULL, verbose_name="Capacity (Measurement)")
+    description = models.TextField(null=True, blank=True, default=None, help_text="Discription shown in search view", verbose_name="Product Description")
     notes = models.TextField(null=True, blank=True, default=None, verbose_name="Additional Notes")
 
     #######################################################################
     #   The following may need to be "Provider Specific"
     #######################################################################
 
-    productLiabilityInsurance = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='This provider has product liability insurance')
-    productLiabilityInsuranceAmount = MoneyField(max_digits=10, decimal_places=0, default_currency='USD', null=True, blank=True, default=None)
-    deliveryMethods = models.ManyToManyField(DeliveryMethod, blank=True)
-    regionalAvailability = models.ManyToManyField(PoliticalSubregion, blank=True)
-    orderMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None)
-    deliveryMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None)
+    productLiabilityInsurance = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='Has insurance')
+    productLiabilityInsuranceAmount = MoneyField(max_digits=10, decimal_places=0, default_currency='USD', null=True, blank=True, default=None, verbose_name="Product liability Insurance amount")
+    deliveryMethods = models.ManyToManyField(DeliveryMethod, blank=True, verbose_name="Delivery Methods for this product")
+    regionalAvailability = models.ManyToManyField(PoliticalSubregion, blank=True, verbose_name="Regions where this product is available")
+    orderMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None, verbose_name="Order Minimum")
+    deliveryMinimum = MoneyField(max_digits=8, decimal_places=2, default_currency='USD', null=True, blank=True, default=None, verbose_name="Delivery Minimum")
     distributors = models.ManyToManyField(Distributor, blank=True)
-    productionPractices = models.ManyToManyField(ProductionPractice, blank=True)
+    productionPractices = models.ManyToManyField(ProductionPractice, blank=True, verbose_name="Production Practices")
 
     def __str__(self):
         return "%s: %s - %s" % (self.name, str(self.category), str(self.provider))
