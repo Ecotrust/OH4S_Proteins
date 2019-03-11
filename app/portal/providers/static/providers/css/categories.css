@@ -47,8 +47,8 @@ hr {
 }
 
 .category-image {
-  width: 8rem;
-  max-height: 8rem;
+  max-width: 8rem;
+  height: 8rem;
   margin: 0.5rem;
 }
 
