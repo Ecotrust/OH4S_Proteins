@@ -35,6 +35,9 @@ hr {
   border: 0.05rem solid #555;
   background-color: white;
   margin: 0.1rem;
+  width: 9rem;
+  text-align: center;
+  min-height: 10.6rem;
 }
 
 .category-container:hover {
@@ -45,6 +48,7 @@ hr {
 
 .category-image {
   width: 8rem;
+  max-height: 8rem;
   margin: 0.5rem;
 }
 

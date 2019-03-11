@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from djmoney.models.fields import MoneyField
 
@@ -231,7 +232,7 @@ class ProductCategory(models.Model):
 
     def to_dict(self):
         if not self.image:
-            image = '/media/category_images/default.png'
+            image = settings.DEFAULT_CATEGORY_IMAGE
         else:
             image = '/media/%s' % self.image
         return {
