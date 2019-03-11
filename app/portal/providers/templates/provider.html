@@ -18,22 +18,145 @@
         </p>
 
         {% if provider.description %}
-        <p>{{ provider.description }}</p>
+          <p>{{ provider.description }}</p>
         {% endif %}
 
-        {% if provider.businessAddressLine1 %}
-        <div class="contact-address">
-          <ul>
-            <li>Primary Contact: </li>
-          </ul>
-        </div>
+        {% if provider.primaryContactFirstName or provider.primaryContactLastName %}
+          <p>
+            <b>Primary Contact:</b> {{ provider.primaryContactFirstName }} {{ provider.primaryContactLastName}}
+          </p>
+        {% endif %}
+        {% if provider.businessAddressCity and provider.businessAddressState %}
+          <div class="contact-address">
+            <b>{% if not provider.physicalAddressIsSame %}Business {% endif %}Address:</b><br />
+              {% if provider.businessAddressLine1 %}
+                {{ provider.businessAddressLine1 }}<br />
+              {% endif %}
+              {% if provider.businessAddressLine2 and not provider.businessAddressLine2 == '' %}
+                {{ provider.businessAddressLine2 }}<br />
+              {% endif %}
+              {{ provider.businessAddressCity }}, {{ provider.businessAddressState.initialism }}<br />
+              {% if provider.businessAddressZipCode and not provider.businessAddressZipCode == '' %}
+                {{ provider.businessAddressZipCode }}<br />
+              {% endif %}
+          </div>
+          {% if not provider.physicalAddressIsSame and provider.physicalAddressCity and provider.physicalAddressState %}
+            <div class="contact-address">
+              <b>Physical Address:</b><br />
+              {% if provider.physicalAddressLine1 and not provider.physicalAddressLine1 == '' %}
+                {{ provider.physicalAddressLine1 }}<br />
+              {% endif %}
+              {% if provider.physicalAddressLine2 and not provider.physicalAddressLine2 == '' %}
+                {{ provider.physicalAddressLine2 }}<br />
+              {% endif %}
+              {{ provider.physicalAddressCity }}, {{ provider.physicalAddressState.initialism }}<br />
+              {% if provider.physicalAddressZipCode and not provider.physicalAddressZipCode == '' %}
+                {{ provider.physicalAddressZipCode }}<br />
+              {% endif %}
+            </div>
+          {% endif %}
         {% endif %}
 
-        {% for key, value in provider.items %}
-          <p><b>{{key}}</b>: {{value}}</p>
-        {% endfor %}
+        {% if provider.officePhone%}
+          <p>
+            <b>Office Phone:</b> {{ provider.officePhone }}
+          </p>
+        {% endif %}
+        {% if provider.cellPhone %}
+          <p>
+            <b>Cell Phone:</b> {{ provider.cellPhone }}
+          </p>
+        {% endif %}
+        {% if provider.email %}
+          <p>
+            <b>Email:</b> {{ provider.email }}
+          </p>
+        {% endif %}
+        {% if provider.websiteAddress %}
+          <p>
+            <b>Website:</b> {{ provider.websiteAddress }}
+          </p>
+        {% endif %}
+
+        <p>
+          <b>Liability Insurance Amount</b>:
+            {% if provider.productLiabilityInsuranceAmount %}
+              {{ provider.productLiabilityInsuranceAmount }}
+            {% else %}
+              Unknown
+            {% endif %}
+        </p>
+
+        {% if provider.deliveryMethods.all.count > 0 %}
+          <p>
+            <b>Deliver Methods:</b>
+            <ul class='provider-details-list delivery-methods-list'>
+              {% for method in provider.deliveryMethods.all %}
+                <li>{{ method.name }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+        {% endif %}
+
+        {% if provider.distributors.all.count > 0 %}
+          <p>
+            <b>Distributors:</b>
+            <ul class='provider-details-list distributors-list'>
+              {% for distributor in provider.distributors.all %}
+                <li>{{ distributor.name }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+        {% endif %}
+
+        {% if provider.regionalAvailability.all.count > 0 %}
+          <p>
+            <b>Regional Availability (by county):</b>
+            <ul class='provider-details-list counties-list'>
+              {% for subregion in provider.regionalAvailability.all %}
+                <li>{{ subregion.name }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+        {% endif %}
+
+        {% if provider.orderMinimum %}
+          <p>
+            <b>Order Minimum:</b> {{ provider.orderMinimum }}
+          </p>
+        {% endif %}
+
+        {% if provider.orderMinimum %}
+          <p>
+            <b>Delivery Minimum:</b> {{ provider.deliveryMinimum }}
+          </p>
+        {% endif %}
+
+        {% if provider.productionPractices.all.count > 0 %}
+          <p>
+            <b>Production Practices:</b>
+            <ul class='provider-details-list production-practices-list'>
+              {% for practice in provider.productionPractices.all %}
+                <li>{{ practice.name }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+        {% endif %}
+
+        {% if provider.identities.all.count > 0 %}
+          <p>
+            <b>We identify as:</b>
+            <ul class='provider-details-list identities-list'>
+              {% for identity in provider.identities.all %}
+                <li>{{ identity.name }}</li>
+              {% endfor %}
+            </ul>
+          </p>
+        {% endif %}
+
+        <p>Information last updated: {{ provider.dateInfoUpdated }}</p>
       </div>
     {% else %}
-      <p>Provider not found</p>
+      <p>Producer not found</p>
     {% endif %}
   {% endblock %}
