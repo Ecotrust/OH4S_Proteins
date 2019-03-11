@@ -1,7 +1,7 @@
 Babel==2.6.0
 backcall==0.1.0
 decorator==4.3.2
-Django==2.1.5
+Django==2.1.7
 django-money==0.14.4
 django-phonenumber-field==2.2.0
 ipdb==0.11
