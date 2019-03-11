@@ -1,0 +1,14 @@
+{% for provider in providers %}
+  <a class="product-link" href="/providers/provider/{{provider.pk}}/">
+    <div class="product-container">
+      <div style="product">
+        {{ provider.name }}<br/>
+        {% if provider.physicalAddressCity and provider.physicalAddressState %}
+          {{ provider.physicalAddressCity }}, {{ provider.physicalAddressState.initialism }}
+        {% else %}
+          {{ provider.businessAddressCity }}, {{ provider.businessAddressState.initialism }}
+        {% endif %}
+      </div>
+    </div>
+  </a>
+{% endfor %}
