@@ -1,8 +1,34 @@
 {% extends "base.html" %}
 
-    {% block content %}
+  {% block header-content %}
+    {% include "header-slim.html" %}
+  {% endblock %}
+
+  {% block content %}
     {% if provider %}
       <div style="margin: 5px; padding: 5px; border: 1px solid black; border-radius: 4px;">
+        <h1 class='provider-name'>{{ provider.name }}</h1>
+
+        <p>
+          {% if provider.physicalAddressCity and provider.physicalAddressState %}
+            {{ provider.physicalAddressCity }}, {{ provider.physicalAddressState.initialism }}
+          {% else %}
+            {{ provider.businessAddressCity }}, {{ provider.businessAddressState.initialism }}
+          {% endif %}
+        </p>
+
+        {% if provider.description %}
+        <p>{{ provider.description }}</p>
+        {% endif %}
+
+        {% if provider.businessAddressLine1 %}
+        <div class="contact-address">
+          <ul>
+            <li>Primary Contact: </li>
+          </ul>
+        </div>
+        {% endif %}
+
         {% for key, value in provider.items %}
           <p><b>{{key}}</b>: {{value}}</p>
         {% endfor %}
@@ -10,4 +36,4 @@
     {% else %}
       <p>Provider not found</p>
     {% endif %}
-    {% endblock %}
+  {% endblock %}
