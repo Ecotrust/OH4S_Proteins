@@ -52,7 +52,7 @@ def category(request, category_id):
     except Exception as e:
         return index(request)
     children = category.get_children()
-    provider_products = category.get_provider_products()
+    providers = category.get_providers()
     product_details = [ (x.pk, x.name) for x in children ]
     if category.capacityMeasurement:
         production_capacity_unit = category.capacityMeasurement.unit
@@ -61,15 +61,15 @@ def category(request, category_id):
     filter_form = FilterForm(product_details=product_details, production_capacity_unit=production_capacity_unit)
     context = {
         'category': category.to_dict(),
-        'children':  [x.to_dict() for x in children.order_by('name')],
-        'provider_products': provider_products.order_by('name'),
+        # 'children':  [x.to_dict() for x in children.order_by('name')],
+        'providers': providers.order_by('name'),
         'filter_form': filter_form,
     }
     context = header(request, context)
 
     return render(request, "category.html", context)
 
-def filterProducts(request, category_id):
+def filterByCategory(request, category_id):
     from providers.models import ProductCategory
 
     category = ProductCategory.objects.get(pk=category_id)
@@ -108,10 +108,27 @@ def filterProducts(request, category_id):
             # RDH: just in case value is non-numeric
             pass
 
+    return provider_products
+
+def filterProducts(request, category_id):
+    provider_products = filterByCategory(request, category_id)
+
     context = {
         'provider_products': provider_products.order_by('name'),
     }
     return render(request, "product_results.html", context)
+
+def filterProviders(request, category_id):
+    from providers.models import Provider
+    provider_products = filterByCategory(request, category_id)
+    provider_ids = [x.provider.pk for x in provider_products]
+    providers = Provider.objects.filter(pk__in=provider_ids)
+
+    context = {
+        'providers': providers.order_by('name'),
+    }
+    return render(request, "provider_results.html", context)
+
 
 def product(request, product_id):
     from providers.models import ProviderProduct

@@ -5,7 +5,7 @@ $('#filter-form').submit(function(event) {
 $('#filter-form').on(
   'change',
   function() {
-    var url = "/providers/filter_products/" + category_id + "/";
+    var url = "/providers/filter_providers/" + category_id + "/";
     // Fire off AJAX request to backend to run filter.
     //    Callback takes HTML results and replaces $('#product-results-list') content
     var filter_request = $.post(url, $('#filter-form').serialize() )

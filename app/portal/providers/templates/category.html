@@ -21,30 +21,6 @@
     </div>
   {% endif %}
   <div class="categories-container">
-    <!-- child categories -->
-    {% if children|length > 0 %}
-    <div class="card">
-      <div class="card-header" id="category-card-header" type="button" data-toggle="collapse" data-target="#collapse-category" aria-expanded="true" aria-controls="collapse-category">
-        {{ category.name }} Categories
-      </div>
-      <div id="collapse-category" class="collapse show" aria-labelledby="category-card-header">
-        <div class="row">
-          <div class="col-12 categories-flex-container subcategories-flex-container">
-            {% for child_category in children %}
-              <a class="category-link" href="/providers/category/{{child_category.pk}}/">
-                <div class="category-container category-container-slim">
-                  <img class="category-image" src="{{child_category.image}}">
-                  <div class="category-name">{{child_category.name}}</div>
-                </div>
-              </a>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-    </div>
-
-      <hr />
-    {% endif %}
 
     <div class="row">
       <div class="col-lg-4 order-first order-lg-2">
@@ -112,18 +88,18 @@
         </form>
       </div>
       <div class="col-lg-8 order-last order-lg-1">
-        {% if provider_products.count > 0 %}
+        {% if providers.count > 0 %}
           <div class="row-fluid">
             <div class="col-12 results-count">
               <p>
                 <img class="results-category-image" src="{{category.image}}">
-                We found <b>{{ provider_products.count }}</b> products for <b>{{category.name }}</b>.
+                We found <b>{{ providers.count }}</b> providers for <b>{{category.name }}</b>.
               </p>
             </div>
           </div>
           <div class="row">
             <div class="col-12 products-flex-container" id="product-results-list">
-              {% include "product_results.html" %}
+              {% include "provider_results.html" %}
             </div>
           </div>
         {% else %}

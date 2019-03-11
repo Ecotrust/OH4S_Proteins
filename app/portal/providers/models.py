@@ -274,6 +274,12 @@ class ProductCategory(models.Model):
         category_provider_products = ProviderProduct.objects.filter(category__in=decendants)
         return category_provider_products
 
+    def get_providers(self):
+        products = self.get_provider_products()
+        provider_ids = list(set([x.provider.pk for x in products]))
+        providers = Provider.objects.filter(pk__in=provider_ids)
+        return providers
+
     def get_ancestors(self):
         if self.parent:
             return self.parent.get_ancestors() + [self.parent]
