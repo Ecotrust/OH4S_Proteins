@@ -144,12 +144,15 @@ def product(request, product_id):
 
 def provider(request, provider_id):
     from providers.models import Provider
+    from providers.models import ProviderProduct
     try:
         provider = Provider.objects.get(pk=provider_id)
+        products = ProviderProduct.objects.filter(provider=provider)
     except Exception as e:
         return index(request)
     context = {
         'provider': provider.to_dict(),
+        'products': [x.to_dict() for x in products.order_by('name')],
     }
     context = header(request, context)
     return render(request, "provider.html", context)

@@ -1,0 +1,12 @@
+.details-container {
+  max-width: 80vw;
+  margin: auto;
+  padding: 2rem;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+
+.provider-details-list li {
+  list-style-type: none;
+}

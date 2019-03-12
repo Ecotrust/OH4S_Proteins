@@ -1,17 +1,104 @@
 {% extends "base.html" %}
+{% load static %}
 
-    {% block content %}
+  {% block additional_header %}
+    <link rel="stylesheet" href="{% static "providers/css/details.css" %}">
+  {% endblock %}
+
+  {% block header-content %}
+    {% include "header-slim.html" %}
+  {% endblock %}
+
+  {% block content %}
     {% if product %}
-      <div style="margin: 5px; padding: 5px; border: 1px solid black; border-radius: 4px;">
-        {% for key, value in product.items %}
-          {% if key == "provider" %}
-          <p><b>{{key}}</b>: <a href="/providers/provider/{{ value.pk }}/">{{value}}</a></p>
-          {% else %}
-          <p><b>{{key}}</b>: {{value}}</p>
+      <div class="details-container container">
+        <div class="row">
+          <div class="col">
+            <h1>{{ product.name }}</h1>
+            <p>{{ product.category }}</p>
+          </div>
+          {% if product.image %}
+          <div class="col">
+            <img src="{{ product.image }}" />
+          </div>
           {% endif %}
-        {% endfor %}
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col">
+            <p><b><a href="/providers/provider/{{ product.provider.pk }}/">{{ product.provider.name }}</a></b><br />
+              {% if product.provider.physicalAddressCity and product.provider.physicalAddressState %}
+                {{ product.provider.physicalAddressCity }}, {{ product.provider.physicalAddressState.initialism }}
+              {% else %}
+                {{ product.provider.businessAddressCity }}, {{ product.provider.businessAddressState.initialism }}
+              {% endif %}
+            </p>
+            {% if product.description %}
+              <p>{{ product.description }}</p>
+            {% endif %}
+
+            {% if product.productLiabilityInsuranceAmount %}
+              <p>
+                <b>Liability Insurance Amount</b>:
+                  {{ product.productLiabilityInsuranceAmount }}
+              </p>
+            {% endif %}
+
+            {% if product.deliveryMethods.all.count > 0 %}
+              <b>Delivery Methods:</b>
+              <ul class='product-details-list delivery-methods-list'>
+                {% for method in product.deliveryMethods.all %}
+                  <li>{{ method.name }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if product.distributors.all.count > 0 %}
+              <b>Distributors:</b>
+              <ul class='product-details-list distributors-list'>
+                {% for distributor in product.distributors.all %}
+                  <li>{{ distributor.name }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if product.regionalAvailability.all.count > 0 %}
+              <b>Regional Availability (by county):</b>
+              <ul class='product-details-list counties-list'>
+                {% for subregion in product.regionalAvailability.all %}
+                  <li>{{ subregion.name }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            {% if product.orderMinimum %}
+              <p>
+                <b>Order Minimum:</b> {{ product.orderMinimum }}
+              </p>
+            {% endif %}
+
+            {% if product.orderMinimum %}
+              <p>
+                <b>Delivery Minimum:</b> {{ product.deliveryMinimum }}
+              </p>
+            {% endif %}
+
+            {% if product.productionPractices.all.count > 0 %}
+              <b>Production Practices:</b>
+              <ul class='product-details-list production-practices-list'>
+                {% for practice in product.productionPractices.all %}
+                  <li>{{ practice.name }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+
+            <p>Information last updated: {{ product.dateInfoUpdated }}</p>
+
+          </div>
+        </div>
       </div>
     {% else %}
-      <p>Product not found</p>
+      <h1>Product not found</h1>
     {% endif %}
-    {% endblock %}
+
+  {% endblock %}

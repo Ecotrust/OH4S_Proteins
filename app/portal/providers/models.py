@@ -320,6 +320,8 @@ class ProviderProduct(models.Model):
 
     # product = models.ForeignKey(Product, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, verbose_name="Product Name")
+    dateInfoAdded = models.DateTimeField(auto_now_add=True, verbose_name='Record created date')
+    dateInfoUpdated = models.DateTimeField(auto_now=True, verbose_name='Date information updated', help_text="This is automatic.")
     category = models.ForeignKey(ProductCategory, on_delete=models.PROTECT, verbose_name="Product Category")
     image = models.ImageField(null=True, blank=True, default=None, upload_to='product_images')
     provider = models.ForeignKey(Provider, on_delete=models.CASCADE)
@@ -346,6 +348,7 @@ class ProviderProduct(models.Model):
 
     def to_dict(self):
         return {
+            'id': self.pk,
             'name': self.name,
             'category': self.category,
             'image': self.image,
@@ -360,6 +363,7 @@ class ProviderProduct(models.Model):
             'deliveryMinimum': self.deliveryMinimum,
             'distributors': self.distributors,
             'productionPractices': self.productionPractices,
+            'dateInfoUpdated': self.dateInfoUpdated,
         }
 
     class Meta:
