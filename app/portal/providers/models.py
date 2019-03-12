@@ -121,11 +121,11 @@ class Provider(models.Model):
     description = models.TextField(blank=True, null=True, default=None, verbose_name="Brief Description", help_text="2-3 Sentences")
     primaryContactFirstName = models.CharField(max_length=100, blank=True, null=True, default=None, verbose_name="Primary contact's first name")
     primaryContactLastName = models.CharField(max_length=100, blank=True, null=True, default=None, verbose_name="Primary contact's last name")
-    businessAddressLine1 = models.CharField(max_length=255, verbose_name="Business Address Line 1")
+    businessAddressLine1 = models.CharField(max_length=255, verbose_name="Business Address Line 1", blank=True, null=True, default=None)
     businessAddressLine2 = models.CharField(max_length=255, blank=True, null=True, default=None, verbose_name="Business Address Line 2")
     businessAddressCity = models.CharField(max_length=255, verbose_name="Business Address City")
     businessAddressState = models.ForeignKey(PoliticalRegion, on_delete=models.PROTECT, verbose_name="Business Address State", related_name="providerBusinessAddresses")
-    businessAddressZipCode = models.CharField(max_length=25, verbose_name="Business Address Zip Code")
+    businessAddressZipCode = models.CharField(max_length=25, verbose_name="Business Address Zip Code", blank=True, null=True, default=None)
 
     physicalAddressIsSame = models.BooleanField(default=False, verbose_name="Physical address is the same as business address")
 
@@ -135,7 +135,7 @@ class Provider(models.Model):
     physicalAddressState = models.ForeignKey(PoliticalRegion, on_delete=models.SET_NULL, blank=True, null=True, default=None, verbose_name="Physical Address State", related_name="providerPhysicalAddresses")
     physicalAddressZipCode = models.CharField(max_length=25, blank=True, null=True, default=None, verbose_name="Physical Address Zip Code")
 
-    officePhone = PhoneNumberField(verbose_name="Office Phone")
+    officePhone = PhoneNumberField(verbose_name="Office Phone", blank=True, null=True, default=None)
     cellPhone = PhoneNumberField(blank=True, null=True, default=None, verbose_name="Cell Phone")
     email = models.EmailField(max_length=255, null=True, blank=True, default=None)
     websiteAddress = models.URLField(max_length=255, null=True, blank=True, default=None, verbose_name="Website Address", help_text="Try to include either http:// (good) or https:// (better if available)")
