@@ -72,19 +72,19 @@ class ProviderAdmin(admin.ModelAdmin):
                 ('primaryContactFirstName', 'primaryContactLastName',),
             )
         }),
+        ('Business Address', {
+            'fields': (
+                'businessAddressLine1',
+                'businessAddressLine2',
+                ('businessAddressCity', 'businessAddressState', 'businessAddressZipCode',),
+            )
+        }),
         ('Physical Address', {
             'fields': (
                 'physicalAddressIsSame',
                 'physicalAddressLine1',
                 'physicalAddressLine2',
                 ('physicalAddressCity', 'physicalAddressState', 'physicalAddressZipCode',),
-            )
-        }),
-        ('Business Address', {
-            'fields': (
-                'businessAddressLine1',
-                'businessAddressLine2',
-                ('businessAddressCity', 'businessAddressState', 'businessAddressZipCode',),
             )
         }),
         ('Contact Info', {
