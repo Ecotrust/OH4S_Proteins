@@ -113,7 +113,11 @@
 
 {% block additional_js %}
   <script>
-    category_id = {{category.pk}};
+    {% if category.pk %}
+      category_id = {{category.pk}};
+    {% else %}
+      category_id = null;
+    {% endif %}
   </script>
   <script src="{% static "providers/js/filter.js" %}"></script>
 {% endblock %}

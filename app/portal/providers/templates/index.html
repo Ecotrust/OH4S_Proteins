@@ -16,6 +16,12 @@
     </div>
     <div class="row">
       <div class="col-12 categories-flex-container">
+        <a class="category-link" href="/providers/category/">
+          <div class="category-container">
+            <img class="category-image" src="{{ default_image }}">
+            <div class="category-name">All</div>
+          </div>
+        </a>
         {% for category in categories %}
           <a class="category-link" href="/providers/category/{{category.pk}}/">
             <div class="category-container">

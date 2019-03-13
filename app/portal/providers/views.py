@@ -37,6 +37,7 @@ def index(request):
 
     context = {
         'categories': [x.to_dict() for x in top_tier_categories.order_by('name')],
+        'default_image': settings.DEFAULT_CATEGORY_IMAGE,
     }
 
     context = header(request, context)
@@ -69,11 +70,39 @@ def category(request, category_id):
 
     return render(request, "category.html", context)
 
-def filterByCategory(request, category_id):
-    from providers.models import ProductCategory
+def all_categories(request):
+    from providers.models import ProductCategory, Provider
+    from providers.forms import FilterForm
 
-    category = ProductCategory.objects.get(pk=category_id)
-    provider_products = category.get_provider_products()
+    children = ProductCategory.objects.filter(parent=None)
+    providers = Provider.objects.all()
+    product_details = [ (x.pk, x.name) for x in children ]
+    # TODO - hide production capacity filter field
+    production_capacity_unit = settings.DEFAULT_CAPACITY_UNIT
+    filter_form = FilterForm(product_details=product_details, production_capacity_unit=production_capacity_unit)
+    context = {
+        'category': {
+            'pk': None,
+            'image': settings.DEFAULT_CATEGORY_IMAGE,
+            'name': "All",
+        },
+        'providers': providers.order_by('name'),
+        'filter_form': filter_form,
+    }
+    context = header(request, context)
+
+    return render(request, "category.html", context)
+
+
+def filterByCategory(request, category_id=None):
+    from providers.models import ProductCategory, ProviderProduct
+
+    if category_id:
+        category = ProductCategory.objects.get(pk=category_id)
+        provider_products = category.get_provider_products()
+    else:
+        category = None
+        provider_products = ProviderProduct.objects.all()
 
     if request.method == "POST":
         if 'product_category' in request.POST.keys():
@@ -84,7 +113,7 @@ def filterByCategory(request, category_id):
             provider_products = provider_products.filter(pk__in=product_ids)
 
         try:
-            if 'capacity' in request.POST.keys() and not request.POST.get('capacity') == '' and not int(request.POST.get('capacity')) == 0:
+            if category and 'capacity' in request.POST.keys() and not request.POST.get('capacity') == '' and not int(request.POST.get('capacity')) == 0:
                 if category.capacityMeasurement:
                     production_capacity_unit = category.capacityMeasurement.unit
                 else:
@@ -110,7 +139,7 @@ def filterByCategory(request, category_id):
 
     return provider_products
 
-def filterProducts(request, category_id):
+def filterProducts(request, category_id=None):
     provider_products = filterByCategory(request, category_id)
 
     context = {
@@ -118,7 +147,7 @@ def filterProducts(request, category_id):
     }
     return render(request, "product_results.html", context)
 
-def filterProviders(request, category_id):
+def filterProviders(request, category_id=None):
     from providers.models import Provider
     provider_products = filterByCategory(request, category_id)
     provider_ids = [x.provider.pk for x in provider_products]
