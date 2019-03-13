@@ -109,3 +109,18 @@ hr {
 .subcard .collapse {
   margin: 0.5rem;
 }
+
+li {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+li > label {
+  margin-bottom: 0;
+}
+
+#collapse-product-category {
+  max-height: 50vh;
+  overflow-y: auto;
+}
