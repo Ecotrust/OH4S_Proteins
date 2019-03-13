@@ -44,8 +44,14 @@ class ProviderAdmin(admin.ModelAdmin):
 
     list_display = ('name','outreachConductor','businessAddressCity',
     'businessAddressState','soldToSchoolsBefore','dateInfoUpdated')
-    search_fields = ('name','outreachConductor','businessAddressCity',
-    'businessAddressState','soldToSchoolsBefore','dateInfoUpdated')
+    search_fields = (
+        'name',
+        'outreachConductor',
+        'businessAddressCity',
+        'businessAddressState__name',
+        'businessAddressState__initialism',
+        'soldToSchoolsBefore',
+    )
     readonly_fields = ('dateInfoUpdated'),
 
     inlines = [
@@ -142,6 +148,9 @@ class ProviderAdmin(admin.ModelAdmin):
 #
 #     # add_form_template = 'admin/ProductForm.html'
 
+class CategoryAdmin(admin.ModelAdmin):
+    search_fields = ('full_name', 'capacityMeasurement__unit', 'image')
+    list_display = ('full_name','capacityMeasurement','image')
 
 admin.site.register(PoliticalRegion)
 admin.site.register(PoliticalSubregion)
@@ -149,7 +158,7 @@ admin.site.register(DeliveryMethod)
 admin.site.register(Distributor)
 admin.site.register(Provider, ProviderAdmin)
 admin.site.register(CapacityMeasurement)
-admin.site.register(ProductCategory)
+admin.site.register(ProductCategory, CategoryAdmin)
 # admin.site.register(Product)
 admin.site.register(ProviderProduct)
 # admin.site.register(ProviderProduct, ProductAdmin)
