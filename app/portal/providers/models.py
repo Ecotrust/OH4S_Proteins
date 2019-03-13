@@ -223,11 +223,24 @@ class CapacityMeasurement(models.Model):
     class Meta:
         ordering = ('measurementType', 'unit')
 
+class CategoryManager(models.QuerySet):
+    # we need to trigger 'saves' on all decendants to reset 'full_name' values
+    def delete(self, *args, **kwargs):
+        impacted_children = []
+        for category in self:
+            impacted_children += [x.pk for x in category.get_children()]
+        super(CategoryManager, self).delete(*args, **kwargs)
+        children = ProductCategory.objects.filter(pk__in=impacted_children)
+        for child in children:
+            child.save()
+
 class ProductCategory(models.Model):
+    objects = CategoryManager.as_manager()
     name = models.CharField(max_length=100)
     capacityMeasurement = models.ForeignKey(CapacityMeasurement, null=True, blank=True, default=None, on_delete=models.SET_NULL)
     parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, default=None)
     image = models.ImageField(null=True, blank=True, default=None, upload_to='category_images')
+    full_name = models.TextField(null=True, blank=True, default=None)
     # ancestor_count = models.IntegerField(default=0)
 
     def to_dict(self):
@@ -291,13 +304,26 @@ class ProductCategory(models.Model):
         return len(ancestors)
 
     # TODO: Clear caches on save for this and parents.
-    # def save(self, *args, **kwargs):
-    #     self.ancestor_count = self.get_ancestor_count()
-    #     super(ProductCategory, self).save(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        # self.ancestor_count = self.get_ancestor_count()
+        # super(ProductCategory, self).save(*args, **kwargs)
+        self.full_name = str(self)
+        super(ProductCategory, self).save(*args, **kwargs)
+        children = self.get_children()
+        for child in children:
+            child.save()
+
+    def delete(self, *args, **kwargs):
+        # we need to trigger 'saves' on all decendants to reset 'full_name' values
+        impacted_children = [x.pk for x in self.get_children()]
+        super(ProductCategory, self).delete(*args, **kwargs)
+        children = ProductCategory.objects.filter(pk__in=impacted_children)
+        for child in children:
+            child.save()
 
     class Meta:
         verbose_name_plural = "product categories"
-        # ordering = ('ancestor_count', 'name')
+        ordering = ('full_name',)
 
 class Product(models.Model):
     name = models.CharField(max_length=255)
