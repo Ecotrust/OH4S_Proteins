@@ -45,18 +45,23 @@
               ...by Supplier Details
             </div>
             <div id="collapse-supplier-details" class="collapse show" aria-labelledby="supplier-details-card-header">
-              <div class="card subcard">
-                <div class="card-header" id="capacity-card-header" type="button" data-toggle="collapse" data-target="#collapse-capacity" aria-expanded="true" aria-controls="collapse-capacity">
-                  Production Capacity
-                </div>
-                <div id="collapse-capacity" class="collapse show" aria-labelledby="capacity-card-header">
-                  <div class="fieldWrapper">
-                    <label for="{{ filter_form.capacity.id_for_label }}">Show me sellers who produce or harvest</label>
-                    {{ filter_form.capacity.errors }}
-                    {{ filter_form.capacity }} {{ filter_form.capacity.label }}
+              <!-- RDH Removing this due to inability for producers to conform
+                      to single measurement per product and lack of funding
+                      to determine how to compare acres to lbs on a per-product,
+                      per-region, per-methodology basis.
+                  <div class="card subcard">
+                    <div class="card-header" id="capacity-card-header" type="button" data-toggle="collapse" data-target="#collapse-capacity" aria-expanded="true" aria-controls="collapse-capacity">
+                      Production Capacity
+                    </div>
+                    <div id="collapse-capacity" class="collapse show" aria-labelledby="capacity-card-header">
+                      <div class="fieldWrapper">
+                        <label for="{{ filter_form.capacity.id_for_label }}">Show me sellers who produce or harvest</label>
+                        {{ filter_form.capacity.errors }}
+                        {{ filter_form.capacity }} {{ filter_form.capacity.label }}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+              -->
 
               <div class="card subcard">
                 <div class="card-header" id="distribution-card-header" type="button" data-toggle="collapse" data-target="#collapse-distribution" aria-expanded="true" aria-controls="collapse-distribution">
