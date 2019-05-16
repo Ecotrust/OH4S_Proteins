@@ -114,10 +114,10 @@ class Provider(models.Model):
     )
 
     name = models.CharField(max_length=255, verbose_name="Supplier Name")
-    outreachConductor = models.CharField(max_length=255, blank=True, null=True, default=None, verbose_name='Outreach conducted by', help_text="The name of the teammate who reached out to this provider")
+    outreachConductor = models.CharField(max_length=255, blank=True, null=True, default=None, verbose_name='Outreach conducted by', help_text="The name of the teammate who reached out to this supplier")
     dateInfoAdded = models.DateTimeField(auto_now_add=True, verbose_name='Record created date')
     dateInfoUpdated = models.DateTimeField(auto_now=True, verbose_name='Date information updated', help_text="This is automatic.")
-    soldToSchoolsBefore = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='This provider has sold to schools before')
+    soldToSchoolsBefore = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='This supplier has sold to schools before')
     description = models.TextField(blank=True, null=True, default=None, verbose_name="Brief Description", help_text="2-3 Sentences")
     primaryContactFirstName = models.CharField(max_length=100, blank=True, null=True, default=None, verbose_name="Primary contact's first name")
     primaryContactLastName = models.CharField(max_length=100, blank=True, null=True, default=None, verbose_name="Primary contact's last name")
@@ -148,7 +148,7 @@ class Provider(models.Model):
     #   The following may need to be "Provider-Product Specific"
     #######################################################################
 
-    productLiabilityInsurance = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='This provider has product liability insurance')
+    productLiabilityInsurance = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='This supplier has product liability insurance')
     productLiabilityInsuranceAmount = MoneyField(max_digits=10, decimal_places=0, default_currency='USD', null=True, blank=True, default=None, verbose_name="Product Liability Insurance Amount")
     deliveryMethods = models.ManyToManyField(DeliveryMethod, blank=True, verbose_name='Delivery Methods')
     regionalAvailability = models.ManyToManyField(PoliticalSubregion, blank=True, verbose_name='Regions where product is available')
@@ -158,8 +158,8 @@ class Provider(models.Model):
     productionPractices = models.ManyToManyField(ProductionPractice, blank=True, verbose_name='Production Practices')
 
     class Meta:
-        verbose_name="provider"
-        verbose_name_plural="providers"
+        verbose_name="supplier"
+        verbose_name_plural="suppliers"
         ordering = ('name', 'dateInfoUpdated',)
 
     def to_dict(self):
@@ -393,4 +393,6 @@ class ProviderProduct(models.Model):
         }
 
     class Meta:
+        verbose_name = 'supplier product'
+        verbose_name_plural = 'supplier products'
         ordering = ('category', 'provider')
