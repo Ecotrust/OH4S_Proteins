@@ -92,6 +92,12 @@
               </ul>
             {% endif %}
 
+            {% if product.capacityValue and product.capacityValue > 0 and product.capacityMeasurement %}
+              <p>
+                <b>Production Capacity:</b> {{ product.capacityValue }} {{ product.capacityMeasurement }}
+              </p>
+            {% endif %}
+
             <p>Information last updated: {{ product.dateInfoUpdated }}</p>
 
           </div>

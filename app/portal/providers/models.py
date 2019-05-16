@@ -389,6 +389,8 @@ class ProviderProduct(models.Model):
             'deliveryMinimum': self.deliveryMinimum,
             'distributors': self.distributors,
             'productionPractices': self.productionPractices,
+            'capacityValue': self.capacityValue,
+            'capacityMeasurement': self.capacityMeasurement,
             'dateInfoUpdated': self.dateInfoUpdated,
         }
 
