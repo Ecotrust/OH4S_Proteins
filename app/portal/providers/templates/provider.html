@@ -3,6 +3,21 @@
 
   {% block additional_header %}
     <link rel="stylesheet" href="{% static "providers/css/details.css" %}">
+    <script>
+      var providerValue = `{{ provider.name }}`;
+      // Maps 'dimension2' to 'category'.
+      gtag('config', 'UA-141387987-1', {
+        'custom_map': {
+          'dimension1': providerValue,
+          'metric1': 'hits'
+        }
+      });
+      // Sends an event that passes 'category' as a parameter.
+      gtag('event', providerValue, {
+        'provider': providerValue,
+        'hits': 1
+      });
+    </script>
   {% endblock %}
 
   {% block header-content %}
@@ -12,7 +27,7 @@
   {% block content %}
     {% if provider %}
       <div class="details-container container">
-        <h1 class='provider-name'>{{ provider.name }}</h1>
+      <h1 class='provider-name'>{{ provider.name }}</h1>
 
         <p>
           {% if provider.physicalAddressCity and provider.physicalAddressState %}

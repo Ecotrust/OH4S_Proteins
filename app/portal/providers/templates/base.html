@@ -3,6 +3,18 @@
   <head>
     <link rel="stylesheet" href="{% static "providers/libraries/bootstrap-4.2.1-dist/css/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "providers/css/header.css" %}">
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141387987-1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-141387987-1');
+      gtag('config', 'GA_MEASUREMENT_ID', { 'allow_ad_personalization_signals': false });
+    </script>
+
     {% block additional_header %}
     {% endblock %}
   </head>

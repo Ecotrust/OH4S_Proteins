@@ -3,6 +3,21 @@
 
 {% block additional_header %}
 <link rel="stylesheet" href="{% static "providers/css/categories.css" %}">
+<script>
+  var categoryValue = `{{ category.name }}`;
+  // Maps 'dimension2' to 'category'.
+  gtag('config', 'UA-141387987-1', {
+    'custom_map': {
+      'dimension2': categoryValue,
+      'metric3': 'hit'
+    }
+  });
+  // Sends an event that passes 'category' as a parameter.
+  gtag('event', categoryValue, {
+    'categoryValue': 1,
+    'hit': 1
+  });
+</script>
 {% endblock %}
 
 {% block header-content %}
@@ -98,7 +113,7 @@
             <div class="col-12 results-count">
               <p>
                 <img class="results-category-image" src="{{category.image}}">
-                We found <b>{{ providers.count }}</b> providers for <b>{{category.name }}</b>.
+                We found <b>{{ providers.count }}</b> providers for <b>{{ category.name }}</b>.
               </p>
             </div>
           </div>
