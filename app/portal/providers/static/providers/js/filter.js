@@ -15,6 +15,11 @@ $('#filter-form').on(
     var filter_request = $.post(url, $('#filter-form').serialize() )
       .done(function( data ) {
         $('#product-results-list').html(data);
+        try {
+          $("#provider-count").html($('#product-results-list').children().length);
+        } catch (error) {
+          console.log(error);
+        }
       });
   }
 );
