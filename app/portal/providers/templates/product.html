@@ -5,17 +5,12 @@
     <link rel="stylesheet" href="{% static "providers/css/details.css" %}">
     <script>
       var productValue = `{{ product.name }}`;
+      var providerValue = `{{ product.provider.name }}`;
       // Maps 'dimension2' to 'category'.
-      gtag('config', 'UA-141387987-1', {
-        'custom_map': {
-          'dimension3': productValue,
-          'metric2': 'hits'
-        }
-      });
-      // Sends an event that passes 'category' as a parameter.
       gtag('event', productValue, {
-        'product': productValue,
-        'hits': 1
+        'event_category': providerValue,
+        'event_label': 'product_provider_hit',
+        'value': 1
       });
     </script>
   {% endblock %}
