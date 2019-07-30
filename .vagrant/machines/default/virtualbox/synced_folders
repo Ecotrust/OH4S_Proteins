@@ -1,1 +1,0 @@
-{"virtualbox":{"/usr/local/apps/OH4S_Proteins/app":{"guestpath":"/usr/local/apps/OH4S_Proteins/app","hostpath":"/Users/dpollard/projects/oh4s/OH4S_Proteins/app","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/Users/dpollard/projects/oh4s/OH4S_Proteins","disabled":false,"__vagrantfile":true}}}
