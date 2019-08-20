@@ -1,3 +1,8 @@
+#categories-header,
+.context-link {
+  text-align: center;
+}
+
 hr {
   border-top: 0.1rem solid #0098a8;
 }
