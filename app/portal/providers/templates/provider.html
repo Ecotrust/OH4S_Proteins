@@ -165,6 +165,13 @@
               </ul>
             {% endif %}
 
+            {% if provider.notes %}
+              <b>Additional notes:</b>
+              <p class='provider-notes'>
+                {{provider.notes}}
+              </p>
+            {% endif %}
+
             <p>Information last updated: {{ provider.dateInfoUpdated }}</p>
           </div><!-- end col 1 -->
             <div class="col-md">

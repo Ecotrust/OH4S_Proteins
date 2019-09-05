@@ -10,3 +10,7 @@
 .provider-details-list li {
   list-style-type: none;
 }
+
+.provider-notes {
+  padding-left: 2.5rem;
+}
