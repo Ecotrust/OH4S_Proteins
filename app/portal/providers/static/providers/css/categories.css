@@ -91,10 +91,7 @@ hr {
 }
 
 .product-link {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+  display: contents;
 }
 
 .product-container {
@@ -105,6 +102,7 @@ hr {
   margin: 0.15rem;
   min-width: 15rem;
   background-color: white;
+  box-sizing: content-box;
 }
 
 .subcard {
