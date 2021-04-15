@@ -4,12 +4,12 @@
   <div class="row">
     <div class="col-2">
       <a href="/">
-        <img class="project-logo" src="{% static PROJECT_IMAGE %}">
+        <img class="project-logo" src="{{ image }}">
       </a>
     </div>
     <div class="col-10">
       <h1>{{ page.title }}</h1>
-      {{ page.body|richtext }}
+      {{ page.welcome|richtext }}
     </div>
   </div>
 </div>
