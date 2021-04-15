@@ -52,6 +52,23 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'phonenumber_field',
     'djmoney',
+
+    # WAGTAIL & DEPS
+    'wagtail.contrib.forms',
+    'wagtail.contrib.redirects',
+    'wagtail.embeds',
+    'wagtail.sites',
+    'wagtail.users',
+    'wagtail.snippets',
+    'wagtail.documents',
+    'wagtail.images',
+    'wagtail.search',
+    'wagtail.admin',
+    'wagtail.core',
+
+    'modelcluster',
+    'taggit',
+    # END WAGTAIL
 ]
 
 MIDDLEWARE = [
@@ -62,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 ]
 
 ROOT_URLCONF = 'portal.urls'
@@ -145,5 +163,7 @@ DEFAULT_CATEGORY_IMAGE = "/static/providers/img/defaults/logo-oh4s-large.jpg"
 DEFAULT_CAPACITY_UNIT = "acres"
 
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
+WAGTAIL_SITE_NAME = "Oregon Harvest For Schools Portal CMS"
 
 from .local_settings import *
