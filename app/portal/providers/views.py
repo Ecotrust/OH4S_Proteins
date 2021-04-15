@@ -30,17 +30,21 @@ def header(request, context, project_id=None):
 
     return context
 
-def index(request):
+def get_category_context(request, context):
     from providers.models import ProductCategory
 
     top_tier_categories = ProductCategory.objects.filter(parent=None)
 
-    context = {
-        'categories': [x.to_dict() for x in top_tier_categories.order_by('name')],
-        'default_image': settings.DEFAULT_CATEGORY_IMAGE,
-    }
+    context['categories'] = [x.to_dict() for x in top_tier_categories.order_by('name')]
+    context['default_image'] = settings.DEFAULT_CATEGORY_IMAGE
+
+    return context
+
+
+def index(request):
 
     context = header(request, context)
+    context = get_category_context(request, context)
 
     return render(request, "index.html", context)
 

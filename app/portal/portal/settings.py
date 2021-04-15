@@ -69,6 +69,8 @@ INSTALLED_APPS = [
     'modelcluster',
     'taggit',
     # END WAGTAIL
+
+    'cms.apps.CmsConfig',
 ]
 
 MIDDLEWARE = [
