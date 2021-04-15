@@ -144,4 +144,6 @@ DEFAULT_CATEGORY_IMAGE = "/static/providers/img/defaults/logo-oh4s-large.jpg"
 
 DEFAULT_CAPACITY_UNIT = "acres"
 
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
+
 from .local_settings import *
