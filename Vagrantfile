@@ -46,6 +46,7 @@ Vagrant.configure("2") do |config|
   # argument is a set of non-required options.
   # config.vm.synced_folder "../data", "/vagrant_data"
   config.vm.synced_folder "./app", "/usr/local/apps/OH4S_Proteins/app"
+  config.vm.synced_folder "./deploy", "/usr/local/apps/OH4S_Proteins/deploy"
 
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.

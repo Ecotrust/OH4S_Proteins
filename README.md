@@ -56,7 +56,7 @@ local   <dbname>            <dbuser>                             md5
 
 Save, then restart the postgreSQL server:
 ```
-# sudo service postgresql restart
+sudo service postgresql restart
 ```
 
 ## Install OH4S Portal App
@@ -74,7 +74,7 @@ needs to be installed on its own, then Django 3.2 needs to be reinstalled when
 Wagtail invariably downgrades it.
 ```
 cd /usr/local/apps/OH4S_Proteins/
-python -m venv env
+python3.9 -m venv env
 source env/bin/activate
 pip3 install --upgrade pip
 pip3 install "wagtail>=2.12"
@@ -122,6 +122,11 @@ If you have initial data to work with (as a fixture), do something like this:
 python portal/manage.py loaddata  portal/fixtures/<FIXTURE_FILE.json>
 ```
 
+Now is also a good time to import category images (if you have them already, as
+associated in your fixture). Copy them into
+`/usr/local/apps/OH4S_Proteins/app/portal/media/category_images/`.
+
+
 Create a Django/Wagtail superuser running the following command and following the prompts:
 ```
 python portal/manage.py createsuperuser
@@ -133,7 +138,7 @@ If you have port 8000 open, you can run a test server like so:
 python portal/manage.py runserver 0:8000
 ```
 
-Check it out here: (http://localhost:8000)[http://localhost:8000]
+Check it out here: http://localhost:8000
 
 ### Create Homepage
 If you didn't import a fixture for Wagtail Pages, then likely you were greeted
@@ -143,9 +148,7 @@ To fix this, go here: http://localhost:8000/cms/
 Create a new page (adjacent to the default homepage), and then set it as your
 homepage in Wagtail's 'Settings -> Sites' area.
 
-
-
-
+### NOTE:
 If you are installing for development purposes, you can stop here. For a live
 server, read on.
 
@@ -158,7 +161,7 @@ sudo rm /etc/nginx/sites-enabled/default
 sudo vim /etc/nginx/sites-available/oh4s
 ```
 
-TODO: Write up any additional configuration needs to be done.
+Update the file with the correct `server_name` (the URL to be used to access the site).
 
 ```
 sudo ln -s /etc/nginx/sites-available/oh4s /etc/nginx/sites-enabled/oh4s
@@ -166,8 +169,16 @@ sudo nginx -t
 ```
 See the the output of that last command doesn't reveal any errors.
 
-TODO: copy and configure deploy/oh4s.ini and deploy/uwsgi.service to their correct locations
 
+Put uWSGI configuration files in the correct place and enable auto-launch:
+```
+sudo cp /usr/local/apps/OH4S_Proteins/deploy/emperor.ini /etc/uwsgi/
+sudo cp /usr/local/apps/OH4S_Proteins/deploy/uwsgi.service /etc/systemd/system/
+sudo systemctl enable uwsgi.service
+sudo cp /usr/local/apps/OH4S_Proteins/deploy/oh4s.ini /etc/uwsgi/apps-enabled/oh4s.ini
+```
+
+Restart the services:
 ```
 sudo service nginx restart
 sudo service uwsgi restart
@@ -177,3 +188,4 @@ sudo service uwsgi restart
 TODO: Unattended upgrades, AV, backup strategy, SSL
 
 ## Other considerations
+TODO: Munin
