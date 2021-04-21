@@ -17,14 +17,9 @@ sudo apt update
 sudo apt upgrade -y
 ```
 
-### ~~Get Python 3.9~~
-~~sudo apt install software-properties-common~~
-~~sudo add-apt-repository ppa:deadsnakes/ppa~~
-~~sudo apt install vim python3.9 python3.9-dev python3.9-venv -y~~
-
 ## Get Python 3.8
-This is installed by default on Ubuntu 20.04. Because of this, a lot of related
-software will assume Python 3.8, even if you try to force 3.9 (wsgi comes to mind).
+This is installed by default on Ubuntu 20.04. Ideally we'd install 3.9, but it
+seems to introduce extra complexity at this time.
 ```
 sudo apt install vim python3.8 python3.8-dev python3.8-venv -y
 ```
@@ -131,6 +126,11 @@ Now is also a good time to import category images (if you have them already, as
 associated in your fixture). Copy them into
 `/usr/local/apps/OH4S_Proteins/app/portal/media/category_images/`.
 
+### Permissions
+User www-data needs write access to the media directory, so let's just give it ownership:
+```
+sudo chown -R www-data /usr/local/apps/OH4S_Proteins/app/portal/media
+```
 
 Create a Django/Wagtail superuser running the following command and following the prompts:
 ```
@@ -158,6 +158,8 @@ If you are installing for development purposes, you can stop here. For a live
 server, read on.
 
 ## Serving the site
+
+### NGINX & uWSGI Configuration
 ```
 sudo apt install nginx uwsgi uwsgi-plugin-python3 libpcre3 libpcre3-dev -y
 pip install uwsgi
@@ -187,6 +189,11 @@ Restart the services:
 ```
 sudo service nginx restart
 sudo service uwsgi restart
+```
+
+### Static Files
+```
+python /usr/local/apps/OH4S_Proteins/app/portal/manage.py collectstatic
 ```
 
 ## Security and Maintenance
