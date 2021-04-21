@@ -197,7 +197,61 @@ python /usr/local/apps/OH4S_Proteins/app/portal/manage.py collectstatic
 ```
 
 ## Security and Maintenance
-TODO: Unattended upgrades, AV, backup strategy, SSL
+### Unattended upgrades,
+```
+sudo apt-get install unattended-upgrades update-notifier-common -y
+sudo dpkg-reconfigure --priority=low unattended-upgrades
+```
+Select 'Yes' in the interactive console.
+
+Edit the file `/etc/apt/apt.conf.d/50unattended-upgrades` near the bottom you will find the line
+`//Unattended-Upgrade::Automatic-Reboot "false";`
+
+uncomment it and set value to true:
+`Unattended-Upgrade::Automatic-Reboot "true";`
+
+To tell the server what time is most safe to reboot (when needed), uncomment the line
+`//Unattended-Upgrade::Automatic-Reboot-Time "02:00";`
+And set the time to your desired restart time. Unless you set it otherwise, this is in UTC.
+
+### Antivirus
+Install [ClamAV](https://help.ubuntu.com/community/ClamAV)
+Installing this and configuring it is beyond the scope of this document, but is
+highly recommended.
+
+### backup strategy
+This is outside of the scope of this document, but I will say that AWS snapshot
+policies make this pretty easy...
+
+### SSL/Certbot
+```
+sudo apt install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d <YOUR_URL>
+```
+Be sure <YOUR_URL> is referenced explicitly and typed the same as in your NGINX
+configuration file at `/etc/nginx/sites-enabled/oh4s`
+
+* provide an email address
+* Type 'A' to agree to the terms
+* 'Y' or 'N' to get on the awesome EFF mailing list
+* '2' -- you want to redirect all traffic to HTTPS.
 
 ## Other considerations
-TODO: Munin
+### Munin
+```
+sudo apt-get install munin munin-node -y
+sudo vim /etc/nginx/sites-enabled oh4s
+```
+Add the following lines inside your `server{}` block:
+```
+location /munin/static/ {
+        alias /etc/munin/static/;
+}
+
+location /munin {
+        alias /var/cache/munin/www;
+}
+```
+
+### Uptime Monitoring
+It is recommended that you use uptimerobot.com
