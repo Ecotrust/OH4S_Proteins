@@ -17,11 +17,16 @@ sudo apt update
 sudo apt upgrade -y
 ```
 
-### Get Python 3.9
+### ~~Get Python 3.9~~
+~~sudo apt install software-properties-common~~
+~~sudo add-apt-repository ppa:deadsnakes/ppa~~
+~~sudo apt install vim python3.9 python3.9-dev python3.9-venv -y~~
+
+## Get Python 3.8
+This is installed by default on Ubuntu 20.04. Because of this, a lot of related
+software will assume Python 3.8, even if you try to force 3.9 (wsgi comes to mind).
 ```
-sudo apt install software-properties-common
-sudo add-apt-repository ppa:deadsnakes/ppa
-sudo apt install vim python3.9 python3.9-dev python3.9-venv -y
+sudo apt install vim python3.8 python3.8-dev python3.8-venv -y
 ```
 
 ### Install Additional Dependencies
@@ -74,7 +79,7 @@ needs to be installed on its own, then Django 3.2 needs to be reinstalled when
 Wagtail invariably downgrades it.
 ```
 cd /usr/local/apps/OH4S_Proteins/
-python3.9 -m venv env
+python3.8 -m venv env
 source env/bin/activate
 pip3 install --upgrade pip
 pip3 install "wagtail>=2.12"
