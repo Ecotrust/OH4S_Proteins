@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 
 def header(request, context, project_id=None):
@@ -189,3 +189,47 @@ def provider(request, provider_id):
     }
     context = header(request, context)
     return render(request, "provider.html", context)
+
+#   A generic results page. This should load blank, then make an ajax request
+# to the following 'filter' view to populate the template with filter results.
+# Further changes to the filters on the page should trigger additional ajax
+# requests to update the data. There should be no page refreshes.
+def results(request):
+    context = {
+        'category': {
+            'pk': None,
+            'image': settings.DEFAULT_CATEGORY_IMAGE,
+            'name': "All",
+        },
+        'providers': [],
+        # 'filter_form': None,
+    }
+    context = header(request, context)
+
+    return render(request, "category.html", context)
+
+#   requests should have a 'filters' object that gets parsed, run against the
+# providers records, then an alphabetical list of results should be put into
+# the JsonResponse and sent back to the client to render.
+def filter(request):
+    from providers.models import Provider
+    # TODO: Get 'filters' object/dict from requests
+
+    # TODO: run filters on providers
+    providers = Provider.objects.all()
+
+    providers_response = {'providers': []}
+    # For provider in providers:
+    #   providers_response['providers'].append({
+    #       'id': provider.pk,
+    #       'name': provider.name,
+    #       'location': some_function_to_get_location_from_provider(provider),
+    #       'products': some_function_to_get_related_producer_products_as_list_to_show_correct_count_and_images(provider),
+    #   })
+
+    # TODO: determine correct filters that can be universally applied given current provider context
+    filters_reponse = []
+    # TODO: apply provided filter state from request to this new filter list
+
+    data = [providers_response, filters_reponse]
+    return JsonResponse(data, safe=False)
