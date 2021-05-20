@@ -209,18 +209,15 @@ def filter(request):
                 for filter_category in filter_categories:
                     product_ids += [x.pk for x in filter_category.get_provider_products()]
             provider_products = ProviderProduct.objects.filter(pk__in=product_ids)
+            provider_ids = [x.provider.pk for x in provider_products]
+            providers = providers.filter(pk__in=provider_ids)
 
     providers_response = {'providers': []}
-    # For provider in providers:
-    #   providers_response['providers'].append({
-    #       'id': provider.pk,
-    #       'name': provider.name,
-    #       'location': some_function_to_get_location_from_provider(provider),
-    #       'products': some_function_to_get_related_producer_products_as_list_to_show_correct_count_and_images(provider),
-    #   })
+    for provider in providers:
+      providers_response['providers'].append(provider.to_dict())
 
     # TODO: determine correct filters that can be universally applied given current provider context
-    filters_reponse = []
+    filters_reponse = request.POST
     # TODO: apply provided filter state from request to this new filter list
 
     data = [providers_response, filters_reponse]

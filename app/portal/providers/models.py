@@ -35,6 +35,14 @@ class PoliticalRegion(models.Model):
                 return "%s: %s of %s" % (self.initialism, self.regionType, self.name)
         return "%s: %s %s, %s" % (self.initialism, self.name, self.regionType, self.country)
 
+    def to_dict(self):
+        return {
+            'initialism': self.initialism,
+            'name': self.name,
+            'country': self.country,
+            'regionType': self.regionType
+        }
+
     class Meta:
         ordering = ('name', 'country', )
 
@@ -52,6 +60,12 @@ class PoliticalSubregion(models.Model):
     def __str__(self):
         return self.name
 
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'region': self.region.to_dict()
+        }
+
     class Meta:
         ordering = ('name', 'region',)
 
@@ -60,6 +74,11 @@ class DeliveryMethod(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_dict(self):
+        return {
+            'name': self.name
+        }
 
     class Meta:
         ordering = ('name',)
@@ -81,6 +100,22 @@ class Distributor(models.Model):
     def __str__(self):
         return self.name
 
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'phone': self.phone.as_national if self.phone else None,
+            'email': self.email,
+            'websiteAddress': self.websiteAddress,
+            'fax': self.fax.as_national if self.fax else None,
+            'primaryContactFirstName': self.primaryContactFirstName,
+            'primaryContactLastName': self.primaryContactLastName,
+            'businessAddressLine1': self.businessAddressLine1,
+            'businessAddressLine2': self.businessAddressLine2,
+            'businessAddressCity': self.businessAddressCity,
+            'businessAddressState': self.businessAddressState.to_dict() if self.businessAddressState else None,
+            'businessAddressZipCode': self.businessAddressZipCode
+        }
+
     class Meta:
         ordering = ('name',)
 
@@ -90,6 +125,12 @@ class Identity(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'description': self.description
+        }
 
     class Meta:
         ordering = ('name',)
@@ -102,6 +143,13 @@ class ProductionPractice(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'description': self.description,
+            'definitionLink': self.definitionLink
+        }
 
     class Meta:
         ordering = ('name',)
@@ -162,12 +210,23 @@ class Provider(models.Model):
         verbose_name_plural="suppliers"
         ordering = ('name', 'dateInfoUpdated',)
 
-    def to_dict(self):
+    def to_flat_dict(self):
+        products = [{'id': x.id, 'name': x.name, 'image': x.image} for x in self.providerproduct_set.all()],
+        product_categories =[]
+        for product in self.providerproduct_set.all():
+            product_ancestor_category = product.category.get_prime_ancestor().to_dict()
+            is_dupe = False
+            for category in product_categories:
+                if product_ancestor_category == category:
+                    is_dupe = True
+            if not is_dupe:
+                product_categories.append(product_ancestor_category)
         return {
+            'id': self.id,
             'name': self.name,
             'outreachConductor': self.outreachConductor,
-            'dateInfoAdded': self.dateInfoAdded,
-            'dateInfoUpdated': self.dateInfoUpdated,
+            'dateInfoAdded': self.dateInfoAdded.strftime('%D'),
+            'dateInfoUpdated': self.dateInfoUpdated.strftime('%D'),
             'soldToSchoolsBefore': self.soldToSchoolsBefore,
             'description': self.description,
             'primaryContactFirstName': self.primaryContactFirstName,
@@ -175,32 +234,39 @@ class Provider(models.Model):
             'businessAddressLine1': self.businessAddressLine1,
             'businessAddressLine2': self.businessAddressLine2,
             'businessAddressCity': self.businessAddressCity,
-            'businessAddressState': self.businessAddressState,
+            'businessAddressState': str(self.businessAddressState) if self.businessAddressState else None,
             'businessAddressZipCode': self.businessAddressZipCode,
             'physicalAddressIsSame': self.physicalAddressIsSame,
             'physicalAddressLine1': self.physicalAddressLine1,
             'physicalAddressLine2': self.physicalAddressLine2,
             'physicalAddressCity': self.physicalAddressCity,
-            'physicalAddressState': self.physicalAddressState,
+            'physicalAddressState': str(self.physicalAddressState) if self.physicalAddressState else None,
             'physicalAddressZipCode': self.physicalAddressZipCode,
-            'officePhone': self.officePhone,
-            'cellPhone': self.cellPhone,
+            'officePhone': self.officePhone.as_national if self.officePhone else None,
+            'cellPhone': self.cellPhone.as_national if self.cellPhone else None,
             'email': self.email,
             'websiteAddress': self.websiteAddress,
-            'identities': self.identities,
+            'identities': [x.to_dict() for x in self.identities.all()],
             'notes': self.notes,
             #######################################################################
             #   The following may need to be "Provider-Product Specific"
             #######################################################################
             'productLiabilityInsurance': self.productLiabilityInsurance,
-            'productLiabilityInsuranceAmount': self.productLiabilityInsuranceAmount,
-            'deliveryMethods': self.deliveryMethods,
-            'regionalAvailability': self.regionalAvailability,
-            'orderMinimum': self.orderMinimum,
-            'deliveryMinimum': self.deliveryMinimum,
-            'distributors': self.distributors,
-            'productionPractices': self.productionPractices,
+            'productLiabilityInsuranceAmount': str(self.productLiabilityInsuranceAmount),
+            'deliveryMethods': [{'id': x.id, 'name': x.name} for x in self.deliveryMethods.all()],
+            'regionalAvailability': [{'id': x.id, 'name': x.name} for x in self.regionalAvailability.all()],
+            'orderMinimum': str(self.orderMinimum),
+            'deliveryMinimum': str(self.deliveryMinimum),
+            'distributors': [{'id': x.id, 'name': x.name} for x in self.distributors.all()],
+            'productionPractices': [{'id': x.id, 'name': x.name} for x in self.productionPractices.all()],
+            'products': products,
+            'product_categories': product_categories,
         }
+
+    def to_dict(self):
+        out_dict = self.to_flat_dict()
+        out_dict['products'] = [x.to_flat_dict() for x in self.providerproduct_set.all()]
+        return out_dict
 
     def __str__(self):
         return self.name
@@ -219,6 +285,13 @@ class CapacityMeasurement(models.Model):
 
     def __str__(self):
         return self.unit
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'measurementType': self.measurementType,
+            'unit': self.unit
+        }
 
     class Meta:
         ordering = ('measurementType', 'unit')
@@ -249,10 +322,25 @@ class ProductCategory(models.Model):
         else:
             image = '/media/%s' % self.image
         return {
+            'id': self.id,
             'pk': self.pk,
             'name': self.name,
-            'capacityMeasurement': self.capacityMeasurement,
-            'parent': self.parent,
+            'capacityMeasurement': self.capacityMeasurement.to_dict() if self.capacityMeasurement else None,
+            'parent': self.parent.to_dict() if self.parent else None,
+            'image': image,
+        }
+
+    def to_flat_dict(self):
+        if not self.image:
+            image = settings.DEFAULT_CATEGORY_IMAGE
+        else:
+            image = '/media/%s' % self.image
+        return {
+            'id': self.id,
+            'pk': self.pk,
+            'name': self.name,
+            'capacityMeasurement': self.capacityMeasurement.to_dict() if self.capacityMeasurement else None,
+            'parent': {'id': self.parent.id, 'name': self.parent.name} if self.parent else None,
             'image': image,
         }
 
@@ -302,6 +390,12 @@ class ProductCategory(models.Model):
     def get_ancestor_count(self):
         ancestors = self.get_ancestors()
         return len(ancestors)
+
+    def get_prime_ancestor(self):
+        if self.parent:
+            return self.parent.get_prime_ancestor()
+        else:
+            return self
 
     # TODO: Clear caches on save for this and parents.
     def save(self, *args, **kwargs):
@@ -373,25 +467,37 @@ class ProviderProduct(models.Model):
         return "%s: %s - %s" % (self.name, str(self.category), str(self.provider))
 
     def to_dict(self):
+        out_dict = self.to_flat_dict()
+        out_dict['provider'] = self.provider.to_flat_dict() if self.provider else None
+        return out_dict
+
+    def to_flat_dict(self):
+        if not self.image:
+            if not self.category:
+                image = settings.DEFAULT_CATEGORY_IMAGE
+            else:
+                image = self.category.to_flat_dict()['image']
+        else:
+            image = '/media/%s' % self.image
         return {
             'id': self.pk,
             'name': self.name,
-            'category': self.category,
-            'image': self.image,
-            'provider': self.provider,
+            'category': {'id': self.category.id, 'name': self.category.name} if self.category else None,
+            'image': image,
+            'provider': {'name':self.provider.name, 'id': self.provider.id} if self.provider else {'name':None, 'id': None},
             'description': self.description,
             'notes': self.notes,
             'productLiabilityInsurance': self.productLiabilityInsurance,
-            'productLiabilityInsuranceAmount': self.productLiabilityInsuranceAmount,
-            'deliveryMethods': self.deliveryMethods,
-            'regionalAvailability': self.regionalAvailability,
-            'orderMinimum': self.orderMinimum,
-            'deliveryMinimum': self.deliveryMinimum,
-            'distributors': self.distributors,
-            'productionPractices': self.productionPractices,
+            'productLiabilityInsuranceAmount': str(self.productLiabilityInsuranceAmount),
+            'deliveryMethods': [{'id': x.id, 'name': x.name} for x in self.deliveryMethods.all()],
+            'regionalAvailability': [{'id': x.id, 'name': x.name} for x in self.regionalAvailability.all()],
+            'orderMinimum': str(self.orderMinimum),
+            'deliveryMinimum': str(self.deliveryMinimum),
+            'distributors': [{'id': x.id, 'name': x.name} for x in self.distributors.all()],
+            'productionPractices': [{'id': x.id, 'name': x.name} for x in self.productionPractices.all()],
             'capacityValue': self.capacityValue,
-            'capacityMeasurement': self.capacityMeasurement,
-            'dateInfoUpdated': self.dateInfoUpdated,
+            'capacityMeasurement': self.capacityMeasurement.to_dict() if self.capacityMeasurement else None,
+            'dateInfoUpdated': self.dateInfoUpdated.strftime('%D'),
         }
 
     class Meta:

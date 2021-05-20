@@ -30,8 +30,8 @@ class FilterTestCase(TestCase):
         for filter_obj in filter_json_list:
             request.POST[filter_obj['key']] = filter_obj['value']
         results = filter(request)
-        result_dict = json.loads(results.content)
-        return result_dict
+        [providers_response, filters_reponse] = json.loads(results.content)
+        return providers_response
 
     def test_fixtres(self):
         # self.assertTrue(Project.objects.all().count() > 0)
@@ -63,8 +63,10 @@ class FilterTestCase(TestCase):
             }
         ]
         results = self.filter_request(json_filters)
-        for result in results:
-            self.assertTrue(apples_category.pk in result.products)
+        for provider in results['providers']:
+            self.assertTrue('product_categories' in  provider.keys())
+            product_ids = [x['id'] for x in provider['product_categories']]
+            self.assertTrue(apples_category.pk in product_ids)
 
     def test_homepage_filters_identity(self):
         print("TODO: Test homepage filters -- identity")
