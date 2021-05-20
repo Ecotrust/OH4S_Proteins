@@ -1,10 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
+from providers.models import ProductCategory, Project, Provider, ProviderProduct
+from providers.forms import FilterForm
 
 def header(request, context, project_id=None):
-    from providers.models import Project
-
     project = None
     project_context = {}
     if Project.objects.all().count() > 0:
@@ -31,7 +31,6 @@ def header(request, context, project_id=None):
     return context
 
 def get_category_context(request, context):
-    from providers.models import ProductCategory
 
     top_tier_categories = ProductCategory.objects.filter(parent=None)
 
@@ -39,7 +38,6 @@ def get_category_context(request, context):
     context['default_image'] = settings.DEFAULT_CATEGORY_IMAGE
 
     return context
-
 
 def index(request):
 
@@ -49,9 +47,6 @@ def index(request):
     return render(request, "index.html", context)
 
 def category(request, category_id):
-    from providers.models import ProductCategory
-    from providers.forms import FilterForm
-
     try:
         category = ProductCategory.objects.get(pk=category_id)
     except Exception as e:
@@ -75,9 +70,6 @@ def category(request, category_id):
     return render(request, "category.html", context)
 
 def all_categories(request):
-    from providers.models import ProductCategory, Provider
-    from providers.forms import FilterForm
-
     children = ProductCategory.objects.filter(parent=None)
     providers = Provider.objects.all()
     product_details = [ (x.pk, x.name) for x in children ]
@@ -97,10 +89,7 @@ def all_categories(request):
 
     return render(request, "category.html", context)
 
-
 def filterByCategory(request, category_id=None):
-    from providers.models import ProductCategory, ProviderProduct
-
     if category_id:
         category = ProductCategory.objects.get(pk=category_id)
         provider_products = category.get_provider_products()
@@ -152,7 +141,6 @@ def filterProducts(request, category_id=None):
     return render(request, "product_results.html", context)
 
 def filterProviders(request, category_id=None):
-    from providers.models import Provider
     provider_products = filterByCategory(request, category_id)
     provider_ids = [x.provider.pk for x in provider_products]
     providers = Provider.objects.filter(pk__in=provider_ids)
@@ -162,9 +150,7 @@ def filterProviders(request, category_id=None):
     }
     return render(request, "provider_results.html", context)
 
-
 def product(request, product_id):
-    from providers.models import ProviderProduct
     try:
         product = ProviderProduct.objects.get(pk=product_id)
     except Exception as e:
@@ -176,8 +162,6 @@ def product(request, product_id):
     return render(request, "product.html", context)
 
 def provider(request, provider_id):
-    from providers.models import Provider
-    from providers.models import ProviderProduct
     try:
         provider = Provider.objects.get(pk=provider_id)
         products = ProviderProduct.objects.filter(provider=provider)
@@ -212,11 +196,19 @@ def results(request):
 # providers records, then an alphabetical list of results should be put into
 # the JsonResponse and sent back to the client to render.
 def filter(request):
-    from providers.models import Provider
     # TODO: Get 'filters' object/dict from requests
 
-    # TODO: run filters on providers
     providers = Provider.objects.all()
+    # TODO: run filters on providers
+    if request.method == "POST":
+        # TODO: Filter by product_category
+        if 'product_category' in request.POST.keys():
+            product_ids = []
+            for category_id in request.POST.getlist('product_category'):
+                filter_categories = ProductCategory.objects.filter(pk__in=category_id)
+                for filter_category in filter_categories:
+                    product_ids += [x.pk for x in filter_category.get_provider_products()]
+            provider_products = ProviderProduct.objects.filter(pk__in=product_ids)
 
     providers_response = {'providers': []}
     # For provider in providers:
