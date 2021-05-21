@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
-from providers.models import ProductCategory, Project, Provider, ProviderProduct
+from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity
 from providers.forms import FilterForm
 import json
 
@@ -209,12 +209,22 @@ def filter(request):
             print(e)
             body = {}
         if 'product_categories' in body.keys():
+            # Many-to-many
             product_ids = []
             for filter_category in ProductCategory.objects.filter(pk__in=body['product_categories']):
                 product_ids += [x.pk for x in filter_category.get_provider_products()]
             provider_products = ProviderProduct.objects.filter(pk__in=product_ids)
             provider_ids = [x.provider.pk for x in provider_products]
             providers = providers.filter(pk__in=provider_ids)
+        if 'identities' in body.keys():
+            # Many-to-many
+            identities = Identity.objects.filter(pk__in=body['identities'])
+            provider_ids = []
+            for identity in identities:
+                new_provider_ids = [x.pk for x in identity.provider_set.all()]
+                provider_ids = list(set(provider_ids + new_provider_ids))
+            providers = providers.filter(pk__in=provider_ids)
+        
 
     providers_response = {'providers': []}
     for provider in providers:

@@ -79,6 +79,20 @@ class FilterTestCase(TestCase):
         # - parse JsonResponse into dict
         # - Check dict for correct results
         # - (Only those matching provided identity)
+        minority_identity = Identity.objects.get(name='Minority Owned')
+        json_filters = [
+            {
+                'key': 'identities',
+                'value': [
+                    minority_identity.pk,
+                ]
+            }
+        ]
+        results = self.filter_request(json_filters)
+        for provider in results['providers']:
+            self.assertTrue('identities' in  provider.keys())
+            product_ids = [x['id'] for x in provider['identities']]
+            self.assertTrue(minority_identity.pk in product_ids)
 
     def test_homepage_filters_county(self):
         print("TODO: Test homepage filters -- county")

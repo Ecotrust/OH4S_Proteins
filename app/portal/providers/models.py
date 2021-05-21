@@ -128,6 +128,7 @@ class Identity(models.Model):
 
     def to_dict(self):
         return {
+            'id': self.pk,
             'name': self.name,
             'description': self.description
         }
