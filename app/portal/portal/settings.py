@@ -168,4 +168,6 @@ DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 WAGTAIL_SITE_NAME = "Oregon Harvest For Schools Portal CMS"
 
+APPEND_SLASH=False
+
 from .local_settings import *

@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from providers.models import ProductCategory, Project, Provider, ProviderProduct
 from providers.forms import FilterForm
+import json
 
 def header(request, context, project_id=None):
     project = None
@@ -202,12 +203,15 @@ def filter(request):
     # TODO: run filters on providers
     if request.method == "POST":
         # TODO: Filter by product_category
-        if 'product_category' in request.POST.keys():
+        try:
+            body = json.loads(request.body)
+        except Exception as e:
+            print(e)
+            body = {}
+        if 'product_categories' in body.keys():
             product_ids = []
-            for category_id in request.POST.getlist('product_category'):
-                filter_categories = ProductCategory.objects.filter(pk__in=category_id)
-                for filter_category in filter_categories:
-                    product_ids += [x.pk for x in filter_category.get_provider_products()]
+            for filter_category in ProductCategory.objects.filter(pk__in=body['product_categories']):
+                product_ids += [x.pk for x in filter_category.get_provider_products()]
             provider_products = ProviderProduct.objects.filter(pk__in=product_ids)
             provider_ids = [x.provider.pk for x in provider_products]
             providers = providers.filter(pk__in=provider_ids)

@@ -5,6 +5,7 @@ from django.core.management import call_command
 from django.http import HttpRequest
 from providers.views import filter
 from providers.models import *
+import json
 
 class FilterTestCase(TestCase):
     # def setUp(self):
@@ -27,8 +28,11 @@ class FilterTestCase(TestCase):
     def filter_request(self, filter_json_list):
         request = HttpRequest()
         request.method = 'POST'
+        request.META['CONTENT_TYPE'] = 'application/json'
+        data = {}
         for filter_obj in filter_json_list:
-            request.POST[filter_obj['key']] = filter_obj['value']
+            data[filter_obj['key']] = filter_obj['value']
+        request._body = json.dumps(data)
         results = filter(request)
         [providers_response, filters_reponse] = json.loads(results.content)
         return providers_response
@@ -56,7 +60,7 @@ class FilterTestCase(TestCase):
         apples_category = ProductCategory.objects.get(name='Apples')
         json_filters = [
             {
-                'key': 'product_category',
+                'key': 'product_categories',
                 'value': [
                     apples_category.pk, # 34
                 ]
