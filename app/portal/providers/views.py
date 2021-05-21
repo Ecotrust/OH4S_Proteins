@@ -236,7 +236,7 @@ def filter(request):
 
     providers_response = {'providers': []}
     for provider in providers:
-      providers_response['providers'].append(provider.to_dict())
+      providers_response['providers'].append(provider.to_json())
 
     # TODO: determine correct filters that can be universally applied given current provider context
     filters_reponse = request.POST

@@ -37,6 +37,7 @@ class PoliticalRegion(models.Model):
 
     def to_dict(self):
         return {
+            'id': self.id,
             'initialism': self.initialism,
             'name': self.name,
             'country': self.country,
@@ -211,11 +212,11 @@ class Provider(models.Model):
         verbose_name_plural="suppliers"
         ordering = ('name', 'dateInfoUpdated',)
 
-    def to_flat_dict(self):
-        products = [{'id': x.id, 'name': x.name, 'image': x.image} for x in self.providerproduct_set.all()],
+    def to_json(self):
+        products = [{'id': x.id, 'name': x.name, 'image': x.image_string} for x in self.providerproduct_set.all()],
         product_categories =[]
         for product in self.providerproduct_set.all():
-            product_ancestor_category = product.category.get_prime_ancestor().to_dict()
+            product_ancestor_category = product.category.get_prime_ancestor().to_json()
             is_dupe = False
             for category in product_categories:
                 if product_ancestor_category == category:
@@ -224,6 +225,7 @@ class Provider(models.Model):
                 product_categories.append(product_ancestor_category)
         return {
             'id': self.id,
+            'pk': self.pk,
             'name': self.name,
             'outreachConductor': self.outreachConductor,
             'dateInfoAdded': self.dateInfoAdded.strftime('%D'),
@@ -235,13 +237,13 @@ class Provider(models.Model):
             'businessAddressLine1': self.businessAddressLine1,
             'businessAddressLine2': self.businessAddressLine2,
             'businessAddressCity': self.businessAddressCity,
-            'businessAddressState': str(self.businessAddressState) if self.businessAddressState else None,
+            'businessAddressState': self.businessAddressState.to_dict() if self.businessAddressState else None,
             'businessAddressZipCode': self.businessAddressZipCode,
             'physicalAddressIsSame': self.physicalAddressIsSame,
             'physicalAddressLine1': self.physicalAddressLine1,
             'physicalAddressLine2': self.physicalAddressLine2,
             'physicalAddressCity': self.physicalAddressCity,
-            'physicalAddressState': str(self.physicalAddressState) if self.physicalAddressState else None,
+            'physicalAddressState': self.physicalAddressState.to_dict() if self.physicalAddressState else None,
             'physicalAddressZipCode': self.physicalAddressZipCode,
             'officePhone': self.officePhone.as_national if self.officePhone else None,
             'cellPhone': self.cellPhone.as_national if self.cellPhone else None,
@@ -253,7 +255,7 @@ class Provider(models.Model):
             #   The following may need to be "Provider-Product Specific"
             #######################################################################
             'productLiabilityInsurance': self.productLiabilityInsurance,
-            'productLiabilityInsuranceAmount': str(self.productLiabilityInsuranceAmount),
+            'productLiabilityInsuranceAmount': str(self.productLiabilityInsuranceAmount) if (self.productLiabilityInsuranceAmount and not self.productLiabilityInsuranceAmount == None) else None,
             'deliveryMethods': [{'id': x.id, 'name': x.name} for x in self.deliveryMethods.all()],
             'regionalAvailability': [{'id': x.id, 'name': x.name} for x in self.regionalAvailability.all()],
             'orderMinimum': str(self.orderMinimum),
@@ -265,8 +267,27 @@ class Provider(models.Model):
         }
 
     def to_dict(self):
-        out_dict = self.to_flat_dict()
-        out_dict['products'] = [x.to_flat_dict() for x in self.providerproduct_set.all()]
+        product_categories =[]
+        for product in self.providerproduct_set.all():
+            product_ancestor_category = product.category.get_prime_ancestor()
+            if not product_ancestor_category in product_categories:
+                product_categories.append(product_ancestor_category)
+
+        out_dict = self.to_json()
+        out_dict['dateInfoAdded'] = self.dateInfoAdded
+        out_dict['dateInfoUpdated'] = self.dateInfoUpdated
+        out_dict['businessAddressState'] = self.businessAddressState
+        out_dict['physicalAddressState'] = self.physicalAddressState
+        out_dict['identities'] = self.identities
+        out_dict['productLiabilityInsuranceAmount'] = self.productLiabilityInsuranceAmount
+        out_dict['deliveryMethods'] = self.deliveryMethods
+        out_dict['regionalAvailability'] = self.regionalAvailability
+        out_dict['orderMinimum'] = self.orderMinimum
+        out_dict['deliveryMinimum'] = self.deliveryMinimum
+        out_dict['distributors'] = self.distributors
+        out_dict['productionPractices'] = self.productionPractices
+        out_dict['products'] = self.providerproduct_set.all()
+        out_dict['product_categories'] = product_categories
         return out_dict
 
     def __str__(self):
@@ -317,32 +338,36 @@ class ProductCategory(models.Model):
     full_name = models.TextField(null=True, blank=True, default=None)
     # ancestor_count = models.IntegerField(default=0)
 
-    def to_dict(self):
+    @property
+    def image_string(self):
         if not self.image:
-            image = settings.DEFAULT_CATEGORY_IMAGE
+            if not self.parent:
+                image = settings.DEFAULT_CATEGORY_IMAGE
+            else:
+                image = self.parent.image_string
         else:
-            image = '/media/%s' % self.image
+            image = '/media/%s' % str(self.image)
+        return image
+
+    def to_dict(self):
+
         return {
             'id': self.id,
             'pk': self.pk,
             'name': self.name,
             'capacityMeasurement': self.capacityMeasurement.to_dict() if self.capacityMeasurement else None,
             'parent': self.parent.to_dict() if self.parent else None,
-            'image': image,
+            'image': self.image_string,
         }
 
-    def to_flat_dict(self):
-        if not self.image:
-            image = settings.DEFAULT_CATEGORY_IMAGE
-        else:
-            image = '/media/%s' % self.image
+    def to_json(self):
         return {
             'id': self.id,
             'pk': self.pk,
             'name': self.name,
             'capacityMeasurement': self.capacityMeasurement.to_dict() if self.capacityMeasurement else None,
             'parent': {'id': self.parent.id, 'name': self.parent.name} if self.parent else None,
-            'image': image,
+            'image': self.image_string,
         }
 
     def __str__(self):
@@ -468,24 +493,40 @@ class ProviderProduct(models.Model):
         return "%s: %s - %s" % (self.name, str(self.category), str(self.provider))
 
     def to_dict(self):
-        out_dict = self.to_flat_dict()
-        out_dict['provider'] = self.provider.to_flat_dict() if self.provider else None
+        out_dict = self.to_json()
+        out_dict['category'] = self.category
+        out_dict['provider'] = self.provider
+        out_dict['productLiabilityInsuranceAmount'] = self.productLiabilityInsuranceAmount
+        out_dict['deliveryMethods'] = self.deliveryMethods
+        out_dict['regionalAvailability'] = self.regionalAvailability
+        out_dict['orderMinimum'] = self.orderMinimum
+        out_dict['deliveryMinimum'] = self.deliveryMinimum
+        out_dict['distributors'] = self.distributors
+        out_dict['productionPractices'] = self.productionPractices
+        out_dict['capacityMeasurement'] = self.capacityMeasurement
+        out_dict['dateInfoUpdated'] = self.dateInfoUpdated
         return out_dict
 
-    def to_flat_dict(self):
+    @property
+    def image_string(self):
         if not self.image:
             if not self.category:
                 image = settings.DEFAULT_CATEGORY_IMAGE
             else:
-                image = self.category.to_flat_dict()['image']
+                image = self.category.to_json()['image']
         else:
-            image = '/media/%s' % self.image
+            image = '/media/%s' % str(self.image)
+        return image
+
+    def to_json(self):
+
         return {
             'id': self.pk,
+            'pk': self.pk,
             'name': self.name,
             'category': {'id': self.category.id, 'name': self.category.name} if self.category else None,
-            'image': image,
-            'provider': {'name':self.provider.name, 'id': self.provider.id} if self.provider else {'name':None, 'id': None},
+            'image': self.image_string,
+            'provider': {'name':self.provider.name, 'id': self.provider.id, 'pk': self.provider.pk} if self.provider else {'name':None, 'id': None},
             'description': self.description,
             'notes': self.notes,
             'productLiabilityInsurance': self.productLiabilityInsurance,
