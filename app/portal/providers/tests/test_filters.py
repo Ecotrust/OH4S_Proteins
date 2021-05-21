@@ -88,8 +88,8 @@ class FilterTestCase(TestCase):
         results = self.filter_request(json_filters)
         for provider in results['providers']:
             self.assertTrue('identities' in  provider.keys())
-            product_ids = [x['id'] for x in provider['identities']]
-            self.assertTrue(minority_identity.pk in product_ids)
+            identity_ids = [x['id'] for x in provider['identities']]
+            self.assertTrue(minority_identity.pk in identity_ids)
 
     def test_homepage_filters_county(self):
         # Create json filter object
@@ -108,8 +108,8 @@ class FilterTestCase(TestCase):
         results = self.filter_request(json_filters)
         for provider in results['providers']:
             self.assertTrue('regionalAvailability' in  provider.keys())
-            product_ids = [x['id'] for x in provider['regionalAvailability']]
-            self.assertTrue(benton_county.pk in product_ids)
+            county_ids = [x['id'] for x in provider['regionalAvailability']]
+            self.assertTrue(benton_county.pk in county_ids)
 
     def test_homepage_filters_component(self):
         print("TODO: Test homepage filters -- USDA component category")
@@ -120,9 +120,50 @@ class FilterTestCase(TestCase):
         # - (Only those matching provided component category)
 
     def test_homepage_filters_composite(self):
-        print("TODO: Test homepage filters -- composite")
-        # TODO: Create a request with a filter fixture
-        # - send request to /providers/filter
-        # - parse JsonResponse into dict
+        # Create json filter object
+        # - Get dict of response from filter query
         # - Check dict for correct results
         # - (Only those matching provided filters)
+        clatsop = PoliticalSubregion.objects.get(name='Clatsop')
+        tillamook = PoliticalSubregion.objects.get(name='Tillamook')
+        women = Identity.objects.get(name='Women-Owned')
+        lgbtq = Identity.objects.get(name='LGBTQ-Owned')
+        beets = ProductCategory.objects.get(name='Beets')
+        broccoli = ProductCategory.objects.get(name='Broccoli')
+        json_filters = [
+            {
+                'key': 'availability',
+                'value': [
+                    clatsop.pk,
+                    tillamook.pk
+                ]
+            },
+            {
+                'key': "identities",
+                'value': [
+                    women.pk,
+                    lgbtq.pk
+                ]
+            },
+            {
+                'key': "product_categories",
+                'value': [
+                    beets.pk,
+                    broccoli.pk
+                ]
+            }
+        ]
+        results = self.filter_request(json_filters)
+        for provider in results['providers']:
+            self.assertTrue('regionalAvailability' in  provider.keys())
+            county_ids = [x['id'] for x in provider['regionalAvailability']]
+            self.assertTrue(clatsop.pk in county_ids)
+            self.assertTrue(tillamook.pk in county_ids)
+            self.assertTrue('identities' in  provider.keys())
+            identity_ids = [x['id'] for x in provider['identities']]
+            self.assertTrue(women.pk in identity_ids)
+            self.assertTrue(lgbtq.pk in identity_ids)
+            self.assertTrue('product_categories' in  provider.keys())
+            product_ids = [x['id'] for x in provider['product_categories']]
+            self.assertTrue(beets.pk in product_ids)
+            self.assertTrue(broccoli.pk in product_ids)
