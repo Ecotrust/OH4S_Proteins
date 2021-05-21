@@ -52,7 +52,6 @@ class FilterTestCase(TestCase):
         self.assertTrue(ProviderProduct.objects.all().count() > 0)
 
     def test_homepage_filters_category(self):
-        print("TODO: Test homepage filters -- category")
         # Create json filter object
         # - Get dict of response from filter query
         # - Check dict for correct results
@@ -73,10 +72,8 @@ class FilterTestCase(TestCase):
             self.assertTrue(apples_category.pk in product_ids)
 
     def test_homepage_filters_identity(self):
-        print("TODO: Test homepage filters -- identity")
-        # TODO: Create a request with a filter fixture
-        # - send request to /providers/filter
-        # - parse JsonResponse into dict
+        # Create json filter object
+        # - Get dict of response from filter query
         # - Check dict for correct results
         # - (Only those matching provided identity)
         minority_identity = Identity.objects.get(name='Minority Owned')
@@ -95,12 +92,24 @@ class FilterTestCase(TestCase):
             self.assertTrue(minority_identity.pk in product_ids)
 
     def test_homepage_filters_county(self):
-        print("TODO: Test homepage filters -- county")
-        # TODO: Create a request with a filter fixture
-        # - send request to /providers/filter
-        # - parse JsonResponse into dict
+        # Create json filter object
+        # - Get dict of response from filter query
         # - Check dict for correct results
         # - (Only those matching provided county of availability)
+        benton_county = PoliticalSubregion.objects.get(name='Benton')
+        json_filters = [
+            {
+                'key': 'availability',
+                'value': [
+                    benton_county.pk,
+                ]
+            }
+        ]
+        results = self.filter_request(json_filters)
+        for provider in results['providers']:
+            self.assertTrue('regionalAvailability' in  provider.keys())
+            product_ids = [x['id'] for x in provider['regionalAvailability']]
+            self.assertTrue(benton_county.pk in product_ids)
 
     def test_homepage_filters_component(self):
         print("TODO: Test homepage filters -- USDA component category")
