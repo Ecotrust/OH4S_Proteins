@@ -381,7 +381,6 @@ class ProductCategory(models.Model):
         return image
 
     def to_dict(self):
-
         return {
             'id': self.id,
             'pk': self.pk,
@@ -389,6 +388,7 @@ class ProductCategory(models.Model):
             'capacityMeasurement': self.capacityMeasurement.to_dict() if self.capacityMeasurement else None,
             'parent': self.parent.to_dict() if self.parent else None,
             'image': self.image_string,
+            'usdaComponentCategories': self.componentCategories,
         }
 
     def to_json(self):
@@ -399,6 +399,7 @@ class ProductCategory(models.Model):
             'capacityMeasurement': self.capacityMeasurement.to_dict() if self.capacityMeasurement else None,
             'parent': {'id': self.parent.id, 'name': self.parent.name} if self.parent else None,
             'image': self.image_string,
+            'usdaComponentCategories': [{'id': x.id, 'name': x.name, 'order': x.order} for x in self.componentCategories],
         }
 
     def __str__(self):
