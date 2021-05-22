@@ -3841,9 +3841,7 @@
     "parent": null,
     "image": "category_images/leek.png",
     "full_name": "Leeks",
-    "usdaComponentCategories": [
-      4
-    ]
+    "usdaComponentCategories": []
   }
 },
 {
