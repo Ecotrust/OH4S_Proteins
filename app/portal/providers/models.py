@@ -212,8 +212,18 @@ class Provider(models.Model):
         verbose_name_plural="suppliers"
         ordering = ('name', 'dateInfoUpdated',)
 
+    @property
+    def components_offered(self):
+        component_ids = []
+        for product in self.providerproduct_set.all():
+            for component in product.category.usdaComponentCategories.all():
+                if component.id not in component_ids:
+                    component_ids.append(component.id)
+        return ComponentCategory.objects.filter(id__in=component_ids)
+
+
     def to_json(self):
-        products = [{'id': x.id, 'name': x.name, 'image': x.image_string} for x in self.providerproduct_set.all()],
+        products = [x.to_json() for x in self.providerproduct_set.all()]
         product_categories =[]
         for product in self.providerproduct_set.all():
             product_ancestor_category = product.category.get_prime_ancestor().to_json()
@@ -551,12 +561,11 @@ class ProviderProduct(models.Model):
         return image
 
     def to_json(self):
-
         return {
             'id': self.pk,
             'pk': self.pk,
             'name': self.name,
-            'category': {'id': self.category.id, 'name': self.category.name} if self.category else None,
+            'category': self.category.to_json() if self.category else None,
             'image': self.image_string,
             'provider': {'name':self.provider.name, 'id': self.provider.id, 'pk': self.provider.pk} if self.provider else {'name':None, 'id': None},
             'description': self.description,

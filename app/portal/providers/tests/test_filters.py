@@ -112,12 +112,29 @@ class FilterTestCase(TestCase):
             self.assertTrue(benton_county.pk in county_ids)
 
     def test_homepage_filters_component(self):
-        print("TODO: Test homepage filters -- USDA component category")
-        # TODO: Create a request with a filter fixture
-        # - send request to /providers/filter
-        # - parse JsonResponse into dict
+        # Create json filter object
+        # - Get dict of response from filter query
         # - Check dict for correct results
         # - (Only those matching provided component category)
+        meats = ComponentCategory.objects.get(name='Meats / Meat Alternates')
+        json_filters = [
+            {
+                'key': 'component_category',
+                'value': [
+                    meats.pk,
+                ]
+            }
+        ]
+        results = self.filter_request(json_filters)
+        for provider in results['providers']:
+            self.assertTrue('products' in  provider.keys())
+            self.assertTrue(len(provider['products']) > 0)
+            self.assertTrue('category' in  provider['products'][0].keys())
+            self.assertTrue('usdaComponentCategories' in  provider['products'][0]['category'].keys())
+            component_ids = []
+            for product in provider['products']:
+                component_ids = component_ids + [x['id'] for x in product['category']['usdaComponentCategories']]
+            self.assertTrue(meats.pk in component_ids)
 
     def test_homepage_filters_composite(self):
         # Create json filter object

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
-from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity, PoliticalSubregion
+from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity, PoliticalSubregion, ComponentCategory
 from providers.forms import FilterForm
 import json
 
@@ -197,12 +197,8 @@ def results(request):
 # providers records, then an alphabetical list of results should be put into
 # the JsonResponse and sent back to the client to render.
 def filter(request):
-    # TODO: Get 'filters' object/dict from requests
-
     providers = Provider.objects.all()
-    # TODO: run filters on providers
     if request.method == "POST":
-        # TODO: Filter by product_category
         try:
             body = json.loads(request.body)
         except Exception as e:
@@ -231,6 +227,15 @@ def filter(request):
             for region in regions:
                 new_provider_ids = [x.pk for x in region.provider_set.all()]
                 provider_ids = list(set(provider_ids + new_provider_ids))
+            providers = providers.filter(pk__in=provider_ids)
+        if 'component_category' in body.keys():
+            # Many-to-many (OR)
+            components = ComponentCategory.objects.filter(pk__in=body['component_category'])
+            provider_ids = []
+            for component in components:
+                for provider in providers:
+                    if component in provider.components_offered and not provider.id in provider_ids:
+                        provider_ids.append(provider.id)
             providers = providers.filter(pk__in=provider_ids)
 
 
