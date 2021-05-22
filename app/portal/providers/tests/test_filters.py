@@ -17,7 +17,7 @@ class FilterTestCase(TestCase):
     #     user.save()
 
     # Import fixture
-    fixture_file = '/usr/local/apps/OH4S_Proteins/app/portal/fixtures/providers_20190729.json'
+    fixture_file = '/usr/local/apps/OH4S_Proteins/app/portal/fixtures/providers_20210521.json'
     # call_command('loaddata', fixture_file)
     fixtures = [fixture_file,]
 

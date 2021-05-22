@@ -318,6 +318,29 @@ class CapacityMeasurement(models.Model):
     class Meta:
         ordering = ('measurementType', 'unit')
 
+class ComponentCategory(models.Model):
+    name = models.CharField(max_length=150)
+    order = models.IntegerField(default=9)
+    description = models.TextField(null=True, blank=True, default=None)
+    imageFile = models.ImageField(null=True, blank=True, default=None, help_text="Upload a file if one is available (preferred)")
+    imageLink = models.URLField(max_length=1000, null=True, blank=True, default=None, help_text="Link to viable online image, used if no imageFile is provided")
+    imageAttribution = models.TextField(null=True, blank=True, default=None)
+    usdaLink = models.URLField(max_length=255, null=True, blank=True, default=None, help_text="A link to the USDA Food Buying Guide information for this Component Category")
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def image(self):
+        if self.imageFile:
+            return '/media/%s' % str(self.image)
+        return self.imageLink
+
+
+    class Meta:
+        verbose_name_plural = "USDA component categories"
+        ordering = ('order', 'name',)
+
 class CategoryManager(models.QuerySet):
     # we need to trigger 'saves' on all decendants to reset 'full_name' values
     def delete(self, *args, **kwargs):
@@ -336,7 +359,15 @@ class ProductCategory(models.Model):
     parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, default=None)
     image = models.ImageField(null=True, blank=True, default=None, upload_to='category_images')
     full_name = models.TextField(null=True, blank=True, default=None)
+    usdaComponentCategories = models.ManyToManyField(ComponentCategory, blank=True, verbose_name='USDA Component Categories')
     # ancestor_count = models.IntegerField(default=0)
+
+    @property
+    def componentCategories(self):
+        if not self.usdaComponentCategories.all().count() > 0:
+            if self.parent:
+                return self.parent.componentCategories
+        return self.usdaComponentCategories.all()
 
     @property
     def image_string(self):
