@@ -147,6 +147,7 @@ class FilterTestCase(TestCase):
         lgbtq = Identity.objects.get(name='LGBTQ-Owned')
         beets = ProductCategory.objects.get(name='Beets')
         broccoli = ProductCategory.objects.get(name='Broccoli')
+        veggies = ComponentCategory.objects.get(name='Vegetables')
         json_filters = [
             {
                 'key': 'availability',
@@ -168,6 +169,12 @@ class FilterTestCase(TestCase):
                     beets.pk,
                     broccoli.pk
                 ]
+            },
+            {
+                'key': 'component_category',
+                'value': [
+                    veggies.pk,
+                ]
             }
         ]
         results = self.filter_request(json_filters)
@@ -184,3 +191,10 @@ class FilterTestCase(TestCase):
             product_ids = [x['id'] for x in provider['product_categories']]
             self.assertTrue(beets.pk in product_ids)
             self.assertTrue(broccoli.pk in product_ids)
+            self.assertTrue(len(provider['products']) > 0)
+            self.assertTrue('category' in  provider['products'][0].keys())
+            self.assertTrue('usdaComponentCategories' in  provider['products'][0]['category'].keys())
+            component_ids = []
+            for product in provider['products']:
+                component_ids = component_ids + [x['id'] for x in product['category']['usdaComponentCategories']]
+            self.assertTrue(veggies.pk in component_ids)
