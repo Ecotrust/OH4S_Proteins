@@ -211,7 +211,7 @@ class FilterTestCase(TestCase):
             {
                 'key': 'product_categories',
                 'value': [
-                    asparagus_category.pk, # 34
+                    asparagus_category.pk,
                 ]
             }
         ]
@@ -223,6 +223,21 @@ class FilterTestCase(TestCase):
 
         # PRODUCER LOCATION
         print("TODO: Filter by producer location")
+        deschutes = PoliticalSubregion.objects.get(name='Deschutes')
+        json_filters = [
+            {
+                'key': 'physical_county',
+                'value': [
+                    deschutes.pk,
+                ]
+            }
+        ]
+        results = self.filter_request(json_filters)
+        for provider in results['providers']:
+            self.assertTrue('physicalCounty' in  provider.keys())
+            self.assertTrue(None != provider['physicalCounty'])
+            self.assertTrue('id' in provider['physicalCounty'].keys())
+            self.assertTrue(deschutes.pk in provider['physicalCounty']['id'])
 
         # DELIVERY METHOD
         supplier_delivers = DeliveryMethod.objects.get(name='Supplier Delivers')

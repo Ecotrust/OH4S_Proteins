@@ -9,3 +9,5 @@ DATABASES = {
         'USER': ''
     }
 }
+
+MAPBOX_TOKEN = ''

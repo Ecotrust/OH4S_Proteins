@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from djmoney.models.fields import MoneyField
+import geocoder
 
 class Project(models.Model):
     name = models.CharField(max_length=255, default="Oregon Harvest For Schools")
@@ -63,6 +64,7 @@ class PoliticalSubregion(models.Model):
 
     def to_dict(self):
         return {
+            'id': self.id,
             'name': self.name,
             'region': self.region.to_dict()
         }
@@ -176,6 +178,7 @@ class Provider(models.Model):
     businessAddressCity = models.CharField(max_length=255, verbose_name="Business Address City")
     businessAddressState = models.ForeignKey(PoliticalRegion, on_delete=models.PROTECT, verbose_name="Business Address State", related_name="providerBusinessAddresses")
     businessAddressZipCode = models.CharField(max_length=25, verbose_name="Business Address Zip Code", blank=True, null=True, default=None)
+    businessCounty = models.ForeignKey(PoliticalSubregion, on_delete=models.SET_NULL, blank=True, null=True, default=None, verbose_name="Business County Location", related_name="providerBusinessCountyLocation")
 
     physicalAddressIsSame = models.BooleanField(default=False, verbose_name="Physical address is the same as business address")
 
@@ -184,6 +187,7 @@ class Provider(models.Model):
     physicalAddressCity = models.CharField(max_length=255, blank=True, null=True, default=None, verbose_name="Physical Address City")
     physicalAddressState = models.ForeignKey(PoliticalRegion, on_delete=models.SET_NULL, blank=True, null=True, default=None, verbose_name="Physical Address State", related_name="providerPhysicalAddresses")
     physicalAddressZipCode = models.CharField(max_length=25, blank=True, null=True, default=None, verbose_name="Physical Address Zip Code")
+    physicalCounty = models.ForeignKey(PoliticalSubregion, on_delete=models.SET_NULL, blank=True, null=True, default=None, verbose_name="Physical County Location", related_name="providerPhysicalCountyLocation")
 
     officePhone = PhoneNumberField(verbose_name="Office Phone", blank=True, null=True, default=None)
     cellPhone = PhoneNumberField(blank=True, null=True, default=None, verbose_name="Cell Phone")
@@ -221,6 +225,66 @@ class Provider(models.Model):
                     component_ids.append(component.id)
         return ComponentCategory.objects.filter(id__in=component_ids)
 
+    def get_address_string(self, locationType=None):
+        if locationType == 'Business':
+            fields = [
+                self.businessAddressLine1,
+                self.businessAddressLine2,
+                self.businessAddressCity,
+                self.businessAddressState.to_dict()['initialism'],
+                self.businessAddressZipCode,
+            ]
+        elif locationType == 'Physical':
+            if self.physicalAddressIsSame:
+                address = self.get_address_string('Business')
+                if not address == None:
+                    return address
+            fields = [
+                self.physicalAddressLine1,
+                self.physicalAddressLine2,
+                self.physicalAddressCity,
+                self.physicalAddressState.to_dict()['initialism'],
+                self.physicalAddressZipCode,
+            ]
+        else:
+            return self.get_address_string('Business')
+
+        return ', '.join([x for x in fields if not x == None])
+
+
+    def geocode(self, locationType='Physical'):
+        return geocoder.mapbox(self.get_address_string(locationType=locationType), key=settings.MAPBOX_TOKEN)
+
+    def get_county(self, locationType='Physical'):
+        if locationType == 'Business':
+            county_field = self.businessCounty
+        else:
+            county_field = self.physicalCounty
+        if not county_field:
+            county_record = None
+            for geocode_hit in self.geocode(locationType=locationType):
+                geocode = geocode_hit.json
+                try:
+                    if 'raw' in geocode.keys() and 'district' in geocode['raw'].keys() and 'state' in geocode.keys():
+                        district = geocode['raw']['district']
+                        state = geocode['state']
+                        if district and state and '' not in [district, state] and 'County' in district:
+                            county_name = ' '.join(district.split(' ')[0:-1])
+                            county_record = PoliticalSubregion.objects.get(name=county_name, region__name=state)
+                            break
+                            # self.county = county_record
+                            # return self.county
+                except Exception as e:
+                    pass
+            if county_record:
+                if locationType == 'Business':
+                    self.businessCounty = county_record
+                else:
+                    self.physicalCounty = county_record
+                self.save()
+                county_field = county_record
+
+        return county_field
 
     def to_json(self):
         products = [x.to_json() for x in self.providerproduct_set.all()]
@@ -233,6 +297,13 @@ class Provider(models.Model):
                     is_dupe = True
             if not is_dupe:
                 product_categories.append(product_ancestor_category)
+
+        physicalCounty = self.physicalCounty
+        if not physicalCounty == None:
+            physicalCounty = physicalCounty.to_dict()
+        businessCounty = self.businessCounty
+        if not businessCounty == None:
+            businessCounty = businessCounty.to_dict()
         return {
             'id': self.id,
             'pk': self.pk,
@@ -249,12 +320,14 @@ class Provider(models.Model):
             'businessAddressCity': self.businessAddressCity,
             'businessAddressState': self.businessAddressState.to_dict() if self.businessAddressState else None,
             'businessAddressZipCode': self.businessAddressZipCode,
+            'businessCounty': businessCounty,
             'physicalAddressIsSame': self.physicalAddressIsSame,
             'physicalAddressLine1': self.physicalAddressLine1,
             'physicalAddressLine2': self.physicalAddressLine2,
             'physicalAddressCity': self.physicalAddressCity,
             'physicalAddressState': self.physicalAddressState.to_dict() if self.physicalAddressState else None,
             'physicalAddressZipCode': self.physicalAddressZipCode,
+            'physicalCounty': physicalCounty,
             'officePhone': self.officePhone.as_national if self.officePhone else None,
             'cellPhone': self.cellPhone.as_national if self.cellPhone else None,
             'email': self.email,
