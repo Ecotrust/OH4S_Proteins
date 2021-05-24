@@ -198,3 +198,79 @@ class FilterTestCase(TestCase):
             for product in provider['products']:
                 component_ids = component_ids + [x['id'] for x in product['category']['usdaComponentCategories']]
             self.assertTrue(veggies.pk in component_ids)
+
+    def test_results_filters(self):
+        # Create json filter object
+        # - Get dict of response from filter query
+        # - Check dict for correct results
+        # - (Only those matching provided category)
+
+        # PRODUCT TYPE
+        asparagus_category = ProductCategory.objects.get(name='Asparagus')
+        json_filters = [
+            {
+                'key': 'product_categories',
+                'value': [
+                    asparagus_category.pk, # 34
+                ]
+            }
+        ]
+        results = self.filter_request(json_filters)
+        for provider in results['providers']:
+            self.assertTrue('product_categories' in  provider.keys())
+            product_ids = [x['id'] for x in provider['product_categories']]
+            self.assertTrue(asparagus_category.pk in product_ids)
+
+        # PRODUCER LOCATION
+        print("TODO: Filter by producer location")
+
+        # DELIVERY METHOD
+        supplier_delivers = DeliveryMethod.objects.get(name='Supplier Delivers')
+        json_filters = [
+            {
+                'key': 'delivery_method',
+                'value': [
+                    supplier_delivers.pk,   #1
+                ]
+            }
+        ]
+        results = self.filter_request(json_filters)
+        for provider in results['providers']:
+            self.assertTrue('delivery_method' in  provider.keys())
+            product_ids = [x['id'] for x in provider['delivery_method']]
+            self.assertTrue(supplier_delivers.pk in product_ids)
+
+        # PRODUCT DETAILS
+        print("TODO: Filter by product details")
+
+        # DISTRIBUTORS
+        sysco = Distributor.objects.get(name='Sysco')
+        json_filters = [
+            {
+                'key': 'distributor',
+                'value': [
+                    sysco.pk,
+                ]
+            }
+        ]
+        results = self.filter_request(json_filters)
+        for provider in results['providers']:
+            self.assertTrue('distributor' in  provider.keys())
+            product_ids = [x['id'] for x in provider['distributor']]
+            self.assertTrue(sysco.pk in product_ids)
+
+        # PRODUCTION PRACTICES
+        orTilth = ProductionPractices.objects.get(name='Oregon Tilth')
+        json_filters = [
+            {
+                'key': 'practices',
+                'value': [
+                    orTilth.pk,
+                ]
+            }
+        ]
+        results = self.filter_request(json_filters)
+        for provider in results['providers']:
+            self.assertTrue('practices' in  provider.keys())
+            product_ids = [x['id'] for x in provider['practices']]
+            self.assertTrue(orTilth.pk in product_ids)
