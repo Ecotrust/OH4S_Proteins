@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
-from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity, PoliticalSubregion, ComponentCategory, DeliveryMethod
+from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity, PoliticalSubregion, ComponentCategory, DeliveryMethod, Distributor
 from providers.forms import FilterForm
 import json
 
@@ -243,6 +243,14 @@ def filter(request):
             provider_ids = []
             for method in delivery_methods:
                 new_provider_ids = [x.pk for x in method.provider_set.all()]
+                provider_ids = list(set(provider_ids + new_provider_ids))
+            providers = providers.filter(pk__in=provider_ids)
+        if 'distributor' in body.keys():
+            # Many-to-many (OR)
+            distributors = Distributor.objects.filter(pk__in=body['distributor'])
+            provider_ids = []
+            for distributor in distributors:
+                new_provider_ids = [x.pk for x in distributor.provider_set.all()]
                 provider_ids = list(set(provider_ids + new_provider_ids))
             providers = providers.filter(pk__in=provider_ids)
 

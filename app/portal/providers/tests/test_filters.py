@@ -255,8 +255,8 @@ class FilterTestCase(TestCase):
         ]
         results = self.filter_request(json_filters)
         for provider in results['providers']:
-            self.assertTrue('distributor' in  provider.keys())
-            product_ids = [x['id'] for x in provider['distributor']]
+            self.assertTrue('distributors' in  provider.keys())
+            product_ids = [x['id'] for x in provider['distributors']]
             self.assertTrue(sysco.pk in product_ids)
 
         # PRODUCTION PRACTICES
@@ -271,6 +271,6 @@ class FilterTestCase(TestCase):
         ]
         results = self.filter_request(json_filters)
         for provider in results['providers']:
-            self.assertTrue('practices' in  provider.keys())
-            product_ids = [x['id'] for x in provider['practices']]
+            self.assertTrue('productionPractices' in  provider.keys())
+            product_ids = [x['id'] for x in provider['productionPractices']]
             self.assertTrue(orTilth.pk in product_ids)
