@@ -119,7 +119,7 @@ class FilterTestCase(TestCase):
         meats = ComponentCategory.objects.get(name='Meats / Meat Alternates')
         json_filters = [
             {
-                'key': 'component_category',
+                'key': 'component_categories',
                 'value': [
                     meats.pk,
                 ]
@@ -171,7 +171,7 @@ class FilterTestCase(TestCase):
                 ]
             },
             {
-                'key': 'component_category',
+                'key': 'component_categories',
                 'value': [
                     veggies.pk,
                 ]
@@ -228,7 +228,7 @@ class FilterTestCase(TestCase):
         supplier_delivers = DeliveryMethod.objects.get(name='Supplier Delivers')
         json_filters = [
             {
-                'key': 'delivery_method',
+                'key': 'delivery_methods',
                 'value': [
                     supplier_delivers.pk,   #1
                 ]
@@ -247,7 +247,7 @@ class FilterTestCase(TestCase):
         sysco = Distributor.objects.get(name='Sysco')
         json_filters = [
             {
-                'key': 'distributor',
+                'key': 'distributors',
                 'value': [
                     sysco.pk,
                 ]
@@ -260,7 +260,7 @@ class FilterTestCase(TestCase):
             self.assertTrue(sysco.pk in product_ids)
 
         # PRODUCTION PRACTICES
-        orTilth = ProductionPractices.objects.get(name='Oregon Tilth')
+        orTilth = ProductionPractice.objects.get(name='Oregon Tilth')
         json_filters = [
             {
                 'key': 'practices',

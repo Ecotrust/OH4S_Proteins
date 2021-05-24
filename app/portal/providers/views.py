@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
-from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity, PoliticalSubregion, ComponentCategory, DeliveryMethod, Distributor
+from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity, PoliticalSubregion, ComponentCategory, DeliveryMethod, Distributor, ProductionPractice
 from providers.forms import FilterForm
 import json
 
@@ -228,29 +228,37 @@ def filter(request):
                 new_provider_ids = [x.pk for x in region.provider_set.all()]
                 provider_ids = list(set(provider_ids + new_provider_ids))
             providers = providers.filter(pk__in=provider_ids)
-        if 'component_category' in body.keys():
+        if 'component_categories' in body.keys():
             # Many-to-many (OR)
-            components = ComponentCategory.objects.filter(pk__in=body['component_category'])
+            components = ComponentCategory.objects.filter(pk__in=body['component_categories'])
             provider_ids = []
             for component in components:
                 for provider in providers:
                     if component in provider.components_offered and not provider.id in provider_ids:
                         provider_ids.append(provider.id)
             providers = providers.filter(pk__in=provider_ids)
-        if 'delivery_method' in body.keys():
+        if 'delivery_methods' in body.keys():
             # Many-to-many (OR)
-            delivery_methods = DeliveryMethod.objects.filter(pk__in=body['delivery_method'])
+            delivery_methods = DeliveryMethod.objects.filter(pk__in=body['delivery_methods'])
             provider_ids = []
             for method in delivery_methods:
                 new_provider_ids = [x.pk for x in method.provider_set.all()]
                 provider_ids = list(set(provider_ids + new_provider_ids))
             providers = providers.filter(pk__in=provider_ids)
-        if 'distributor' in body.keys():
+        if 'distributors' in body.keys():
             # Many-to-many (OR)
-            distributors = Distributor.objects.filter(pk__in=body['distributor'])
+            distributors = Distributor.objects.filter(pk__in=body['distributors'])
             provider_ids = []
             for distributor in distributors:
                 new_provider_ids = [x.pk for x in distributor.provider_set.all()]
+                provider_ids = list(set(provider_ids + new_provider_ids))
+            providers = providers.filter(pk__in=provider_ids)
+        if 'practices' in body.keys():
+            # Many-to-many (OR)
+            practices = ProductionPractice.objects.filter(pk__in=body['practices'])
+            provider_ids = []
+            for practice in practices:
+                new_provider_ids = [x.pk for x in practice.provider_set.all()]
                 provider_ids = list(set(provider_ids + new_provider_ids))
             providers = providers.filter(pk__in=provider_ids)
 
