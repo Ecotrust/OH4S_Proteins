@@ -29,23 +29,33 @@
         <hr />
       </div>
     </div>
-    <div class="row">
-      <div class="col-12 categories-flex-container">
-        <a class="category-link" href="/providers/category/">
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6">
+      <div class="col categories-flex-container">
+        <a class="card h-100 category-link" href="/providers/category/">
           <div class="category-container">
-            <img class="category-image" src="{{ default_image }}">
-            <div class="category-name">All</div>
+            <img class="card-img-top category-image" src="{{ default_image }}">
+            <!-- <div class="card-body">
+              <div class="card-title"></div>
+              <div class="card-text"></div>
+            </div> -->
           </div>
+          <div class="card-footer category-name">All</div>
         </a>
-        {% for category in categories %}
-          <a class="category-link" href="/providers/category/{{category.pk}}/">
-            <div class="category-container">
-              <img class="category-image" src="{{category.image}}">
-              <div class="category-name">{{category.name}}</div>
-            </div>
-          </a>
-        {% endfor %}
       </div>
+      {% for category in categories %}
+        <div class="col">
+          <a class="card h-100 category-link" href="/providers/category/{{category.pk}}/">
+            <div class="category-container">
+              <img class="card-img-top category-image" src="{{category.image}}" alt="{{ category.name }}">
+              <!-- <div class="card-body">
+                <div class="card-title"></div>
+                <div class="card-text"></div>
+              </div> -->
+            </div>
+            <div class="card-footer category-name">{{category.name}}</div>
+          </a>
+        </div>
+      {% endfor %}
     </div>
   </div>
 </div>

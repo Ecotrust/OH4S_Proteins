@@ -9,9 +9,9 @@ hr {
 
 .categories-container {
   background-color: #EEE;
-  border-radius: 0.2rem;
-  border: 0.05rem solid #666;
-  padding: 1.5rem;
+  /* border-radius: 0.2rem; */
+  /* border: 0.05rem solid #666; */
+  /* padding: 1.5rem; */
 }
 
 .categories-flex-container {
@@ -36,13 +36,12 @@ hr {
 }
 
 .category-container {
-  border-radius: 0.2rem;
-  border: 0.05rem solid #555;
+  /* border-radius: 0.2rem; */
+  /* border: 0.05rem solid #555; */
   background-color: white;
-  margin: 0.1rem;
-  width: 9rem;
+  /* width: 120px; */
   text-align: center;
-  min-height: 10.6rem;
+  /* height: 120px; */
 }
 
 .category-container:hover {
@@ -52,15 +51,18 @@ hr {
 }
 
 .category-image {
-  max-width: 8rem;
-  height: 8rem;
-  margin: 0.5rem;
+  width: auto;
+  max-width: 100px;
+  height: auto;
+  max-height: 100px;
+  margin: 10px;
 }
 
 .category-name {
   background: rgba(0,0,0,0.5);
   bottom:0;
   color: white;
+  font-size: .875em;
   text-align: center;
   font-weight:bold;
 }
@@ -103,6 +105,10 @@ hr {
   min-width: 15rem;
   background-color: white;
   box-sizing: content-box;
+}
+
+.card {
+  flex: 1;
 }
 
 .subcard {

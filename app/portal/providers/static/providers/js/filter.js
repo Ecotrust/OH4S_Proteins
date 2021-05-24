@@ -1,3 +1,17 @@
+/**
+ * Filter State Object
+ * a user is trying to pick a producer that matches their needs
+ * @key @value
+ * {
+ *   'selfIdentification': [],
+ *   'county': [],
+ *   'deliveryMethod': [],
+ *   'usdaComponents': [],
+ *   'productType': [],
+ *   'productionPractices': [],
+ *   'distributors': [], 
+ * }
+ */
 $('#filter-form').submit(function(event) {
   event.preventDefault();
 });
