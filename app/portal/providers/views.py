@@ -261,7 +261,13 @@ def filter(request):
                 new_provider_ids = [x.pk for x in practice.provider_set.all()]
                 provider_ids = list(set(provider_ids + new_provider_ids))
             providers = providers.filter(pk__in=provider_ids)
-
+        if 'product_forms' in body.keys():
+            product_forms = ProductCategory.objects.filter(pk__in=body['product_forms'])
+            provider_ids = []
+            for form in product_forms:
+                new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
+                provider_ids = list(set(provider_ids + new_provider_ids))
+            providers = providers.filter(pk__in=provider_ids)
 
     providers_response = {'providers': []}
     for provider in providers:

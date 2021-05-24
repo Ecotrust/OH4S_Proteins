@@ -241,7 +241,24 @@ class FilterTestCase(TestCase):
             self.assertTrue(supplier_delivers.pk in product_ids)
 
         # PRODUCT DETAILS
-        print("TODO: Filter by product details")
+        carrots = ProductCategory.objects.get(name='Carrots')
+        fresh_carrots = ProductCategory.objects.get(name='Fresh, whole', parent=carrots)
+        json_filters = [
+            {
+                'key': 'product_forms',
+                'value': [
+                    fresh_carrots.pk,
+                ]
+            }
+        ]
+        results = self.filter_request(json_filters)
+        for provider in results['providers']:
+            self.assertTrue('products' in  provider.keys())
+            self.assertTrue('product_categories' in  provider.keys())
+            product_ids = [x['category']['id'] for x in provider['products']]
+            category_ids = [x['id'] for x in provider['product_categories']]
+            self.assertTrue(fresh_carrots.pk in product_ids)
+            self.assertTrue(carrots.pk in category_ids)
 
         # DISTRIBUTORS
         sysco = Distributor.objects.get(name='Sysco')
