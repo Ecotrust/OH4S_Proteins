@@ -73,11 +73,12 @@ ALTER USER <username> CREATEDB;
 exit
 sudo vim /etc/postgresql/12/main/pg_hba.conf
 ```
-I think the test database is just named 'test_<dbname>'. If you want to be
-super careful, duplicate the line you created above for your DB user. Or (again
-for development installs) you can just edit the prior line to read:
+The test database is named 'test_\<dbname>' by default. If you want to be
+super careful, duplicate the line you created earlier for your DB user, as well
+access to the postgres database (needed for testing):
 ```
-local   all           <dbuser>                        md5
+local   postgres           <dbuser>                        md5
+local   test_<dbname>      <dbuser>                        md5
 ```
 Save and then restart PostgreSQL to enable your changes:
 ```
