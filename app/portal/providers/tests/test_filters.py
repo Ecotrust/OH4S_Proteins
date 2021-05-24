@@ -236,8 +236,8 @@ class FilterTestCase(TestCase):
         ]
         results = self.filter_request(json_filters)
         for provider in results['providers']:
-            self.assertTrue('delivery_method' in  provider.keys())
-            product_ids = [x['id'] for x in provider['delivery_method']]
+            self.assertTrue('deliveryMethods' in  provider.keys())
+            product_ids = [x['id'] for x in provider['deliveryMethods']]
             self.assertTrue(supplier_delivers.pk in product_ids)
 
         # PRODUCT DETAILS
