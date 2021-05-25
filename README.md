@@ -59,6 +59,32 @@ Save, then restart the postgreSQL server:
 sudo service postgresql restart
 ```
 
+### Additional steps to allow running tests
+I know we said granting users 'create db' privileges was bad, but if you're just
+building a dev environment, who cares? Also, Django testing needs permission to
+create test databases, so:
+```
+sudo su postgres
+psql
+
+ALTER USER <username> CREATEDB;
+\q
+
+exit
+sudo vim /etc/postgresql/12/main/pg_hba.conf
+```
+The test database is named 'test_\<dbname>' by default. To enable creation of
+a test db, duplicate the line you created earlier, once for the test db, and
+once again to grant access to the postgres database (needed for testing):
+```
+local   postgres           <dbuser>                        md5
+local   test_<dbname>      <dbuser>                        md5
+```
+Save and then restart PostgreSQL to enable your changes:
+```
+sudo service postgresql restart
+```
+
 ## Install OH4S Portal App
 ### Download the source code
 ```

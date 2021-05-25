@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from phonenumber_field.modelfields import PhoneNumberField
 from djmoney.models.fields import MoneyField
+import geocoder
 
 class Project(models.Model):
     name = models.CharField(max_length=255, default="Oregon Harvest For Schools")
@@ -35,6 +36,15 @@ class PoliticalRegion(models.Model):
                 return "%s: %s of %s" % (self.initialism, self.regionType, self.name)
         return "%s: %s %s, %s" % (self.initialism, self.name, self.regionType, self.country)
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'initialism': self.initialism,
+            'name': self.name,
+            'country': self.country,
+            'regionType': self.regionType
+        }
+
     class Meta:
         ordering = ('name', 'country', )
 
@@ -52,6 +62,13 @@ class PoliticalSubregion(models.Model):
     def __str__(self):
         return self.name
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'region': self.region.to_dict()
+        }
+
     class Meta:
         ordering = ('name', 'region',)
 
@@ -60,6 +77,11 @@ class DeliveryMethod(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_dict(self):
+        return {
+            'name': self.name
+        }
 
     class Meta:
         ordering = ('name',)
@@ -81,6 +103,22 @@ class Distributor(models.Model):
     def __str__(self):
         return self.name
 
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'phone': self.phone.as_national if self.phone else None,
+            'email': self.email,
+            'websiteAddress': self.websiteAddress,
+            'fax': self.fax.as_national if self.fax else None,
+            'primaryContactFirstName': self.primaryContactFirstName,
+            'primaryContactLastName': self.primaryContactLastName,
+            'businessAddressLine1': self.businessAddressLine1,
+            'businessAddressLine2': self.businessAddressLine2,
+            'businessAddressCity': self.businessAddressCity,
+            'businessAddressState': self.businessAddressState.to_dict() if self.businessAddressState else None,
+            'businessAddressZipCode': self.businessAddressZipCode
+        }
+
     class Meta:
         ordering = ('name',)
 
@@ -90,6 +128,13 @@ class Identity(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_dict(self):
+        return {
+            'id': self.pk,
+            'name': self.name,
+            'description': self.description
+        }
 
     class Meta:
         ordering = ('name',)
@@ -102,6 +147,13 @@ class ProductionPractice(models.Model):
 
     def __str__(self):
         return self.name
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'description': self.description,
+            'definitionLink': self.definitionLink
+        }
 
     class Meta:
         ordering = ('name',)
@@ -126,6 +178,7 @@ class Provider(models.Model):
     businessAddressCity = models.CharField(max_length=255, verbose_name="Business Address City")
     businessAddressState = models.ForeignKey(PoliticalRegion, on_delete=models.PROTECT, verbose_name="Business Address State", related_name="providerBusinessAddresses")
     businessAddressZipCode = models.CharField(max_length=25, verbose_name="Business Address Zip Code", blank=True, null=True, default=None)
+    businessCounty = models.ForeignKey(PoliticalSubregion, on_delete=models.SET_NULL, blank=True, null=True, default=None, verbose_name="Business County Location", related_name="providerBusinessCountyLocation")
 
     physicalAddressIsSame = models.BooleanField(default=False, verbose_name="Physical address is the same as business address")
 
@@ -134,6 +187,7 @@ class Provider(models.Model):
     physicalAddressCity = models.CharField(max_length=255, blank=True, null=True, default=None, verbose_name="Physical Address City")
     physicalAddressState = models.ForeignKey(PoliticalRegion, on_delete=models.SET_NULL, blank=True, null=True, default=None, verbose_name="Physical Address State", related_name="providerPhysicalAddresses")
     physicalAddressZipCode = models.CharField(max_length=25, blank=True, null=True, default=None, verbose_name="Physical Address Zip Code")
+    physicalCounty = models.ForeignKey(PoliticalSubregion, on_delete=models.SET_NULL, blank=True, null=True, default=None, verbose_name="Physical County Location", related_name="providerPhysicalCountyLocation")
 
     officePhone = PhoneNumberField(verbose_name="Office Phone", blank=True, null=True, default=None)
     cellPhone = PhoneNumberField(blank=True, null=True, default=None, verbose_name="Cell Phone")
@@ -162,12 +216,113 @@ class Provider(models.Model):
         verbose_name_plural="suppliers"
         ordering = ('name', 'dateInfoUpdated',)
 
-    def to_dict(self):
+    @property
+    def components_offered(self):
+        component_ids = []
+        for product in self.providerproduct_set.all():
+            for component in product.category.usdaComponentCategories.all():
+                if component.id not in component_ids:
+                    component_ids.append(component.id)
+        return ComponentCategory.objects.filter(id__in=component_ids)
+
+    def get_address_string(self, locationType=None, fullAddress=True):
+        if locationType == 'Business':
+            fields = [
+                self.businessAddressLine1,
+                self.businessAddressLine2 if fullAddress else None,
+                self.businessAddressCity,
+                self.businessAddressState.to_dict()['initialism'] if self.businessAddressState else None,
+                self.businessAddressZipCode,
+            ]
+        elif locationType == 'Physical':
+            if self.physicalAddressIsSame:
+                address = self.get_address_string('Business', fullAddress=fullAddress)
+                if not address == None:
+                    return address
+            fields = [
+                self.physicalAddressLine1,
+                self.physicalAddressLine2 if fullAddress else None,
+                self.physicalAddressCity,
+                self.physicalAddressState.to_dict()['initialism'] if self.physicalAddressState else None,
+                self.physicalAddressZipCode,
+            ]
+        else:
+            return self.get_address_string('Business')
+
+        return ', '.join([x for x in fields if not x == None])
+
+
+    def geocode(self, locationType='Physical'):
+        address_string = self.get_address_string(locationType=locationType)
+        if len(address_string) > 1:
+            try:
+                results = geocoder.mapbox(address_string, key=settings.MAPBOX_TOKEN)
+            except Exception as e:
+                print(e)
+                results = None
+            if not results or len(results) < 1 or results.error:
+                address_string = self.get_address_string(locationType=locationType, fullAddress=False)
+                results = geocoder.mapbox(address_string, key=settings.MAPBOX_TOKEN)
+            return results
+
+        else:
+            return []
+
+    def get_county(self, locationType='Physical'):
+        if locationType == 'Business':
+            county_field = self.businessCounty
+        else:
+            county_field = self.physicalCounty
+        if not county_field:
+            county_record = None
+            for geocode_hit in self.geocode(locationType=locationType):
+                geocode = geocode_hit.json
+                try:
+                    if 'raw' in geocode.keys() and 'district' in geocode['raw'].keys() and 'state' in geocode.keys():
+                        district = geocode['raw']['district']
+                        state = geocode['state']
+                        if district and state and '' not in [district, state] and 'County' in district:
+                            county_name = ' '.join(district.split(' ')[0:-1])
+                            county_record = PoliticalSubregion.objects.get(name=county_name, region__name=state)
+                            break
+
+                except Exception as e:
+                    pass
+            if county_record:
+                if locationType == 'Business':
+                    self.businessCounty = county_record
+                else:
+                    self.physicalCounty = county_record
+                self.save()
+                county_field = county_record
+
+        return county_field
+
+    def to_json(self):
+        products = [x.to_json() for x in self.providerproduct_set.all()]
+        product_categories =[]
+        for product in self.providerproduct_set.all():
+            product_ancestor_category = product.category.get_prime_ancestor().to_json()
+            is_dupe = False
+            for category in product_categories:
+                if product_ancestor_category == category:
+                    is_dupe = True
+            if not is_dupe:
+                product_categories.append(product_ancestor_category)
+
+        physicalCounty = self.physicalCounty
+        if not physicalCounty == None:
+            physicalCounty = physicalCounty.to_dict()
+        businessCounty = self.businessCounty
+        if not businessCounty == None:
+            businessCounty = businessCounty.to_dict()
         return {
+            'id': self.id,
+            'pk': self.pk,
             'name': self.name,
             'outreachConductor': self.outreachConductor,
-            'dateInfoAdded': self.dateInfoAdded,
-            'dateInfoUpdated': self.dateInfoUpdated,
+            'dateInfoAdded': self.dateInfoAdded.strftime('%D'),
+            'dateInfoUpdated': self.dateInfoUpdated.strftime('%D'),
             'soldToSchoolsBefore': self.soldToSchoolsBefore,
             'description': self.description,
             'primaryContactFirstName': self.primaryContactFirstName,
@@ -175,32 +330,60 @@ class Provider(models.Model):
             'businessAddressLine1': self.businessAddressLine1,
             'businessAddressLine2': self.businessAddressLine2,
             'businessAddressCity': self.businessAddressCity,
-            'businessAddressState': self.businessAddressState,
+            'businessAddressState': self.businessAddressState.to_dict() if self.businessAddressState else None,
             'businessAddressZipCode': self.businessAddressZipCode,
+            'businessCounty': businessCounty,
             'physicalAddressIsSame': self.physicalAddressIsSame,
             'physicalAddressLine1': self.physicalAddressLine1,
             'physicalAddressLine2': self.physicalAddressLine2,
             'physicalAddressCity': self.physicalAddressCity,
-            'physicalAddressState': self.physicalAddressState,
+            'physicalAddressState': self.physicalAddressState.to_dict() if self.physicalAddressState else None,
             'physicalAddressZipCode': self.physicalAddressZipCode,
-            'officePhone': self.officePhone,
-            'cellPhone': self.cellPhone,
+            'physicalCounty': physicalCounty,
+            'officePhone': self.officePhone.as_national if self.officePhone else None,
+            'cellPhone': self.cellPhone.as_national if self.cellPhone else None,
             'email': self.email,
             'websiteAddress': self.websiteAddress,
-            'identities': self.identities,
+            'identities': [x.to_dict() for x in self.identities.all()],
             'notes': self.notes,
             #######################################################################
             #   The following may need to be "Provider-Product Specific"
             #######################################################################
             'productLiabilityInsurance': self.productLiabilityInsurance,
-            'productLiabilityInsuranceAmount': self.productLiabilityInsuranceAmount,
-            'deliveryMethods': self.deliveryMethods,
-            'regionalAvailability': self.regionalAvailability,
-            'orderMinimum': self.orderMinimum,
-            'deliveryMinimum': self.deliveryMinimum,
-            'distributors': self.distributors,
-            'productionPractices': self.productionPractices,
+            'productLiabilityInsuranceAmount': str(self.productLiabilityInsuranceAmount) if (self.productLiabilityInsuranceAmount and not self.productLiabilityInsuranceAmount == None) else None,
+            'deliveryMethods': [{'id': x.id, 'name': x.name} for x in self.deliveryMethods.all()],
+            'regionalAvailability': [{'id': x.id, 'name': x.name} for x in self.regionalAvailability.all()],
+            'orderMinimum': str(self.orderMinimum),
+            'deliveryMinimum': str(self.deliveryMinimum),
+            'distributors': [{'id': x.id, 'name': x.name} for x in self.distributors.all()],
+            'productionPractices': [{'id': x.id, 'name': x.name} for x in self.productionPractices.all()],
+            'products': products,
+            'product_categories': product_categories,
         }
+
+    def to_dict(self):
+        product_categories =[]
+        for product in self.providerproduct_set.all():
+            product_ancestor_category = product.category.get_prime_ancestor()
+            if not product_ancestor_category in product_categories:
+                product_categories.append(product_ancestor_category)
+
+        out_dict = self.to_json()
+        out_dict['dateInfoAdded'] = self.dateInfoAdded
+        out_dict['dateInfoUpdated'] = self.dateInfoUpdated
+        out_dict['businessAddressState'] = self.businessAddressState
+        out_dict['physicalAddressState'] = self.physicalAddressState
+        out_dict['identities'] = self.identities
+        out_dict['productLiabilityInsuranceAmount'] = self.productLiabilityInsuranceAmount
+        out_dict['deliveryMethods'] = self.deliveryMethods
+        out_dict['regionalAvailability'] = self.regionalAvailability
+        out_dict['orderMinimum'] = self.orderMinimum
+        out_dict['deliveryMinimum'] = self.deliveryMinimum
+        out_dict['distributors'] = self.distributors
+        out_dict['productionPractices'] = self.productionPractices
+        out_dict['products'] = self.providerproduct_set.all()
+        out_dict['product_categories'] = product_categories
+        return out_dict
 
     def __str__(self):
         return self.name
@@ -220,8 +403,38 @@ class CapacityMeasurement(models.Model):
     def __str__(self):
         return self.unit
 
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'measurementType': self.measurementType,
+            'unit': self.unit
+        }
+
     class Meta:
         ordering = ('measurementType', 'unit')
+
+class ComponentCategory(models.Model):
+    name = models.CharField(max_length=150)
+    order = models.IntegerField(default=9)
+    description = models.TextField(null=True, blank=True, default=None)
+    imageFile = models.ImageField(null=True, blank=True, default=None, help_text="Upload a file if one is available (preferred)")
+    imageLink = models.URLField(max_length=1000, null=True, blank=True, default=None, help_text="Link to viable online image, used if no imageFile is provided")
+    imageAttribution = models.TextField(null=True, blank=True, default=None)
+    usdaLink = models.URLField(max_length=255, null=True, blank=True, default=None, help_text="A link to the USDA Food Buying Guide information for this Component Category")
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def image(self):
+        if self.imageFile:
+            return '/media/%s' % str(self.image)
+        return self.imageLink
+
+
+    class Meta:
+        verbose_name_plural = "USDA component categories"
+        ordering = ('order', 'name',)
 
 class CategoryManager(models.QuerySet):
     # we need to trigger 'saves' on all decendants to reset 'full_name' values
@@ -241,19 +454,47 @@ class ProductCategory(models.Model):
     parent = models.ForeignKey("self", on_delete=models.SET_NULL, null=True, blank=True, default=None)
     image = models.ImageField(null=True, blank=True, default=None, upload_to='category_images')
     full_name = models.TextField(null=True, blank=True, default=None)
+    usdaComponentCategories = models.ManyToManyField(ComponentCategory, blank=True, verbose_name='USDA Component Categories')
     # ancestor_count = models.IntegerField(default=0)
 
-    def to_dict(self):
+    @property
+    def componentCategories(self):
+        if not self.usdaComponentCategories.all().count() > 0:
+            if self.parent:
+                return self.parent.componentCategories
+        return self.usdaComponentCategories.all()
+
+    @property
+    def image_string(self):
         if not self.image:
-            image = settings.DEFAULT_CATEGORY_IMAGE
+            if not self.parent:
+                image = settings.DEFAULT_CATEGORY_IMAGE
+            else:
+                image = self.parent.image_string
         else:
-            image = '/media/%s' % self.image
+            image = '/media/%s' % str(self.image)
+        return image
+
+    def to_dict(self):
         return {
+            'id': self.id,
             'pk': self.pk,
             'name': self.name,
-            'capacityMeasurement': self.capacityMeasurement,
-            'parent': self.parent,
-            'image': image,
+            'capacityMeasurement': self.capacityMeasurement.to_dict() if self.capacityMeasurement else None,
+            'parent': self.parent.to_dict() if self.parent else None,
+            'image': self.image_string,
+            'usdaComponentCategories': self.componentCategories,
+        }
+
+    def to_json(self):
+        return {
+            'id': self.id,
+            'pk': self.pk,
+            'name': self.name,
+            'capacityMeasurement': self.capacityMeasurement.to_dict() if self.capacityMeasurement else None,
+            'parent': {'id': self.parent.id, 'name': self.parent.name} if self.parent else None,
+            'image': self.image_string,
+            'usdaComponentCategories': [{'id': x.id, 'name': x.name, 'order': x.order} for x in self.componentCategories],
         }
 
     def __str__(self):
@@ -302,6 +543,12 @@ class ProductCategory(models.Model):
     def get_ancestor_count(self):
         ancestors = self.get_ancestors()
         return len(ancestors)
+
+    def get_prime_ancestor(self):
+        if self.parent:
+            return self.parent.get_prime_ancestor()
+        else:
+            return self
 
     # TODO: Clear caches on save for this and parents.
     def save(self, *args, **kwargs):
@@ -373,25 +620,52 @@ class ProviderProduct(models.Model):
         return "%s: %s - %s" % (self.name, str(self.category), str(self.provider))
 
     def to_dict(self):
+        out_dict = self.to_json()
+        out_dict['category'] = self.category
+        out_dict['provider'] = self.provider
+        out_dict['productLiabilityInsuranceAmount'] = self.productLiabilityInsuranceAmount
+        out_dict['deliveryMethods'] = self.deliveryMethods
+        out_dict['regionalAvailability'] = self.regionalAvailability
+        out_dict['orderMinimum'] = self.orderMinimum
+        out_dict['deliveryMinimum'] = self.deliveryMinimum
+        out_dict['distributors'] = self.distributors
+        out_dict['productionPractices'] = self.productionPractices
+        out_dict['capacityMeasurement'] = self.capacityMeasurement
+        out_dict['dateInfoUpdated'] = self.dateInfoUpdated
+        return out_dict
+
+    @property
+    def image_string(self):
+        if not self.image:
+            if not self.category:
+                image = settings.DEFAULT_CATEGORY_IMAGE
+            else:
+                image = self.category.to_json()['image']
+        else:
+            image = '/media/%s' % str(self.image)
+        return image
+
+    def to_json(self):
         return {
             'id': self.pk,
+            'pk': self.pk,
             'name': self.name,
-            'category': self.category,
-            'image': self.image,
-            'provider': self.provider,
+            'category': self.category.to_json() if self.category else None,
+            'image': self.image_string,
+            'provider': {'name':self.provider.name, 'id': self.provider.id, 'pk': self.provider.pk} if self.provider else {'name':None, 'id': None},
             'description': self.description,
             'notes': self.notes,
             'productLiabilityInsurance': self.productLiabilityInsurance,
-            'productLiabilityInsuranceAmount': self.productLiabilityInsuranceAmount,
-            'deliveryMethods': self.deliveryMethods,
-            'regionalAvailability': self.regionalAvailability,
-            'orderMinimum': self.orderMinimum,
-            'deliveryMinimum': self.deliveryMinimum,
-            'distributors': self.distributors,
-            'productionPractices': self.productionPractices,
+            'productLiabilityInsuranceAmount': str(self.productLiabilityInsuranceAmount),
+            'deliveryMethods': [{'id': x.id, 'name': x.name} for x in self.deliveryMethods.all()],
+            'regionalAvailability': [{'id': x.id, 'name': x.name} for x in self.regionalAvailability.all()],
+            'orderMinimum': str(self.orderMinimum),
+            'deliveryMinimum': str(self.deliveryMinimum),
+            'distributors': [{'id': x.id, 'name': x.name} for x in self.distributors.all()],
+            'productionPractices': [{'id': x.id, 'name': x.name} for x in self.productionPractices.all()],
             'capacityValue': self.capacityValue,
-            'capacityMeasurement': self.capacityMeasurement,
-            'dateInfoUpdated': self.dateInfoUpdated,
+            'capacityMeasurement': self.capacityMeasurement.to_dict() if self.capacityMeasurement else None,
+            'dateInfoUpdated': self.dateInfoUpdated.strftime('%D'),
         }
 
     class Meta:

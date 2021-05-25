@@ -17,6 +17,7 @@ django-treebeard
 djangorestframework
 draftjs-exporter==2.1.7
 et-xmlfile==1.0.1
+geocoder
 html5lib==1.1
 idna==2.10
 ipdb==0.11

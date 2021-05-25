@@ -1,7 +1,8 @@
+from django import forms
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import PoliticalRegion, PoliticalSubregion, DeliveryMethod, DeliveryMethod, Distributor, Provider, CapacityMeasurement, ProductCategory, Product, ProviderProduct, Identity, ProductionPractice
+from .models import PoliticalRegion, PoliticalSubregion, DeliveryMethod, DeliveryMethod, Distributor, Provider, CapacityMeasurement, ComponentCategory, ProductCategory, Product, ProviderProduct, Identity, ProductionPractice
 
 # class ProductInline(admin.StackedInline):
 class ProductInline(admin.TabularInline):
@@ -83,6 +84,7 @@ class ProviderAdmin(admin.ModelAdmin):
                 'businessAddressLine1',
                 'businessAddressLine2',
                 ('businessAddressCity', 'businessAddressState', 'businessAddressZipCode',),
+                'businessCounty'
             )
         }),
         ('Physical Address', {
@@ -91,6 +93,7 @@ class ProviderAdmin(admin.ModelAdmin):
                 'physicalAddressLine1',
                 'physicalAddressLine2',
                 ('physicalAddressCity', 'physicalAddressState', 'physicalAddressZipCode',),
+                'physicalCounty'
             )
         }),
         ('Contact Info', {
@@ -148,9 +151,18 @@ class ProviderAdmin(admin.ModelAdmin):
 #
 #     # add_form_template = 'admin/ProductForm.html'
 
+class CategoryForm(forms.ModelForm):
+    class Meta:
+        exclude = ('pk',)
+        model = ProductCategory
+        widgets = {
+            'usdaComponentCategories': admin.widgets.FilteredSelectMultiple('ComponentCategory', False),
+        }
+
 class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('full_name', 'capacityMeasurement__unit', 'image')
     list_display = ('full_name','capacityMeasurement','image')
+    form = CategoryForm
 
 admin.site.register(PoliticalRegion)
 admin.site.register(PoliticalSubregion)
@@ -158,6 +170,7 @@ admin.site.register(DeliveryMethod)
 admin.site.register(Distributor)
 admin.site.register(Provider, ProviderAdmin)
 admin.site.register(CapacityMeasurement)
+admin.site.register(ComponentCategory)
 admin.site.register(ProductCategory, CategoryAdmin)
 # admin.site.register(Product)
 admin.site.register(ProviderProduct)
