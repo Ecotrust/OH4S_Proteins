@@ -84,6 +84,7 @@ class ProviderAdmin(admin.ModelAdmin):
                 'businessAddressLine1',
                 'businessAddressLine2',
                 ('businessAddressCity', 'businessAddressState', 'businessAddressZipCode',),
+                'businessCounty'
             )
         }),
         ('Physical Address', {
@@ -92,6 +93,7 @@ class ProviderAdmin(admin.ModelAdmin):
                 'physicalAddressLine1',
                 'physicalAddressLine2',
                 ('physicalAddressCity', 'physicalAddressState', 'physicalAddressZipCode',),
+                'physicalCounty'
             )
         }),
         ('Contact Info', {
