@@ -228,6 +228,15 @@ def filter(request):
                 new_provider_ids = [x.pk for x in region.provider_set.all()]
                 provider_ids = list(set(provider_ids + new_provider_ids))
             providers = providers.filter(pk__in=provider_ids)
+        if 'physical_counties' in body.keys():
+            # Many-to-many (OR)
+            regions = PoliticalSubregion.objects.filter(pk__in=body['physical_counties'])
+            provider_ids = []
+            for region in regions:
+                new_provider_ids = [x.pk for x in providers.filter(physicalCounty=region)]
+                provider_ids = list(set(provider_ids + new_provider_ids))
+            providers = providers.filter(pk__in=provider_ids)
+
         if 'component_categories' in body.keys():
             # Many-to-many (OR)
             components = ComponentCategory.objects.filter(pk__in=body['component_categories'])

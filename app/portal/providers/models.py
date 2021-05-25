@@ -225,25 +225,25 @@ class Provider(models.Model):
                     component_ids.append(component.id)
         return ComponentCategory.objects.filter(id__in=component_ids)
 
-    def get_address_string(self, locationType=None):
+    def get_address_string(self, locationType=None, fullAddress=True):
         if locationType == 'Business':
             fields = [
                 self.businessAddressLine1,
-                self.businessAddressLine2,
+                self.businessAddressLine2 if fullAddress else None,
                 self.businessAddressCity,
-                self.businessAddressState.to_dict()['initialism'],
+                self.businessAddressState.to_dict()['initialism'] if self.businessAddressState else None,
                 self.businessAddressZipCode,
             ]
         elif locationType == 'Physical':
             if self.physicalAddressIsSame:
-                address = self.get_address_string('Business')
+                address = self.get_address_string('Business', fullAddress=fullAddress)
                 if not address == None:
                     return address
             fields = [
                 self.physicalAddressLine1,
-                self.physicalAddressLine2,
+                self.physicalAddressLine2 if fullAddress else None,
                 self.physicalAddressCity,
-                self.physicalAddressState.to_dict()['initialism'],
+                self.physicalAddressState.to_dict()['initialism'] if self.physicalAddressState else None,
                 self.physicalAddressZipCode,
             ]
         else:
@@ -253,7 +253,20 @@ class Provider(models.Model):
 
 
     def geocode(self, locationType='Physical'):
-        return geocoder.mapbox(self.get_address_string(locationType=locationType), key=settings.MAPBOX_TOKEN)
+        address_string = self.get_address_string(locationType=locationType)
+        if len(address_string) > 1:
+            try:
+                results = geocoder.mapbox(address_string, key=settings.MAPBOX_TOKEN)
+            except Exception as e:
+                print(e)
+                results = None
+            if not results or len(results) < 1 or results.error:
+                address_string = self.get_address_string(locationType=locationType, fullAddress=False)
+                results = geocoder.mapbox(address_string, key=settings.MAPBOX_TOKEN)
+            return results
+
+        else:
+            return []
 
     def get_county(self, locationType='Physical'):
         if locationType == 'Business':
@@ -272,8 +285,7 @@ class Provider(models.Model):
                             county_name = ' '.join(district.split(' ')[0:-1])
                             county_record = PoliticalSubregion.objects.get(name=county_name, region__name=state)
                             break
-                            # self.county = county_record
-                            # return self.county
+
                 except Exception as e:
                     pass
             if county_record:
