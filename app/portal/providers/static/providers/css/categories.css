@@ -7,11 +7,14 @@ hr {
   border-top: 0.1rem solid #0098a8;
 }
 
+.card {
+}
+
 .categories-container {
   background-color: #EEE;
   /* border-radius: 0.2rem; */
   /* border: 0.05rem solid #666; */
-  /* padding: 1.5rem; */
+  padding: 1.5rem;
 }
 
 .categories-flex-container {
@@ -45,14 +48,15 @@ hr {
 }
 
 .category-container:hover {
-  border: 0.05rem solid #0098a8;
+  /* border: 0.05rem solid #0098a8; */
   box-shadow: 0.1rem 0.1rem 0.1rem 0.1rem rgba(0,152,184,0.2), 0.15rem 0.15rem 0.15rem 0.15rem rgba(0,152,184,0.19);
-  margin: 0 0.2rem 0.2rem 0;
+  /* margin: 0 0.2rem 0.2rem 0; */
 }
 
 .category-image {
   width: auto;
-  max-width: 100px;
+  max-width: 100%;
+  /* max-width: 100px; */
   height: auto;
   max-height: 100px;
   margin: 10px;
