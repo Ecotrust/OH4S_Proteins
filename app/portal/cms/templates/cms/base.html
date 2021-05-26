@@ -2,7 +2,7 @@
 {% load wagtailcore_tags %}
 <HTML>
   <head>
-    <link rel="stylesheet" href="{% static "providers/css/vendor/normalize.css" %}">
+    <link rel="stylesheet" href="{% static "providers/css/normalize.css" %}">
     <link rel="stylesheet" href="{% static "providers/libraries/bootstrap-5.0.1/css/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "providers/css/base.css" %}">
     <link rel="stylesheet" href="{% static "providers/css/header.css" %}">
@@ -17,6 +17,10 @@
       gtag('config', 'UA-141387987-1', { 'allow_ad_personalization_signals': false });
     </script>
 
+    <script src="{% static "providers/libraries/jquery-3.3.1.min.js" %}"></script>
+    {# <script src="{% static "providers/libraries/popper.min.js" %}"></script> #}
+    <script src="{% static "providers/libraries/bootstrap-5.0.1/js/bootstrap.bundle.min.js" %}"></script>
+
     {% block additional_header %}
     {% endblock %}
   </head>
@@ -27,9 +31,7 @@
     {% block content %}
     {% endblock %}
 
-    <script src="{% static "providers/libraries/jquery-3.3.1.min.js" %}"></script>
-    <script src="{% static "providers/libraries/popper.min.js" %}"></script>
-    <script src="{% static "providers/libraries/bootstrap-4.2.1-dist/js/bootstrap.min.js" %}"></script>
+
     {% block additional_js %}
     {% endblock %}
     {% block feedback_form %}

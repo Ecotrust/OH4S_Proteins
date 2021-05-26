@@ -1,5 +1,6 @@
 :root {
     --font-family: Trebuchet, serif;
+    --font-family-sans: 'Helvetica Neue', Helvetica, sans-serif;
     --font-size: 18px;
     --primary-color: #707070;
     --earth: #553822;
@@ -11,19 +12,30 @@
 }
 
 body {
-    color: @var(--earth);
-    font-family: @var(--font-family);
-    font-size: @var(--font-size);
+    background: #eee;
+    color: var(--earth);
+    font-family: var(--font-family);
+    font-size: var(--font-size);
 }
 
 h1 {
-    color: @var(--cranberry);
-    font-family: @var(--font-family);
+    color: var(--cranberry);
+    font-family: var(--font-family);
     font-weight: bold:
 }
 
 h2 {
-    color: @var(--earth);
-    font-family: @var(--font-family);
+    color: var(--earth);
+    font-family: var(--font-family);
     font-weight: normal;
+}
+
+.btn-primary {
+    background: var(--cranberry);
+    border-radius: 0;
+    color: #fff;
+    font-family: var(--font-family-sans);
+    font-weight: bold;
+    padding: .5em 1em;
+    text-transform: uppercase;
 }

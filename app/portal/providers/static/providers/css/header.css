@@ -1,6 +1,7 @@
 .header {
-  margin-top: 3rem;
-  margin-bottom: 1rem;
+  background: #fff;
+  padding-top: 3rem;
+  padding-bottom: 1rem;
 }
 
 .header-slim {

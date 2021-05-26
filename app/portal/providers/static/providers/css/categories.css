@@ -10,8 +10,12 @@ hr {
 .card {
 }
 
+.filtering {
+  background: #fff;
+}
+
 .categories-container {
-  background-color: #EEE;
+  /* background-color: #EEE; */
   /* border-radius: 0.2rem; */
   /* border: 0.05rem solid #666; */
   padding: 1.5rem;

@@ -9,7 +9,7 @@
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid filtering">
   <div class="well categories-container">
     <div class="row">
       <div class="col-12" id="categories-header">
@@ -30,41 +30,59 @@
       </div>
     </div>
     <!-- FIlters -->
-    <div class="row">
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-          Dropdown button
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">Action</a></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
-        </ul>
-      </div>
-      <div class="list-group">
-        <label class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value="">
-          First checkbox
-        </label>
-        <label class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value="">
-          Second checkbox
-        </label>
-        <label class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value="">
-          Third checkbox
-        </label>
-        <label class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value="">
-          Fourth checkbox
-        </label>
-        <label class="list-group-item">
-          <input class="form-check-input me-1" type="checkbox" value="">
-          Fifth checkbox
-        </label>
+    <div class="row row-cols-3 row-cols-md-5">
+      <div class="col"></div>
+      {% for filter in filters %}
+        <div class="col">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
+
+          <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                  {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
+                    <div class="list-group">
+                      {% for option in filter.options %}
+                        <label class="list-group-item">
+                          <input class="form-check-input me-1" type="checkbox" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                          {{ option.label }}
+                        </label>
+                      {% endfor %}
+                    </div>
+                  {# {% elif filter.widget == 'multiselect-spatial' %} #}
+                  {% else %}
+                    <p>Add new widget options to template</p>
+                  {% endif %}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary">Apply</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+
+      <div class="col"></div>
+    </div>
+    <!-- end filters -->
+  </div>
+</div>
+
+<div class="container">
+  <div class="well categories-container">
+    <div class="row p-4">
+      <div class="col text-center">
+        <em>View all suppliers for speciﬁc product categories</em>
       </div>
     </div>
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-2">
+
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-1">
       <div class="col categories-flex-container">
         <a class="card h-100 category-link" href="/providers/category/">
           <div class="category-container">
