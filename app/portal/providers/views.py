@@ -47,7 +47,7 @@ def index(request):
     return render(request, "index.html", context)
 
 def get_homepage_filter_context(request, context={}):
-    # TODO: Build and return Homepage Filter Context
+    # Build and return Homepage Filter Context
     filters = []
 
     identity_filter = {
@@ -97,8 +97,103 @@ def get_homepage_filter_context(request, context={}):
     return context
 
 def get_results_filter_context(request, context={}):
-    # TODO: Based on current applied filters in request.body
+    # Based on current applied filters in request.body
     # add 'filters' to context and build it with current filter state
+    filters = []
+    current_state = {}
+    if request.method == "POST":
+        try:
+            current_state = json.loads(request.body)
+        except Exception as e:
+            print(e)
+            current_state = {}
+
+    location_filter = {
+        'name': 'Producer Location',
+        'facet': 'physical_counties',
+        'widget': 'multiselect-spatial',
+        'data-layer': None,
+        'options': []
+    }
+    for county in PoliticalSubregion.objects.all().order_by('name'):
+        location_filter['options'].append({
+            'value': county.pk,
+            'label': county.name,
+            'state': 'physical_counties' in current_state.keys() and county.pk in current_state['physical_counties']
+        })
+    filters.append(location_filter)
+
+    delivery_filter = {
+        'name': 'Delivery Method',
+        'facet': 'delivery_methods',
+        'widget': 'multiselect',
+        'options': []
+    }
+    for method in DeliveryMethod.objects.all().order_by('name'):
+        delivery_filter['options'].append({
+            'value': method.pk,
+            'label': method.name,
+            'state': 'delivery_methods' in current_state.keys() and method.pk in current_state['delivery_methods']
+        })
+    filters.append(delivery_filter)
+
+    category_filter = {
+        'name': 'Product Type',
+        'facet': 'product_categories',
+        'widget': 'multiselect',
+        'options': []
+    }
+    for category in ProductCategory.objects.filter(parent=None).order_by('name'):
+        category_filter['options'].append({
+            'value': category.pk,
+            'label': category.name,
+            'state': 'product_categories' in current_state.keys() and category.pk in current_state['product_categories']
+        })
+    filters.append(category_filter)
+
+    details_filter = {
+        'name': 'Product Details',
+        'facet': 'product_forms',
+        'widget': 'multiselect',
+        'options': []
+    }
+    for category in ProductCategory.objects.exclude(parent=None).order_by('name'):
+        details_filter['options'].append({
+            'value': category.pk,
+            'label': category.name,
+            'state': 'product_forms' in current_state.keys() and category.pk in current_state['product_forms']
+        })
+    filters.append(details_filter)
+
+    distributor_filter = {
+        'name': 'Distributors',
+        'facet': 'distributors',
+        'widget': 'multiselect',
+        'options': []
+    }
+    for distributor in Distributor.objects.all().order_by('name'):
+        distributor_filter['options'].append({
+            'value': distributor.pk,
+            'label': distributor.name,
+            'state': 'distributors' in current_state.keys() and distributor.pk in current_state['distributors']
+        })
+    filters.append(distributor_filter)
+
+    practice_filter = {
+        'name': 'Production Practices',
+        'facet': 'practices',
+        'widget': 'multiselect',
+        'options': []
+    }
+    for practice in ProductionPractice.objects.all().order_by('name'):
+        practice_filter['options'].append({
+            'value': practice.pk,
+            'label': practice.name,
+            'state': 'practices' in current_state.keys() and practice.pk in current_state['practices']
+        })
+    filters.append(practice_filter)
+
+    context['filters'] = filters
     return context
 
 def category(request, category_id):

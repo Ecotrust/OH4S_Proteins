@@ -382,7 +382,7 @@ class FilterTestCase(TestCase):
         self.assertEqual('physical_counties', location_filters['facet'])
         self.assertTrue('widget' in location_filters.keys())
         self.assertEqual('multiselect-spatial', location_filters['widget'])
-        self.assertTrue('data-layer' in county_filter.keys())
+        self.assertTrue('data-layer' in location_filters.keys())
         # TODO: Add datalayer (json/svg filename) to be passed to front-end map with selection
         self.assertTrue('options' in location_filters.keys())
         self.assertEqual(PoliticalSubregion.objects.all().count(), len(location_filters['options']))
@@ -391,7 +391,7 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(location_filters['options'][0]['state']), bool)
 
         # Delivery Method
-        delivery_filters = context['filters'][0]
+        delivery_filters = context['filters'][1]
         self.assertTrue('name' in delivery_filters.keys())
         self.assertEqual('Delivery Method', delivery_filters['name'])
         self.assertTrue('facet' in delivery_filters.keys())
@@ -405,11 +405,11 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(delivery_filters['options'][0]['state']), bool)
 
         # Product Type (Category)
-        category_filters = context['filters'][0]
+        category_filters = context['filters'][2]
         self.assertTrue('name' in category_filters.keys())
         self.assertEqual('Product Type', category_filters['name'])
         self.assertTrue('facet' in category_filters.keys())
-        self.assertEqual('categories', category_filters['facet'])
+        self.assertEqual('product_categories', category_filters['facet'])
         self.assertTrue('widget' in category_filters.keys())
         self.assertEqual('multiselect', category_filters['widget'])
         self.assertTrue('options' in category_filters.keys())
@@ -419,7 +419,7 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(category_filters['options'][0]['state']), bool)
 
         # Product Details (Form)
-        details_filters = context['filters'][0]
+        details_filters = context['filters'][3]
         self.assertTrue('name' in details_filters.keys())
         self.assertEqual('Product Details', details_filters['name'])
         self.assertTrue('facet' in details_filters.keys())
@@ -434,7 +434,7 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(details_filters['options'][0]['state']), bool)
 
         # Distributors
-        distributor_filters = context['filters'][0]
+        distributor_filters = context['filters'][4]
         self.assertTrue('name' in distributor_filters.keys())
         self.assertEqual('Distributors', distributor_filters['name'])
         self.assertTrue('facet' in distributor_filters.keys())
@@ -448,7 +448,7 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(distributor_filters['options'][0]['state']), bool)
 
         # Production Practices
-        practice_filters = context['filters'][0]
+        practice_filters = context['filters'][5]
         self.assertTrue('name' in practice_filters.keys())
         self.assertEqual('Production Practices', practice_filters['name'])
         self.assertTrue('facet' in practice_filters.keys())
