@@ -346,7 +346,7 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(county_filter['options'][0]['state']), bool)
 
         # USDA Meal Components
-        component_filter = context['filters'][0]
+        component_filter = context['filters'][2]
         self.assertTrue('name' in component_filter.keys())
         self.assertEqual('USDA Meal Components', component_filter['name'])
         self.assertTrue('facet' in component_filter.keys())

@@ -48,6 +48,52 @@ def index(request):
 
 def get_homepage_filter_context(request, context={}):
     # TODO: Build and return Homepage Filter Context
+    filters = []
+
+    identity_filter = {
+        'name': 'Producer Identity',
+        'facet': 'identities',
+        'widget': 'multiselect',
+        'options': []
+    }
+    for identity in Identity.objects.all().order_by('name'):
+        identity_filter['options'].append({
+            'value': identity.pk,
+            'label': identity.name,
+            'state': False
+        })
+    filters.append(identity_filter)
+
+    availability_filter = {
+        'name': 'Availability By County',
+        'facet': 'availability',
+        'widget': 'multiselect-spatial',
+        'data-layer': None,
+        'options': []
+    }
+    for county in PoliticalSubregion.objects.all().order_by('name'):
+        availability_filter['options'].append({
+            'value': county.pk,
+            'label': county.name,
+            'state': False
+        })
+    filters.append(availability_filter)
+
+    component_filter = {
+        'name': 'USDA Meal Components',
+        'facet': 'component_categories',
+        'widget': 'multiselect',
+        'options': []
+    }
+    for category in ComponentCategory.objects.all().order_by('order', 'name'):
+        component_filter['options'].append({
+            'value': category.pk,
+            'label': category.name,
+            'state': False
+        })
+    filters.append(component_filter)
+
+    context['filters'] = filters
     return context
 
 def get_results_filter_context(request, context={}):
