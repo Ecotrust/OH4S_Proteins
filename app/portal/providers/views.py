@@ -41,11 +41,19 @@ def get_category_context(request, context):
     return context
 
 def index(request):
-
     context = header(request, context)
     context = get_category_context(request, context)
 
     return render(request, "index.html", context)
+
+def get_homepage_filter_context(request, context={}):
+    # TODO: Build and return Homepage Filter Context
+    return context
+
+def get_results_filter_context(request, context={}):
+    # TODO: Based on current applied filters in request.body
+    # add 'filters' to context and build it with current filter state
+    return context
 
 def category(request, category_id):
     try:

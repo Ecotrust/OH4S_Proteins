@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.http import HttpRequest
-from providers.views import filter
+from providers.views import filter, get_homepage_filter_context
 from providers.models import *
 import json
 
@@ -305,3 +305,56 @@ class FilterTestCase(TestCase):
             self.assertTrue('productionPractices' in  provider.keys())
             product_ids = [x['id'] for x in provider['productionPractices']]
             self.assertTrue(orTilth.pk in product_ids)
+
+    def test_get_filter_context(self):
+        request = HttpRequest()
+        request.path = '/'
+        request.method = 'GET'
+        context = get_homepage_filter_context(request, {})
+
+        self.assertTrue('filters' in context.keys())
+        self.assertEqual(3, len(context['filters']))
+
+        # Producer Identity
+        identity_filter = context['filters'][0]
+        self.assertTrue('name' in identity_filter.keys())
+        self.assertEqual('Producer Identity', identity_filter['name'])
+        self.assertTrue('facet' in identity_filter.keys())
+        self.assertEqual('identities', identity_filter['facet'])
+        self.assertTrue('widget' in identity_filter.keys())
+        self.assertEqual('multiselect', identity_filter['widget'])
+        self.assertTrue('options' in identity_filter.keys())
+        self.assertEqual(Identity.objects.all().count(), len(identity_filter['options']))
+        self.assertEqual(type(identity_filter['options'][0]['value']), int)
+        self.assertEqual(type(identity_filter['options'][0]['label']), str)
+        self.assertEqual(type(identity_filter['options'][0]['state']), bool)
+
+        # County Availability
+        county_filter = context['filters'][1]
+        self.assertTrue('name' in county_filter.keys())
+        self.assertEqual('Availability By County', county_filter['name'])
+        self.assertTrue('facet' in county_filter.keys())
+        self.assertEqual('availability', county_filter['facet'])
+        self.assertTrue('widget' in county_filter.keys())
+        self.assertEqual('multiselect-spatial', county_filter['widget'])
+        self.assertTrue('data-layer' in county_filter.keys())
+        # TODO: Add datalayer (json/svg filename) to be passed to front-end map with selection
+        self.assertTrue('options' in county_filter.keys())
+        self.assertEqual(PoliticalSubregion.objects.all().count(), len(county_filter['options']))
+        self.assertEqual(type(county_filter['options'][0]['value']), int)
+        self.assertEqual(type(county_filter['options'][0]['label']), str)
+        self.assertEqual(type(county_filter['options'][0]['state']), bool)
+
+        # USDA Meal Components
+        component_filter = context['filters'][0]
+        self.assertTrue('name' in component_filter.keys())
+        self.assertEqual('USDA Meal Components', component_filter['name'])
+        self.assertTrue('facet' in component_filter.keys())
+        self.assertEqual('component_categories', component_filter['facet'])
+        self.assertTrue('widget' in component_filter.keys())
+        self.assertEqual('multiselect', component_filter['widget'])
+        self.assertTrue('options' in component_filter.keys())
+        self.assertEqual(ComponentCategory.objects.all().count(), len(component_filter['options']))
+        self.assertEqual(type(component_filter['options'][0]['value']), int)
+        self.assertEqual(type(component_filter['options'][0]['label']), str)
+        self.assertEqual(type(component_filter['options'][0]['state']), bool)
