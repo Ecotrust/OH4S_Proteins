@@ -9,8 +9,20 @@
  *   'usdaComponents': [],
  *   'productType': [],
  *   'productionPractices': [],
- *   'distributors': [], 
+ *   'distributors': [],
  * }
+ * {
+ *   'facite': <unique_id>
+ *   'name':
+ *   'options': {
+ *      <id>: '',
+ *      <label>: '',
+ *      <checked>: bool,
+ *   }
+ * }
+ * Clear Selection
+ * Don't send query if select
+ * if over 5 alert user
  */
 $('#filter-form').submit(function(event) {
   event.preventDefault();
