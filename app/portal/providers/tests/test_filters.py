@@ -3,7 +3,7 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.http import HttpRequest
-from providers.views import filter, get_homepage_filter_context
+from providers.views import filter, get_homepage_filter_context, get_results_filter_context
 from providers.models import *
 import json
 
@@ -306,7 +306,7 @@ class FilterTestCase(TestCase):
             product_ids = [x['id'] for x in provider['productionPractices']]
             self.assertTrue(orTilth.pk in product_ids)
 
-    def test_get_filter_context(self):
+    def test_get_home_filter_context(self):
         request = HttpRequest()
         request.path = '/'
         request.method = 'GET'
@@ -358,3 +358,105 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(component_filter['options'][0]['value']), int)
         self.assertEqual(type(component_filter['options'][0]['label']), str)
         self.assertEqual(type(component_filter['options'][0]['state']), bool)
+
+
+    def test_get_results_filter_context(self):
+        request = HttpRequest()
+        request.path = '/results'
+        request.method = 'POST'
+        request.META['CONTENT_TYPE'] = 'application/json'
+        data = {}
+        # for filter_obj in filter_json_list:
+        #     data[filter_obj['key']] = filter_obj['value']
+        request._body = json.dumps(data)
+        context = get_results_filter_context(request)
+
+        self.assertTrue('filters' in context.keys())
+        self.assertEqual(len(context['filters']), 6)
+
+        # Producer Location
+        location_filters = context['filters'][0]
+        self.assertTrue('name' in location_filters.keys())
+        self.assertEqual('Producer Location', location_filters['name'])
+        self.assertTrue('facet' in location_filters.keys())
+        self.assertEqual('physical_counties', location_filters['facet'])
+        self.assertTrue('widget' in location_filters.keys())
+        self.assertEqual('multiselect-spatial', location_filters['widget'])
+        self.assertTrue('data-layer' in county_filter.keys())
+        # TODO: Add datalayer (json/svg filename) to be passed to front-end map with selection
+        self.assertTrue('options' in location_filters.keys())
+        self.assertEqual(PoliticalSubregion.objects.all().count(), len(location_filters['options']))
+        self.assertEqual(type(location_filters['options'][0]['value']), int)
+        self.assertEqual(type(location_filters['options'][0]['label']), str)
+        self.assertEqual(type(location_filters['options'][0]['state']), bool)
+
+        # Delivery Method
+        delivery_filters = context['filters'][0]
+        self.assertTrue('name' in delivery_filters.keys())
+        self.assertEqual('Delivery Method', delivery_filters['name'])
+        self.assertTrue('facet' in delivery_filters.keys())
+        self.assertEqual('delivery_methods', delivery_filters['facet'])
+        self.assertTrue('widget' in delivery_filters.keys())
+        self.assertEqual('multiselect', delivery_filters['widget'])
+        self.assertTrue('options' in delivery_filters.keys())
+        self.assertEqual(DeliveryMethod.objects.all().count(), len(delivery_filters['options']))
+        self.assertEqual(type(delivery_filters['options'][0]['value']), int)
+        self.assertEqual(type(delivery_filters['options'][0]['label']), str)
+        self.assertEqual(type(delivery_filters['options'][0]['state']), bool)
+
+        # Product Type (Category)
+        category_filters = context['filters'][0]
+        self.assertTrue('name' in category_filters.keys())
+        self.assertEqual('Product Type', category_filters['name'])
+        self.assertTrue('facet' in category_filters.keys())
+        self.assertEqual('categories', category_filters['facet'])
+        self.assertTrue('widget' in category_filters.keys())
+        self.assertEqual('multiselect', category_filters['widget'])
+        self.assertTrue('options' in category_filters.keys())
+        self.assertEqual(ProductCategory.objects.filter(parent=None).count(), len(category_filters['options']))
+        self.assertEqual(type(category_filters['options'][0]['value']), int)
+        self.assertEqual(type(category_filters['options'][0]['label']), str)
+        self.assertEqual(type(category_filters['options'][0]['state']), bool)
+
+        # Product Details (Form)
+        details_filters = context['filters'][0]
+        self.assertTrue('name' in details_filters.keys())
+        self.assertEqual('Product Details', details_filters['name'])
+        self.assertTrue('facet' in details_filters.keys())
+        self.assertEqual('product_forms', details_filters['facet'])
+        self.assertTrue('widget' in details_filters.keys())
+        # TODO: Determine if A: this always shows, B: this is hierarchical, or C: this is merged with Product Type
+        self.assertEqual('multiselect', details_filters['widget'])
+        self.assertTrue('options' in details_filters.keys())
+        self.assertEqual(ProductCategory.objects.exclude(parent=None).count(), len(details_filters['options']))
+        self.assertEqual(type(details_filters['options'][0]['value']), int)
+        self.assertEqual(type(details_filters['options'][0]['label']), str)
+        self.assertEqual(type(details_filters['options'][0]['state']), bool)
+
+        # Distributors
+        distributor_filters = context['filters'][0]
+        self.assertTrue('name' in distributor_filters.keys())
+        self.assertEqual('Distributors', distributor_filters['name'])
+        self.assertTrue('facet' in distributor_filters.keys())
+        self.assertEqual('distributors', distributor_filters['facet'])
+        self.assertTrue('widget' in distributor_filters.keys())
+        self.assertEqual('multiselect', distributor_filters['widget'])
+        self.assertTrue('options' in distributor_filters.keys())
+        self.assertEqual(Distributor.objects.all().count(), len(distributor_filters['options']))
+        self.assertEqual(type(distributor_filters['options'][0]['value']), int)
+        self.assertEqual(type(distributor_filters['options'][0]['label']), str)
+        self.assertEqual(type(distributor_filters['options'][0]['state']), bool)
+
+        # Production Practices
+        practice_filters = context['filters'][0]
+        self.assertTrue('name' in practice_filters.keys())
+        self.assertEqual('Production Practices', practice_filters['name'])
+        self.assertTrue('facet' in practice_filters.keys())
+        self.assertEqual('practices', practice_filters['facet'])
+        self.assertTrue('widget' in practice_filters.keys())
+        self.assertEqual('multiselect', practice_filters['widget'])
+        self.assertTrue('options' in practice_filters.keys())
+        self.assertEqual(ProductionPractice.objects.all().count(), len(practice_filters['options']))
+        self.assertEqual(type(practice_filters['options'][0]['value']), int)
+        self.assertEqual(type(practice_filters['options'][0]['label']), str)
+        self.assertEqual(type(practice_filters['options'][0]['state']), bool)
