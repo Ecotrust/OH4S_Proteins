@@ -5,13 +5,13 @@ class Command(BaseCommand):
     help = 'Finds duplicate records and unifies all foreign key references'
 
     def handle(self, *args, **options):
-        family_id = Identity.objects.filter(name='Family-Owned')[0]
-        for identity in Identity.objects.filter(name__icontains='family'):
-            if not identity == family_id:
-                for provider in identity.provider_set.all():
-                    provider.identities.remove(identity)
-                    provider.identities.add(family_id) # this will not duplicate family_id if already associated.
-                identity.delete()
+        # family_id = Identity.objects.filter(name='Family-Owned')[0]
+        # for identity in Identity.objects.filter(name__icontains='family'):
+        #     if not identity == family_id:
+        #         for provider in identity.provider_set.all():
+        #             provider.identities.remove(identity)
+        #             provider.identities.add(family_id) # this will not duplicate family_id if already associated.
+        #         identity.delete()
 
         removed_ids = []
         for prime in Identity.objects.all():
