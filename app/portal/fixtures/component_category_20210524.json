@@ -1,0 +1,80 @@
+[
+{
+  "model": "providers.componentcategory",
+  "pk": 1,
+  "fields": {
+    "name": "Meats / Meat Alternates",
+    "order": 1,
+    "description": "Meats and meat alternates (M/MA) include meat, poultry, fish, cheese, yogurt, soy yogurt, dry beans and peas, whole eggs, tofu, tempeh, peanut butter or other nut or seed butters, and nuts and seeds. Child Nutrition Program operators must serve meals that contain the amount of M/MA required in the lunch and supper Meal Pattern Charts as found in the Resource Center. Program operators have the choice to serve a M/MA as one of the two components of a snack served in the NSLP, CACFP, or as part of the breakfast for the SBP and CACFP.",
+    "imageFile": "",
+    "imageLink": "https://foodbuyingguide.fns.usda.gov/Content/template/images/meatAndMeatAlt_framed.jpg",
+    "imageAttribution": "USDA",
+    "usdaLink": "https://foodbuyingguide.fns.usda.gov/FoodComponents/ResourceMeat"
+  }
+},
+{
+  "model": "providers.componentcategory",
+  "pk": 2,
+  "fields": {
+    "name": "Fruits",
+    "order": 2,
+    "description": "Fruits that are fresh, frozen, dried, canned (packed in water, full-strength juice, or light syrup) and full-strength fruit juice may contribute toward the fruits requirement.",
+    "imageFile": "",
+    "imageLink": "https://foodbuyingguide.fns.usda.gov/Content/template/images/fruit_framed.jpg",
+    "imageAttribution": "USDA",
+    "usdaLink": "https://foodbuyingguide.fns.usda.gov/FoodComponents/ResourceFruits"
+  }
+},
+{
+  "model": "providers.componentcategory",
+  "pk": 3,
+  "fields": {
+    "name": "Milk",
+    "order": 3,
+    "description": "Fluid milk refers to pasteurized nonfat milk, low-fat milk (1%), reduced-fat milk (2%), whole milk, lactose-free milk, lactose-reduced milk, cultured milk, such as cultured buttermilk, cultured kefir milk, and cultured acidophilus milk, acidified milk, such as acidified kefir milk and acidified acidophilus milk, and Ultra High Temperature (UHT) milk, all of which meet State and local standards for such milk. The fluid milk must also contain vitamins A and D at levels specified by the U.S. Food and Drug Administration. Please note that not all fluid milks on this list apply to all Child Nutrition Programs, and some of the fluid milk may be flavored. Refer to the sections below for program-specific information related to the fluid milk requirement.",
+    "imageFile": "",
+    "imageLink": "https://foodbuyingguide.fns.usda.gov/Content/template/images/milk_framed.jpg",
+    "imageAttribution": "USDA",
+    "usdaLink": "https://foodbuyingguide.fns.usda.gov/FoodComponents/ResourceMilk"
+  }
+},
+{
+  "model": "providers.componentcategory",
+  "pk": 4,
+  "fields": {
+    "name": "Vegetables",
+    "order": 4,
+    "description": "Vegetables are one of the required components of reimbursable meals in the National School Lunch Program (NSLP) and Child and Adult Care Food Program (CACFP). Vegetables may be served as part of a reimbursable meal for the School Breakfast Program (SBP) and the Summer Food Service Program (SFSP). They may also be served as part of the reimbursable snack for the NSLP Afterschool Snack Service. The meal pattern requirements are described in the Charts located in the Resource Center.",
+    "imageFile": "",
+    "imageLink": "https://foodbuyingguide.fns.usda.gov/Content/template/images/vegetables_framed.jpg",
+    "imageAttribution": "USDA",
+    "usdaLink": "https://foodbuyingguide.fns.usda.gov/FoodComponents/ResourceVegetables"
+  }
+},
+{
+  "model": "providers.componentcategory",
+  "pk": 5,
+  "fields": {
+    "name": "Grains",
+    "order": 5,
+    "description": "All reimbursable meals offered in the National School Lunch Program (NSLP), School Breakfast Program (SBP), Child and Adult Care Food Program (CACFP), and Summer Food Service Program (SFSP) must include a grains food product. A reimbursable snack in the CACFP, SFSP, or the NSLP Afterschool Snack Service must include a creditable grain.\r\n\r\nFNS meal pattern regulations establish the minimum serving size(s) of grains required for breakfasts, lunches, suppers, and snacks. Meal pattern charts for each of the Child Nutrition Programs are in the Resource Center. This section pertains to grains requirements in the NSLP, SBP, and CACFP. Please refer to Appendix E for grains requirements for the SFSP and NSLP Afterschool Snack Service.",
+    "imageFile": "",
+    "imageLink": "https://foodbuyingguide.fns.usda.gov/Content/template/images/grains_framed.jpg",
+    "imageAttribution": "USDA",
+    "usdaLink": "https://foodbuyingguide.fns.usda.gov/FoodComponents/ResourceGrains"
+  }
+},
+{
+  "model": "providers.componentcategory",
+  "pk": 6,
+  "fields": {
+    "name": "Other Foods",
+    "order": 6,
+    "description": "The foods in this section do not meet the requirement for any component in the meal patterns. These items are included for your convenience since they are frequently used as condiments and seasonings to round out the meal, improve acceptability, and satisfy children’s or adults’ appetites. Child Nutrition Program operators may include these foods in small portions.",
+    "imageFile": "",
+    "imageLink": "https://foodbuyingguide.fns.usda.gov/Content/template/images/otherfoods_framed.jpg",
+    "imageAttribution": "USDA",
+    "usdaLink": "https://foodbuyingguide.fns.usda.gov/FoodComponents/ResourceOtherFoods"
+  }
+}
+]

@@ -1,0 +1,18 @@
+.filter-prompt  {
+    color: black;
+    font-style: italic;
+    text-align: right;
+    padding-top: 1rem;
+}
+
+.category-header {
+  font-size: 20;
+  font-weight: bold;
+}
+.category-header h2,
+.category-header h3,
+.category-header h4,
+.category-header {
+    color: black;
+    /* font-style: italic; */
+}
