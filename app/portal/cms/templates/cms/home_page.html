@@ -3,17 +3,23 @@
 {% load wagtailcore_tags %}
 
 {% block additional_header %}
+  <link rel="stylesheet" href="{% static "providers/css/home.css" %}">
   <link rel="stylesheet" href="{% static "providers/css/categories.css" %}">
 {% endblock %}
 
 {% block body_class %}template-homepage{% endblock %}
 
+{% block header-content %}
+  {% include "cms/header.html" %}
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid filtering">
   <div class="well categories-container">
     <div class="row">
-      <div class="col-12" id="categories-header">
-        <h3>Select a product to find Oregon suppliers that want to work with schools</h3>
+      <div class="col-2"></div>
+      <div class="col-8" id="categories-header">
+        <div class="welcome-text">{{ page.welcome_text|richtext }}</div>
         <div id="selection-links" class="row">
           <div class="col-6 context-link">
             <a target="_blank" href="https://www.oregon.gov/ode/students-and-family/childnutrition/F2S/Pages/OregonHarvestforSchools.aspx">
@@ -33,7 +39,7 @@
     <!-- Harcode and add filter images here -->
     <!-- FIlters -->
     <div class="row row-cols-3 row-cols-md-5">
-      <div class="col"></div>
+      <div class="col filter-prompt">{{ page.filter_prompt|richtext }}</div>
       {% for filter in filters %}
         <div class="col">
           <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
@@ -82,7 +88,7 @@
   <div class="well categories-container">
     <div class="row p-4">
       <div class="col text-center">
-        <em>View all suppliers for speciﬁc product categories</em>
+        <div class='category-header'>{{ page.categories_header|richtext }}</div>
       </div>
     </div>
 
