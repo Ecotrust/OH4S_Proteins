@@ -8,4 +8,17 @@
 
 {% block body_class %}template-results{% endblock %}
 
-{% block content %}{% endblock %}
+{% block content %}
+{% endblock %}
+
+{% block additional_js %}
+  <script src="{% static 'providers/js/filters.js' %}"></script>
+  <script>
+    {% if FILTERS %}
+      var filters = {{FILTERS}};
+    {% else %}
+      var filters = {};
+    {% endif %}
+    filterQuery(filters);
+  </script>
+{% endblock %}

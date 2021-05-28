@@ -12,6 +12,6 @@ urlpatterns = [
     re_path('filter_providers/$', views.filterProviders),
     path('product/<int:product_id>/', views.product),
     path('provider/<int:provider_id>/', views.provider),
-    re_path('results/?', views.results),
+    # re_path('results/?', views.results),
     re_path('filter/?', csrf_exempt(views.filter)),
 ]

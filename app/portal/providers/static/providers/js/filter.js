@@ -49,3 +49,53 @@ $('#filter-form').on(
       });
   }
 );
+
+function filterQuery(filters) {
+
+  var forms = document.querySelectorAll('form');
+
+  for (var i = 0; i < forms.length; i++) {
+    var form = forms[i];
+    var formName = form.name;
+    // get form inputs that are checked
+  }
+
+  for each form with checked boxes
+    key = facet
+    value = filter form input field value
+
+    /*
+    {
+     'product_categories': [ 3, 7, 26],
+     'identities': [ 9, 43, 82],
+     ...
+      }
+     */
+
+  // build a query that filters producers using the above structure
+
+}
+
+/**
+ * Form Validation
+ * ([event])
+ */
+// (function () {
+//   'use strict'
+//
+//   // Fetch all the forms we want to apply custom Bootstrap validation styles to
+//   var forms = document.querySelectorAll('.needs-validation')
+//
+//   // Loop over them and prevent submission
+//   Array.prototype.slice.call(forms)
+//     .forEach(function (form) {
+//       form.addEventListener('submit', function (event) {
+//         if (!form.checkValidity()) {
+//           event.preventDefault()
+//           event.stopPropagation()
+//         }
+//
+//         form.classList.add('was-validated')
+//       }, false)
+//     })
+// })()

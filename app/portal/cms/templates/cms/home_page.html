@@ -46,19 +46,21 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
-                    <div class="list-group">
-                      {% for option in filter.options %}
-                        <label class="list-group-item">
-                          <input class="form-check-input me-1" type="checkbox" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
-                          {{ option.label }}
-                        </label>
-                      {% endfor %}
-                    </div>
-                  {# {% elif filter.widget == 'multiselect-spatial' %} #}
-                  {% else %}
-                    <p>Add new widget options to template</p>
-                  {% endif %}
+                    <form name="{{ filter.facet }}">
+                      {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
+                        <div class="list-group">
+                          {% for option in filter.options %}
+                            <label class="list-group-item">
+                              <input class="form-check-input me-1" type="checkbox" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                              {{ option.label }}
+                            </label>
+                          {% endfor %}
+                        </div>
+                      {# {% elif filter.widget == 'multiselect-spatial' %} #}
+                      {% else %}
+                        <p>Add new widget options to template</p>
+                      {% endif %}
+                    </form>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
