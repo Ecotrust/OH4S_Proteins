@@ -24,6 +24,9 @@
  * Don't send query if select
  * if over 5 alert user
  */
+
+const filterData = JSON.parse(document.getElementById('filters-data').textContent);
+
 $('#filter-form').submit(function(event) {
   event.preventDefault();
 });
@@ -49,6 +52,10 @@ $('#filter-form').on(
       });
   }
 );
+
+function loadJson(selector) {
+  return JSON.parse(document.querySelector(selector).getAttribute('data-json'));
+}
 
 function filterQuery(filters) {
 

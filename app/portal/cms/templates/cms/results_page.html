@@ -15,6 +15,11 @@
     {% for filter in filters %}
       <div class="col">
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
+        {% for option in filter.options %}
+          {% if option.state %}
+            <span class="badge bg-primary">{{ option.name }}</span>
+          {% endif %}
+        {% endfor %}
         <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
           <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
@@ -89,21 +94,12 @@
       </div>
     </div>
   </div>
+  <div style="display: none" id="jsonData" data-json="{{ data }}"></div>
 {% endblock %}
 
 {% block additional_js %}
 
+  {{ filters|json_script:"filters-data" }}
   <script src="{% static 'providers/js/filter.js' %}"></script>
-
-  <script>
-    var filters = {};
-    {% if filters %}
-      filters = {{ filters }};
-    {% endif %}
-
-    <!-- (function() { -->
-      filterQuery(filters);
-    // )();
-  </script>
 
 {% endblock %}
