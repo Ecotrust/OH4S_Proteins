@@ -58,11 +58,12 @@ function filterQuery(filters) {
     var form = forms[i];
     var formName = form.name;
     // get form inputs that are checked
+    console.log(formName);
   }
 
-  for each form with checked boxes
-    key = facet
-    value = filter form input field value
+  // for each form with checked boxes
+    // key = facet
+    // value = filter form input field value
 
     /*
     {
