@@ -13,21 +13,22 @@
   <div class="row row-cols-3 row-cols-md-5">
     <div class="col"></div>
     {% for filter in filters %}
-      <div class="col">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
-        {% for option in filter.options %}
-          {% if option.state %}
-            <span class="badge bg-primary">{{ option.name }}</span>
-          {% endif %}
-        {% endfor %}
-        <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-              </div>
-              <div class="modal-body">
+      {% if filter.visible %}
+        <div class="col">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
+          {% for option in filter.options %}
+            {% if option.state %}
+              <span class="badge bg-primary">{{ option.name }}</span>
+            {% endif %}
+          {% endfor %}
+          <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
                   <form name="{{ filter.facet }}-form">
                     {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
                       <div class="list-group">

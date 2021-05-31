@@ -3,21 +3,13 @@
  * a user is trying to pick a producer that matches their needs
  * @key @value
  * {
- *   'selfIdentification': [],
- *   'county': [],
- *   'deliveryMethod': [],
- *   'usdaComponents': [],
- *   'productType': [],
- *   'productionPractices': [],
- *   'distributors': [],
- * }
- * {
- *   'facite': <unique_id>
- *   'name':
- *   'options': {
- *      <id>: '',
- *      <label>: '',
- *      <checked>: bool,
+ *   facet: '',
+ *   name: '',
+ *   widget: '',
+ *   options: {
+ *      value: '',
+ *      label: '',
+ *      state: bool,
  *   }
  * }
  * Clear Selection
@@ -31,13 +23,15 @@ function populateFilterForm() {
   var allFormsObj = document.forms;
   filterData.forEach((filter, i) => {
     var facet = filter.facet;
-    var filterFrom = `${allFormsObj}.${facet}-form`;
-    filter.options.forEach((option, i) => {
-      if (option.state === true) {
-        ADD THIS
-        // i.forEach(vl => { if (vl.value == 1) { console.log(true) } } )
-      }
-    });
+    var filterForm = `${allFormsObj}.${facet}-form`;
+    if (filter.visible) {
+      filter.options.forEach((option, i) => {
+        console.log(option);
+        if (option.state === true) {
+          document.querySelector(`input[name="${facet}"][value="${option.value}"]`).checked = true;
+        }
+      });
+    }
   });
 
 }
