@@ -52,12 +52,12 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form name="{{ filter.facet }}">
+                    <form name="{{ filter.facet }}" class='home-filter-form filter-form'>
                       {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
                         <div class="list-group">
                           {% for option in filter.options %}
                             <label class="list-group-item">
-                              <input class="form-check-input me-1" type="checkbox" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                              <input class="form-check-input me-1" name="{{ filter.facet }}" type="checkbox" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
                               {{ option.label }}
                             </label>
                           {% endfor %}
@@ -69,8 +69,7 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary">Apply</button>
+                  <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
                 </div>
               </div>
             </div>
@@ -78,10 +77,13 @@
         </div>
       {% endfor %}
 
+      <div class="col">
+        <button type="button" class="btn btn-secondary" id='home-filter-button' onclick='go_to_results()'>Browse All &gt;&gt;</button>
+      </div>
       <div class="col"></div>
     </div>
     <!-- end filters -->
-    
+
   </div>
 </div>
 
@@ -123,4 +125,9 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block additional_js %}
+  {{ block.super }}
+  <script src="{% static "providers/js/home.js" %}"></script>
 {% endblock %}
