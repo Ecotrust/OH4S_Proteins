@@ -27,6 +27,22 @@
 
 const filterData = JSON.parse(document.getElementById('filters-data').textContent);
 
+function populateFilterForm() {
+  var allFormsObj = document.forms;
+  filterData.forEach((filter, i) => {
+    var facet = filter.facet;
+    var filterFrom = `${allFormsObj}.${facet}-form`;
+    filter.options.forEach((option, i) => {
+      if (option.state === true) {
+        ADD THIS
+        // i.forEach(vl => { if (vl.value == 1) { console.log(true) } } )
+      }
+    });
+  });
+
+}
+populateFilterForm();
+
 $('#filter-form').submit(function(event) {
   event.preventDefault();
 });
