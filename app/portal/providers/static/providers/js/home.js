@@ -9,7 +9,6 @@ var filters = {};
 //  https://stackoverflow.com/a/50862441/706797
 var filterProxy = new Proxy(filters, {
   set: function(target, key, value) {
-    console.log('${key} set to ${value}');
     target[key] = value;
     reset_filter_button();
     return true;
@@ -34,7 +33,6 @@ var reset_filter_button = function() {
 }
 
 var toggle_home_filter = function(form) {
-  console.log('home filter change');
   var checked = [];
   var inputs = form.find('input');
   for (var i = 0; i < inputs.length; i++) {
