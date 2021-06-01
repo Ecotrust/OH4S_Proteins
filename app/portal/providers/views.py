@@ -408,6 +408,7 @@ def filter(request):
     if request.method == "POST":
         try:
             body = json.loads(request.body)
+            # import ipdb; ipdb.set_trace()
         except Exception as e:
             print(e)
             body = {}
@@ -486,8 +487,8 @@ def filter(request):
             providers = providers.filter(pk__in=provider_ids)
 
     providers_response = {'providers': []}
-    for provider in providers:
-      providers_response['providers'].append(provider.to_json())
+    for p in providers:
+      providers_response['providers'].append(p.to_json())
 
     # TODO: determine correct filters that can be universally applied given current provider context
     filters_reponse = request.POST

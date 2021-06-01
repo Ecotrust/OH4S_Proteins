@@ -9,27 +9,36 @@
 {% block body_class %}template-results{% endblock %}
 
 {% block content %}
-  <!-- FIlters -->
-  <div class="row row-cols-3 row-cols-md-5">
-    <div class="col"></div>
-    {% for filter in filters %}
-      {% if filter.visible %}
-        <div class="col">
-          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
-          <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-scrollable">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h5>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
+  <div class="container">
+    <div class="row">
+      <h2>{{ page.results_count_message|richtext }} <span id="results-count"></span></h2>
+      <p>{{ page.filter_prompt|richtext }}</p>
+    </div>
+    <!-- FIlters -->
+    <div class="row row-cols-3 g-3">
+      {% for filter in filters %}
+        {% if filter.visible %}
+          <div class="col">
+            <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
+            {% for option in filter.options %}
+              {% if option.state %}
+                <span class="badge bg-primary">{{ option.name }}</span>
+              {% endif %}
+            {% endfor %}
+            <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
                     <form name="{{ filter.facet }}">
                       {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
                         <div class="list-group">
                           {% for option in filter.options %}
                             <label class="list-group-item">
-                              <input class="form-check-input me-1" type="checkbox" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                              <input class="form-check-input me-1" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
                               {{ option.label }}
                             </label>
                           {% endfor %}
@@ -39,62 +48,43 @@
                         <p>Add new widget options to template</p>
                       {% endif %}
                     </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                  <button type="button" class="btn btn-primary">Apply</button>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick=filterQuery() data-bs-dismiss="modal">Apply</button>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      {% endif %}
-    {% endfor %}
-    <div class="col"></div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    <!-- end filters -->
   </div>
-  <!-- end filters -->
 
   <div class="container">
     <div class="well categories-container">
       <div class="row p-4">
         <div class="col text-center">
-          <em>View all suppliers for speciﬁc product categories</em>
+          <em>Matching Providers</em>
         </div>
       </div>
-      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-1">
-        <div class="col categories-flex-container">
-          <a class="card h-100 category-link" href="/providers/category/">
-            <div class="category-container">
-              <img class="card-img-top category-image" src="{{ default_image }}">
-              <!-- <div class="card-body">
-                <div class="card-title"></div>
-                <div class="card-text"></div>
-              </div> -->
-            </div>
-            <div class="card-footer category-name">All</div>
-          </a>
-        </div>
-        {% for category in categories %}
-          <div class="col">
-            <a class="card h-100 category-link" href="/providers/category/{{category.pk}}/">
-              <div class="category-container">
-                <img class="card-img-top category-image" src="{{category.image}}" alt="{{ category.name }}">
-                <!-- <div class="card-body">
-                  <div class="card-title"></div>
-                  <div class="card-text"></div>
-                </div> -->
-              </div>
-              <div class="card-footer category-name">{{category.name}}</div>
-            </a>
+      <div id="filter-results-wrap" class="row row-cols-2 g-1">
+        <div class="d-flex justify-content-end">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
-        {% endfor %}
+        </div>
       </div>
     </div>
   </div>
+  <div style="display: none" id="jsonData" data-json="{{ data }}"></div>
 {% endblock %}
 
 {% block additional_js %}
 
+  {{ filters|json_script:"filters-data" }}
   <script src="{% static 'providers/js/filter.js' %}"></script>
 
   <script>
@@ -103,6 +93,7 @@
       filters = {{ filters_json|safe }};
     {% endif %}
 
+    populateFilterForms(filters);
     filterQuery(filters);
   </script>
 
