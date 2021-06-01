@@ -89,7 +89,7 @@
 
   <script>
     var filters = {};
-    {% if filters %}
+    {% if filters_json %}
       filters = {{ filters_json|safe }};
     {% endif %}
 
