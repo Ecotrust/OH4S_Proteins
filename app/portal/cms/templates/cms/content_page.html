@@ -9,5 +9,6 @@
 {% block body_class %}template-content{% endblock %}
 
 {% block content %}
-  {{ page.body|richtext }}
+  {{ page.content_title|richtext }}
+  {{ page.content|richtext }}
 {% endblock %}
