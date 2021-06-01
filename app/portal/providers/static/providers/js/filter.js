@@ -32,6 +32,8 @@ function populateFilterForms(filterArr) {
 }
 
 function populateFilterResults(arr) {
+  const resultsCountElement = document.getElementById('results-count');
+  resultsCountElement.innerHTML = arr.length.toString();
   const resultsWrap = document.getElementById('filter-results-wrap');
   if (arr.length < 1) {
     resultsWrap.innerHTML = '<h2>No results found</h2>';
