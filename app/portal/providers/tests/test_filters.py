@@ -361,6 +361,13 @@ class FilterTestCase(TestCase):
 
 
     def test_get_results_filter_context(self):
+        EXPECTED_FILTER_COUNT = 9
+        LOCATION_FILTER_INDEX = 3
+        DELIVERY_FILTER_INDEX = LOCATION_FILTER_INDEX + 1
+        CATEGORY_FILTER_INDEX = LOCATION_FILTER_INDEX + 2
+        FORM_FILTER_INDEX = LOCATION_FILTER_INDEX + 3
+        DISTRIBUTOR_FILTER_INDEX = LOCATION_FILTER_INDEX + 4
+        PRACTICE_FILTER_INDEX = LOCATION_FILTER_INDEX + 5
         request = HttpRequest()
         request.path = '/results'
         request.method = 'POST'
@@ -372,10 +379,10 @@ class FilterTestCase(TestCase):
         context = get_results_filter_context(request)
 
         self.assertTrue('filters' in context.keys())
-        self.assertEqual(len(context['filters']), 6)
+        self.assertEqual(len(context['filters']), EXPECTED_FILTER_COUNT)
 
         # Producer Location
-        location_filters = context['filters'][0]
+        location_filters = context['filters'][LOCATION_FILTER_INDEX]
         self.assertTrue('name' in location_filters.keys())
         self.assertEqual('Producer Location', location_filters['name'])
         self.assertTrue('facet' in location_filters.keys())
@@ -386,12 +393,12 @@ class FilterTestCase(TestCase):
         # TODO: Add datalayer (json/svg filename) to be passed to front-end map with selection
         self.assertTrue('options' in location_filters.keys())
         self.assertEqual(PoliticalSubregion.objects.all().count(), len(location_filters['options']))
-        self.assertEqual(type(location_filters['options'][0]['value']), int)
-        self.assertEqual(type(location_filters['options'][0]['label']), str)
-        self.assertEqual(type(location_filters['options'][0]['state']), bool)
+        self.assertEqual(type(location_filters['options'][LOCATION_FILTER_INDEX]['value']), int)
+        self.assertEqual(type(location_filters['options'][LOCATION_FILTER_INDEX]['label']), str)
+        self.assertEqual(type(location_filters['options'][LOCATION_FILTER_INDEX]['state']), bool)
 
         # Delivery Method
-        delivery_filters = context['filters'][1]
+        delivery_filters = context['filters'][DELIVERY_FILTER_INDEX]
         self.assertTrue('name' in delivery_filters.keys())
         self.assertEqual('Delivery Method', delivery_filters['name'])
         self.assertTrue('facet' in delivery_filters.keys())
@@ -405,7 +412,7 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(delivery_filters['options'][0]['state']), bool)
 
         # Product Type (Category)
-        category_filters = context['filters'][2]
+        category_filters = context['filters'][CATEGORY_FILTER_INDEX]
         self.assertTrue('name' in category_filters.keys())
         self.assertEqual('Product Type', category_filters['name'])
         self.assertTrue('facet' in category_filters.keys())
@@ -419,7 +426,7 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(category_filters['options'][0]['state']), bool)
 
         # Product Details (Form)
-        details_filters = context['filters'][3]
+        details_filters = context['filters'][FORM_FILTER_INDEX]
         self.assertTrue('name' in details_filters.keys())
         self.assertEqual('Product Details', details_filters['name'])
         self.assertTrue('facet' in details_filters.keys())
@@ -434,7 +441,7 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(details_filters['options'][0]['state']), bool)
 
         # Distributors
-        distributor_filters = context['filters'][4]
+        distributor_filters = context['filters'][DISTRIBUTOR_FILTER_INDEX]
         self.assertTrue('name' in distributor_filters.keys())
         self.assertEqual('Distributors', distributor_filters['name'])
         self.assertTrue('facet' in distributor_filters.keys())
@@ -448,7 +455,7 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(distributor_filters['options'][0]['state']), bool)
 
         # Production Practices
-        practice_filters = context['filters'][5]
+        practice_filters = context['filters'][PRACTICE_FILTER_INDEX]
         self.assertTrue('name' in practice_filters.keys())
         self.assertEqual('Production Practices', practice_filters['name'])
         self.assertTrue('facet' in practice_filters.keys())
