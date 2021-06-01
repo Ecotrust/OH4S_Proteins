@@ -19,6 +19,9 @@
       {% for filter in filters %}
         {% if filter.visible %}
           <div class="col">
+        {% else %}
+          <div style="display: none;">
+        {% endif %}
             <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
             {% for option in filter.options %}
               {% if option.state %}
@@ -57,7 +60,6 @@
               </div>
             </div>
           </div>
-        {% endif %}
       {% endfor %}
     </div>
     <!-- end filters -->
