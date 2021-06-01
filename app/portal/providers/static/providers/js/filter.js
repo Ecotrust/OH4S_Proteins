@@ -17,25 +17,34 @@
  * if over 5 alert user
  */
 
-const filterData = JSON.parse(document.getElementById('filters-data').textContent);
-
-function populateFilterForm() {
+function populateFilterForms(filterArr) {
   var allFormsObj = document.forms;
-  filterData.forEach((filter, i) => {
+  filterArr.forEach((filter, i) => {
     var facet = filter.facet;
-    var filterForm = `${allFormsObj}.${facet}-form`;
     if (filter.visible) {
       filter.options.forEach((option, i) => {
-        console.log(option);
-        if (option.state === true) {
+        if (option.state == true) {
           document.querySelector(`input[name="${facet}"][value="${option.value}"]`).checked = true;
         }
       });
     }
   });
-
 }
-populateFilterForm();
+
+function populateFilterResults(arr) {
+  const resultsWrap = document.getElementById('filter-results-wrap');
+  if (arr.length < 1) {
+    resultsWrap.innerHTML = '<h2>No results found</h2>';
+    return;
+  }
+  resultsWrap.innerHTML = "";
+  arr.forEach((provider, i) => {
+    let providerUrl = `/providers/provider/${provider.id}/`;
+    let addCol = true;
+    let providerCard = providerToCard(provider.name, providerUrl, addCol);
+    resultsWrap.insertAdjacentHTML('beforeend', providerCard);
+  });
+}
 
 $('#filter-form').submit(function(event) {
   event.preventDefault();
@@ -67,32 +76,66 @@ function loadJson(selector) {
   return JSON.parse(document.querySelector(selector).getAttribute('data-json'));
 }
 
-function filterQuery(filters) {
-
-  var forms = document.querySelectorAll('form');
-
-  for (var i = 0; i < forms.length; i++) {
-    var form = forms[i];
-    var formName = form.name;
-    // get form inputs that are checked
-    console.log(formName);
-  }
-
-  // for each form with checked boxes
-    // key = facet
-    // value = filter form input field value
-
-    /*
-    {
-     'product_categories': [ 3, 7, 26],
-     'identities': [ 9, 43, 82],
-     ...
+function filterQuery() {
+  var filterReq = {};
+  var allFormsObj = document.forms;
+  var allFormsArr = document.querySelectorAll('form');
+  allFormsArr.forEach((form, i) => {
+    // Loop through add form elements
+    for (var i = 0; i < form.elements.length; i++) {
+      var option = form.elements.item(i);
+      if (option.checked === true) {
+        if (typeof(filterReq[form.name]) === "undefined") {
+          filterReq[form.name] = [];
+        }
+        filterReq[form.name].push(option.value);
       }
-     */
+    }
+  });
 
-  // build a query that filters producers using the above structure
-
+  $.ajax('/providers/filter/', {
+    type: 'POST',
+    headers: {
+      'X-CSRFToken': csrftoken
+    },
+    data: JSON.stringify(filterReq),
+    success: function(response) {
+      // needs work
+      populateFilterForms([response[1]]);
+      populateFilterResults(response[0].providers);
+    }
+  });
 }
+
+/**
+ * Create HTML with class card fromn array
+ * @type {[function]}
+ */
+const providerToCard = (name, providerUrl) => {
+  const cardElement = `<div class="col"><a class="card h-100" href="${providerUrl}"><div class="card-body"><h5 class="card=title">${name}</h5></div></a></div>`;
+  return cardElement;
+}
+
+/**
+ * Get CSRF cookie
+ */
+
+ function getCookie(name) {
+     let cookieValue = null;
+     if (document.cookie && document.cookie !== '') {
+         const cookies = document.cookie.split(';');
+         for (let i = 0; i < cookies.length; i++) {
+             const cookie = cookies[i].trim();
+             // Does this cookie string begin with the name we want?
+             if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                 break;
+             }
+         }
+     }
+     return cookieValue;
+ }
+ const csrftoken = getCookie('csrftoken');
 
 /**
  * Form Validation

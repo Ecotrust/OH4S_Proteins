@@ -29,7 +29,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                  <form name="{{ filter.facet }}-form">
+                  <form name="{{ filter.facet }}">
                     {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
                       <div class="list-group">
                         {% for option in filter.options %}
@@ -44,10 +44,11 @@
                       <p>Add new widget options to template</p>
                     {% endif %}
                   </form>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Apply</button>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                  <button type="button" class="btn btn-primary" onclick=filterQuery()>Apply</button>
+                </div>
               </div>
             </div>
           </div>
@@ -62,36 +63,15 @@
     <div class="well categories-container">
       <div class="row p-4">
         <div class="col text-center">
-          <em>View all suppliers for speciﬁc product categories</em>
+          <em>Matching Providers</em>
         </div>
       </div>
-      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-1">
-        <div class="col categories-flex-container">
-          <a class="card h-100 category-link" href="/providers/category/">
-            <div class="category-container">
-              <img class="card-img-top category-image" src="{{ default_image }}">
-              <!-- <div class="card-body">
-                <div class="card-title"></div>
-                <div class="card-text"></div>
-              </div> -->
-            </div>
-            <div class="card-footer category-name">All</div>
-          </a>
-        </div>
-        {% for category in categories %}
-          <div class="col">
-            <a class="card h-100 category-link" href="/providers/category/{{category.pk}}/">
-              <div class="category-container">
-                <img class="card-img-top category-image" src="{{category.image}}" alt="{{ category.name }}">
-                <!-- <div class="card-body">
-                  <div class="card-title"></div>
-                  <div class="card-text"></div>
-                </div> -->
-              </div>
-              <div class="card-footer category-name">{{category.name}}</div>
-            </a>
+      <div id="filter-results-wrap" class="row row-cols-2 g-1">
+        <div class="d-flex justify-content-end">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
           </div>
-        {% endfor %}
+        </div>
       </div>
     </div>
   </div>
@@ -109,6 +89,7 @@
       filters = {{ filters_json|safe }};
     {% endif %}
 
+    populateFilterForms(filters);
     filterQuery(filters);
   </script>
 
