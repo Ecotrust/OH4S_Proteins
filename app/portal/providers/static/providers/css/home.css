@@ -1,8 +1,18 @@
 .filter-prompt  {
     color: black;
     font-style: italic;
-    text-align: right;
+    /* text-align: right; */
     padding-top: 1rem;
+}
+
+/* #category-selection {
+  width: 100vw;
+  left: 0;
+  position: absolute;
+} */
+
+#categories-header {
+  border-right: 2px solid white;
 }
 
 .category-header {
