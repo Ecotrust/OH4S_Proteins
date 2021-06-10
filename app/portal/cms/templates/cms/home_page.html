@@ -95,7 +95,7 @@
 
     <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6 g-1">
       <div class="col categories-flex-container">
-        <a class="card h-100 category-link" href="/providers/category/">
+        <div class="card h-100 category-link" onclick="go_to_results()">
           <div class="category-container">
             <img class="card-img-top category-image" src="{{ default_image }}">
             <!-- <div class="card-body">
@@ -104,11 +104,12 @@
             </div> -->
           </div>
           <div class="card-footer category-name">All</div>
-        </a>
+        </div>
       </div>
       {% for category in categories %}
         <div class="col">
-          <a class="card h-100 category-link" href="/providers/category/{{category.pk}}/">
+          <!-- <a class="card h-100 category-link" href="/providers/category/{{category.pk}}/"> -->
+          <div class="card h-100 category-link" onclick="go_to_product_results({{category.pk}}, '{{ category.name }}')">
             <div class="category-container">
               <img class="card-img-top category-image" src="{{category.image}}" alt="{{ category.name }}">
               <!-- <div class="card-body">
@@ -117,7 +118,7 @@
               </div> -->
             </div>
             <div class="card-footer category-name">{{category.name}}</div>
-          </a>
+          </div>
         </div>
       {% endfor %}
     </div>
