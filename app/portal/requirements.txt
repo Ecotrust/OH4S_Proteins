@@ -6,7 +6,7 @@ beautifulsoup4==4.8.2
 certifi==2020.12.5
 chardet==4.0.0
 decorator==4.3.2
-Django==3.2
+Django==3.2.4
 django-filter
 django-model-utils
 django-modelcluster==5.1
