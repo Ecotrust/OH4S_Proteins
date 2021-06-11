@@ -44,7 +44,7 @@ var toggle_home_filter = function(form) {
   filterProxy[form.attr('name')] = checked;
 }
 
-var go_to_results = function() {
+var get_filter_form = function() {
   var form = $('<form id="final-home-filter-form"></form>');
   form.attr("method", "post");
   form.attr("action", "/results/");
@@ -56,6 +56,19 @@ var go_to_results = function() {
     }
 
   });
+  return form;
+}
+
+var go_to_product_results = function(product_id, product_name) {
+  var form = get_filter_form();
+  var label = `<label class="list-group-item">
+    <input class="form-check-input me-1" name="product_categories" type="checkbox" value="${product_id}" checked>" ${product_name}"</label>`;
+  form.append(label);
+  form.appendTo('body').submit();
+}
+
+var go_to_results = function() {
+  var form = get_filter_form();
   form.appendTo('body').submit();
 
 }

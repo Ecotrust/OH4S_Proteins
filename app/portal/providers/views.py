@@ -408,7 +408,10 @@ def filter(request):
     if request.method == "POST":
         try:
             body = json.loads(request.body)
-            # import ipdb; ipdb.set_trace()
+            for key in body.keys():
+                if len(body[key]) > 0 and type(body[key][0]) == str:
+                    str_values = body[key]
+                    body[key] = [int(x) for x in str_values]
         except Exception as e:
             print(e)
             body = {}
