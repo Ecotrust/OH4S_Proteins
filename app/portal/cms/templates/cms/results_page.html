@@ -11,8 +11,13 @@
 {% block content %}
   <div class="container">
     <div class="row">
-      <h2 id="results-count">{{ page.results_count_message|richtext }}</h2>
-      <p>{{ page.filter_prompt|richtext }}</p>
+      <h2>
+        {{ page.results_count_message_before }}
+        <span id="results-count"></span>
+        {{ page.results_count_message_after }}
+      </h2>
+      {{ page.filter_advice|richtext }}
+      {{ page.filter_prompt }}
     </div>
     <!-- FIlters -->
     <div class="row row-cols-3 g-3">
