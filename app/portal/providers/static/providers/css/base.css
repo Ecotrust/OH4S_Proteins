@@ -35,7 +35,7 @@
 }
 
 @font-face {
-    font-family: "ZillaSlab Black";
+    font-family: "ZillaSlab SemiBold";
     src: url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.woff2") format("woff2"),
          url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.woff") format("woff"),
          url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.ttf") format("truetype");
@@ -49,6 +49,8 @@
          url("../fonts/ZillaSlab/web/ZillaSlab-Medium.ttf") format("truetype");
     font-style: normal;
 }
+
+
 /**
  * Global Variables
  * variables below are applied appropriately through this stylesheet
@@ -57,50 +59,68 @@
  */
 
 :root {
-    --color-bg: #fff;
-    --color-text: #000;
-    --font-family: "Avenir", "Surveyor Text", Georgia, sans-serif;
-    --font-family-sans-serif: "Avenir", Verdana, sans-serif;
-    --font-family-serif: "Surveyor Text", Georgia, serif;
-}
 
-:root {
-    --font-family: Trebuchet, serif;
-    --font-family-sans: 'Helvetica Neue', Helvetica, sans-serif;
-    --font-size: 18px;
-    --primary-color: #707070;
-    --earth: #553822;
-    --cranberry: #8E3337;
-    --sunrise: #E58325;
-    --crimson: #D4282F;
-    --shamrock: #69AC20;
-    --cornflower: #006F8E;
+    /* Text */
+    --font-1: "ZillaSlab Medium", Georgia, serif;
+    --font-1-medium: var(--font-1);
+    --font-1-semibold: "ZillaSlab Medium", Georgia, serif;
+    --font-1-bold: "ZillaSlab Bold", Georgia, serif;
+
+    --font-2: "Nunito Bold", sans-serif;
+    --font-2-bold: var(--font-2);
+    --font-2-black: "Nunito Black", sans-serif;
+
+    --font-size: 16px;
+    --font-size-p: 1.125em;
+    --font-size-h1: 2.875em;
+    --font-size-h2: 1em;
+    --font-size-h3: 2.25em;
+    --font-size-h4: 1em;
+
+    /* Color */
+    --color-1: #79111E;
+    --color-2: #E6D410;
+    --color-3: #4D2908;
+    --white: #fff;
 }
 
 body {
-    background: #eee;
-    color: var(--earth);
-    font-family: var(--font-family);
+    color: var(--color-3);
+    font-family: var(--font-1);
     font-size: var(--font-size);
 }
 
+h1,
+h3 {
+    font-family: var(--font-1-semibold);
+}
+
+h2,
+h4 {
+    font-family: var(--font-2-black);
+}
+
 h1 {
-    color: var(--cranberry);
-    font-family: var(--font-family);
-    font-weight: bold:
+    color: var(--color-3);
+    font-size: var(--font-size-h1);
 }
 
 h2 {
-    color: var(--earth);
-    font-family: var(--font-family);
-    font-weight: normal;
+    color: var(--color-3);
+    font-size: var(--font-size-h2);
+}
+
+h3 {
+    font-size: var(--font-size-h3);
+}
+
+h4 {
+    font-size: var(--font-size-h4);
 }
 
 .btn-primary {
-    background: var(--cranberry);
     border-radius: 0;
     color: #fff;
-    font-family: var(--font-family-sans);
     font-weight: bold;
     padding: .5em 1em;
     text-transform: uppercase;
