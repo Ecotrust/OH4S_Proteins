@@ -6,8 +6,10 @@ from wagtail.core.fields import RichTextField
 from wagtail.admin.edit_handlers import FieldPanel
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from providers.views import header as get_header_context, get_category_context, get_homepage_filter_context, get_results_filter_context
+from providers.models import Provider
 
 class HomePage(Page):
     welcome = models.CharField(max_length=255, default='Welcome', verbose_name='Welcome Title')
@@ -78,6 +80,35 @@ class ResultsPage(Page):
         context = get_header_context(request, context)
         context = get_results_filter_context(request, context)
         return context
+
+class ProducerPage(RoutablePageMixin, Page):
+    subtitle = models.CharField(max_length=255, default='Producer Profile', help_text="Page header subtitle")
+
+    @route(r'^$') # will override the default Page serving mechanism
+    @route(r'^(\d+)/$')
+    def producer(self, request, id=None):
+        """
+        View function for the producer page
+        """
+        if id:
+            try:
+                provider = Provider.objects.get(pk=id)
+            except Exception as e:
+                pass
+        if not id:
+            provider = Provider.objects.all()[0]
+
+        # NOTE: We can use the RoutablePageMixin.render() method to render
+        # the page as normal, but with some of the context values overridden
+        return self.render(request, context_overrides={
+            'provider': provider,
+        })
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context = get_header_context(request, context)
+        return context
+
 
 class ContentPage(Page):
     content_title = RichTextField(blank=True, default='Page Title')

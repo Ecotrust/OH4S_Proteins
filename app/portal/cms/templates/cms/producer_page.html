@@ -1,0 +1,215 @@
+{% extends "cms/base.html" %}
+{% load static %}
+{% load wagtailcore_tags %}
+
+{% block additional_header %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static "providers/css/producer.css" %}">
+{% endblock %}
+
+{% block body_class %}template-producer{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row">
+      <div class="col-6">
+        <h2>{{ page.subtitle}}</h2>
+        <button onclick="window.history.back();">Go Back</button>
+        <h3>{{ provider.name }}</h3>
+      </div>
+      <div class="col-6">
+        <div class='row'>
+          <div class="col-1">
+            <span id="name-icon">&#9432;</span>
+          </div>
+          <div class="col-11">
+            <p><b>
+              {{ provider.primaryContactFirstName }}
+              {{ provider.primaryContactLastName }}
+            </b></p>
+          </div>
+        </div>
+        {% if provider.officePhone or provider.cellPhone%}
+          <div class='row'>
+            <div class="col-1">
+              <span id="phone-icon">&#9432;</span>
+            </div>
+            <div class="col-11">
+              <p><b>
+                {% if provider.officePhone %}
+                  Office: {{ provider.officePhone.as_national }}
+                {% endif %}
+                {% if provider.officePhone and provider.cellPhone%}
+                  <span class='text-separator'>|</span>
+                {% endif %}
+                {% if provider.cellPhone %}
+                  Cell: {{ provider.cellPhone.as_national }}
+                {% endif %}
+              </b></p>
+            </div>
+          </div>
+        {% endif %}
+        {% if provider.email %}
+          <div class='row'>
+            <div class="col-1">
+              <span id="email-icon">&#9432;</span>
+            </div>
+            <div class="col-11">
+              <p><b>
+                <a href = "mailto: {{ provider.email }}?subject = OH4S Inquiry">
+                  {{ provider.email }}
+                </a>
+              </b></p>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+
+  <div class="container">
+    <div class="row">
+      <div class="col-6" id="provider-left-column">
+        <h4>About</h4>
+        <p class='expandable'>{{ provider.description }}</p>
+        <div class="row">
+          <div class="col-6" id="provider-left-left">
+            {% if provider.websiteAddress %}
+              <h4>
+                <span id="name-website">&#9432;</span>
+                Website
+              </h4>
+              <a href="{{ provider.websiteAddress }}" target="_blank">
+                {{ provider.websiteAddress }}
+              </a>
+            {% endif %}
+            {% if provider.identities.all.count > 0 %}
+              <h4>
+                Self-Identifiers
+              </h4>
+              {% for identity in provider.identities.all %}
+                <div>
+                  {{ identity.name }}
+                  {% if identity.description %}
+                    &nbsp; &nbsp;
+                    <span onclick="alert('{{ identity.description }}')">
+                      &#9432;
+                    </span>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% endif %}
+            {% if provider.productionPractices.all.count > 0 %}
+              <h4>
+                Self-Identifiers
+              </h4>
+              {% for practice in provider.productionPractices.all %}
+                <div>
+                  {% if practice.definitionLink %}
+                    <a href="{{ practice.definitionLink }}" target="_blank">
+                  {% endif %}
+                  {{ practice.name }}
+                  {% if practice.definitionLink %}
+                    </a>
+                  {% endif %}
+                  {% if practice.description %}
+                     &nbsp; &nbsp;
+                    <span onclick="alert('{{ practice.description }}')">
+                      &#9432;
+                    </span>
+                  {% endif %}
+                </div>
+              {% endfor %}
+            {% endif %}
+          </div>
+          <div class="col-6" id="provider-left-right">
+            {% if provider.businessAddressCity and provider.businessAddressState %}
+                <h4>
+                  {% if provider.physicalAddressCity and not provider.physicalAddressIsSame %}
+                    Business Address:
+                  {% else %}
+                    Location:
+                  {% endif %}
+                </h4>
+                <p>
+                  {% if provider.businessAddressLine1 %}
+                    {{ provider.businessAddressLine1 }}<br />
+                  {% endif %}
+                  {% if provider.businessAddressLine2 and not provider.businessAddressLine2 == '' %}
+                    {{ provider.businessAddressLine2 }}<br />
+                  {% endif %}
+                  {{ provider.businessAddressCity }}, {{ provider.businessAddressState.initialism }}
+                  {% if provider.businessAddressZipCode and not provider.businessAddressZipCode == '' %}
+                    <br />
+                    {{ provider.businessAddressZipCode }}
+                  {% endif %}
+                </p>
+              {% if not provider.physicalAddressIsSame and provider.physicalAddressCity and provider.physicalAddressState %}
+                  <h4>Physical Location:</h4>
+                  <p>
+                    {% if provider.physicalAddressLine1 and not provider.physicalAddressLine1 == '' %}
+                      {{ provider.physicalAddressLine1 }}<br />
+                    {% endif %}
+                    {% if provider.physicalAddressLine2 and not provider.physicalAddressLine2 == '' %}
+                      {{ provider.physicalAddressLine2 }}<br />
+                    {% endif %}
+                    {{ provider.physicalAddressCity }}, {{ provider.physicalAddressState.initialism }}
+                    {% if provider.physicalAddressZipCode and not provider.physicalAddressZipCode == '' %}
+                      <br />
+                      {{ provider.physicalAddressZipCode }}
+                    {% endif %}
+                  </p>
+              {% endif %}
+            {% endif %}
+            {% if provider.deliveryMethods.all.count > 0 %}
+              <h4>Delivery</h4>
+              {% for method in provider.deliveryMethods.all %}
+                <div>
+                  {{ method.name }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            {% if provider.distributors.all.count > 0 %}
+              <h4>Distributors</h4>
+              {% for distributor in provider.distributors.all %}
+                <div>
+                  {{ distributor.name }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            {% if provider.regionalAvailability.all.count > 0 %}
+              <h4>Availability By County</h4>
+              <div class='expandable'>
+                {% for county in provider.regionalAvailability.all %}
+                  <div>
+                    {{ county.name }}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="col-6" id="provider-right-column">
+        <h4>Products</h4>
+        <div class="flex-container">
+          {% for product in provider.providerproduct_set.all %}
+            <div class="product flex-item">
+              <!-- link is just a placeholder until modals are in place. RDH 20210611 -->
+              <a href="/providers/product/{{ product.id}}/" target="_blank">
+                <image src="{{ product.category.image_string }}" />
+                {{ product.name }}
+              </a>
+            </div>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block additional_js %}
+
+  {{ block.super }}
+
+{% endblock %}
