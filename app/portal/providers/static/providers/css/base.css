@@ -1,3 +1,69 @@
+/**
+ * Base.css
+ * styles that are applied thoughout site
+ *
+ */
+
+/**
+ * Fonts
+ * create and import fonts
+ *
+ */
+
+@font-face {
+    font-family: "Nunito Black";
+    src: url("../fonts/Nunito/web/Nunito-Black.woff2") format("woff2"),
+         url("../fonts/Nunito/web/Nunito-Black.woff") format("woff"),
+         url("../fonts/Nunito/web/Nunito-Black.ttf") format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Nunito Bold";
+    src: url("../fonts/Nunito/web/Nunito-Bold.woff2") format("woff2"),
+         url("../fonts/Nunito/web/Nunito-Bold.woff") format("woff"),
+         url("../fonts/Nunito/web/Nunito-Bold.ttf") format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "ZillaSlab Bold";
+    src: url("../fonts/ZillaSlab/web/ZillaSlab-Bold.woff2") format("woff2"),
+         url("../fonts/ZillaSlab/web/ZillaSlab-Bold.woff") format("woff"),
+         url("../fonts/ZillaSlab/web/ZillaSlab-Bold.ttf") format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "ZillaSlab Black";
+    src: url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.woff2") format("woff2"),
+         url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.woff") format("woff"),
+         url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.ttf") format("truetype");
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "ZillaSlab Medium";
+    src: url("../fonts/ZillaSlab/web/ZillaSlab-Medium.woff2") format("woff2"),
+         url("../fonts/ZillaSlab/web/ZillaSlab-Medium.woff") format("woff"),
+         url("../fonts/ZillaSlab/web/ZillaSlab-Medium.ttf") format("truetype");
+    font-style: normal;
+}
+/**
+ * Global Variables
+ * variables below are applied appropriately through this stylesheet
+ * change a variable below to change all instances
+ *
+ */
+
+:root {
+    --color-bg: #fff;
+    --color-text: #000;
+    --font-family: "Avenir", "Surveyor Text", Georgia, sans-serif;
+    --font-family-sans-serif: "Avenir", Verdana, sans-serif;
+    --font-family-serif: "Surveyor Text", Georgia, serif;
+}
+
 :root {
     --font-family: Trebuchet, serif;
     --font-family-sans: 'Helvetica Neue', Helvetica, sans-serif;
