@@ -33,7 +33,7 @@ function populateFilterForms(filterArr) {
 
 function populateFilterResults(arr) {
   const resultsCountElement = document.getElementById('results-count');
-  resultsCountElement.innerHTML = arr.length.toString();
+  resultsCountElement.insertAdjacentHTML('beforeend', arr.length.toString());
   const resultsWrap = document.getElementById('filter-results-wrap');
   if (arr.length < 1) {
     resultsWrap.innerHTML = '<h2>No results found</h2>';
@@ -74,8 +74,14 @@ $('#filter-form').on(
   }
 );
 
-function loadJson(selector) {
-  return JSON.parse(document.querySelector(selector).getAttribute('data-json'));
+function showResultsSpinner() {
+  // Add spinner to results section
+  const resultsWrap = document.getElementById('filter-results-wrap');
+  resultsWrap.innerHTML = `<div class="d-flex justify-content-end">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>`;
 }
 
 function filterQuery() {

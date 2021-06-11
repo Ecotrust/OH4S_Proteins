@@ -11,7 +11,7 @@
 {% block content %}
   <div class="container">
     <div class="row">
-      <h2>{{ page.results_count_message|richtext }} <span id="results-count"></span></h2>
+      <h2 id="results-count">{{ page.results_count_message|richtext }}</h2>
       <p>{{ page.filter_prompt|richtext }}</p>
     </div>
     <!-- FIlters -->
@@ -81,7 +81,6 @@
       </div>
     </div>
   </div>
-  <div style="display: none" id="jsonData" data-json="{{ data }}"></div>
 {% endblock %}
 
 {% block additional_js %}
