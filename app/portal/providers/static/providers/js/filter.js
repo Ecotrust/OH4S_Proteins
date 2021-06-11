@@ -41,7 +41,7 @@ function populateFilterResults(arr) {
   }
   resultsWrap.innerHTML = "";
   arr.forEach((provider, i) => {
-    let providerUrl = `/providers/provider/${provider.id}/`;
+    let providerUrl = `/producer/${provider.id}/`;
     let addCol = true;
     let providerCard = providerToCard(provider.name, providerUrl, addCol);
     resultsWrap.insertAdjacentHTML('beforeend', providerCard);
