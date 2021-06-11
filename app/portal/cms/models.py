@@ -10,24 +10,36 @@ from wagtail.images.edit_handlers import ImageChooserPanel
 from providers.views import header as get_header_context, get_category_context, get_homepage_filter_context, get_results_filter_context
 
 class HomePage(Page):
-    welcome = RichTextField(blank=True, verbose_name='Welcome Title')
-    welcome_text = RichTextField(blank=True, default='<p>We connect school food buyers with Oregon producers who are ready to sell to schools. We have over 75 producers offering a wide variety of products. You can  search by product type, producer identity, location, and much more.</p><p>Need help using the site? <a href="https://vimeo.com/352842407" target="_blank">Watch our short how-to video</a> or <a href="/contact">contact us here</a>. Know a food producer who should be here? Thanks for visiting.</p>')
-    filter_prompt = RichTextField(blank=True, help_text='Language directing users to use filters', default='Explore our filters')
-    categories_header = RichTextField(blank=True, help_text='Header above categories', default='View  all  suppliers  for  specific  product  categories')
-    image = models.ForeignKey(
-        Image,
-        null=True,
+    welcome = models.CharField(max_length=255, default='Welcome', verbose_name='Welcome Title')
+    welcome_text = RichTextField(
         blank=True,
-        on_delete=models.SET_NULL,
-        related_name='+'
+        features=[
+            'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
+            'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
+            'embed', 'code'
+        ],
+        default='<p><b>We connect school food buyers with Oregon producers who ' +
+            'are ready to sell to schools</b></p>' +
+            '<p><b>Get started by searching with out new filters or by ' +
+            'selecting the product types pictured below.</b></p>' +
+            '><p>Need help using the site? ' +
+            '<a href="https://vimeo.com/352842407" target="_blank">' +
+            'Watch our short how-to video</a>. Have ideas about how this site' +
+            'cab be improved? <a hre="http://localhost:8000/contact" ' +
+            'target="_blank">We want to her from you</a>.'
+            '¿Habla Español? <a hre="http://localhost:8000/contact" ' +
+            'target="_blank">Contáctanos aquí</a>.' +
+            '</p>',
+        verbose_name='Welcome Text'
     )
+    filter_prompt = models.CharField(max_length=255, help_text='Language directing users to use filters', default='Search By Filtering')
+    categories_header = models.CharField(max_length=255, help_text='Header above categories', default='Search By Product Types')
 
     content_panels = Page.content_panels + [
         FieldPanel('welcome', classname="full"),
         FieldPanel('welcome_text', classname="full"),
         FieldPanel('filter_prompt', classname="full"),
         FieldPanel('categories_header', classname="full"),
-        ImageChooserPanel('image'),
     ]
 
     def get_context(self, request):
@@ -36,18 +48,28 @@ class HomePage(Page):
         context = get_header_context(request, context)
         context = get_category_context(request, context)
         context = get_homepage_filter_context(request, context)
-        if self.image == None:
-            context['image'] = settings.DEFAULT_PROJECT_IMAGE
-        else:
-            context['image'] = self.image.file.url
         return context
 
 class ResultsPage(Page):
-    results_count_message = RichTextField(blank=True, default='Producers found:')
-    filter_prompt = RichTextField(blank=True, help_text='Language directing users to use filters', default='You can filter these results further')
+    subtitle = models.CharField(max_length=255, default='Results', help_text="Page header subtitle")
+    results_count_message_before = models.CharField(max_length=255, blank=True, default='We found', help_text="Text before result count")
+    results_count_message_after = models.CharField(max_length=255, blank=True, default='producers that meet your criteria', help_text="Text after result count")
+    filter_advice = RichTextField(
+    blank=True,
+    features=[
+    'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
+    'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
+    'embed', 'code'
+    ],
+    default='<p>Try removing filters to see more results</p>',
+    help_text='Helpful advice for users confused by their results'
+    )
+    filter_prompt = models.CharField(max_length=255, help_text='Language directing users to use filters', default='Add Filters')
 
     content_panels = Page.content_panels + [
-        FieldPanel('results_count_message', classname="full"),
+        FieldPanel('results_count_message_before', classname="full"),
+        FieldPanel('results_count_message_after', classname="full"),
+        FieldPanel('filter_advice', classname="full"),
         FieldPanel('filter_prompt', classname="full"),
     ]
 

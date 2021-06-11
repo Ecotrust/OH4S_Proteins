@@ -18,6 +18,7 @@
   <div class="well">
     <div class="row">
       <div class="col-6" id="categories-header" class='filtering' >
+        <div class="subtitle">{{ page.welcome }}</div>
         <div class="welcome-text">{{ page.welcome_text|richtext }}</div>
         <div id="selection-links" class="row">
           <div class="col-6 context-link">
@@ -37,7 +38,7 @@
       <!-- FIlters -->
       <div class="col-6">
       <!-- <div class="row row-cols-3 row-cols-md-5"> -->
-        <div class="col filter-prompt">{{ page.filter_prompt|richtext }}</div>
+        <div class="col filter-prompt">{{ page.filter_prompt }}</div>
         {% for filter in filters %}
           <div class="col">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
@@ -89,7 +90,7 @@
   <div class="well categories-container" id="category-selection">
     <div class="row p-4">
       <div class="col text-center">
-        <div class='category-header'>{{ page.categories_header|richtext }}</div>
+        <div class='category-header'>{{ page.categories_header }}</div>
       </div>
     </div>
 
