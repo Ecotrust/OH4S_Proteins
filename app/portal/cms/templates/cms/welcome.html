@@ -1,9 +1,11 @@
 {% load static %}
 {% load wagtailcore_tags %}
-<div class="container-fluid header">
-  <div class="row">
-    <div class="col">
-      {{ page.welcome|richtext }}
+{% if page.welcome %}
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col">
+        {{ page.welcome|richtext }}
+      </div>
     </div>
   </div>
-</div>
+{% endif %}
