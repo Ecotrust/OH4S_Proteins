@@ -16,73 +16,77 @@
 {% block content %}
 <div class="container-fluid filtering">
   <div class="well">
-    <div class="row">
-      <div class="col-6" id="categories-header" class='filtering' >
-        <div class="subtitle">{{ page.welcome }}</div>
-        <div class="welcome-text">{{ page.welcome_text|richtext }}</div>
-        <div id="selection-links" class="row">
-          <div class="col-6 context-link">
-            <a target="_blank" href="https://www.oregon.gov/ode/students-and-family/childnutrition/F2S/Pages/OregonHarvestforSchools.aspx">
-              Oregon Harvest for Schools Main Page
-            </a>
-          </div>
-          <div class="col-6 context-link">
-            <a target="_blank" href="https://vimeo.com/352842407">
-              Video: How to Use This Site
-            </a>
+    <div class="container">
+      <div class="row">
+        <div class="col-6" id="categories-header" class='filtering' >
+          <div class="subtitle">{{ page.welcome }}</div>
+          <div class="welcome-text">{{ page.welcome_text|richtext }}</div>
+          <div id="selection-links" class="row">
+            <div class="col-6 context-link">
+              <a target="_blank" href="https://www.oregon.gov/ode/students-and-family/childnutrition/F2S/Pages/OregonHarvestforSchools.aspx">
+                Oregon Harvest for Schools Main Page
+              </a>
+            </div>
+            <div class="col-6 context-link">
+              <a target="_blank" href="https://vimeo.com/352842407">
+                Video: How to Use This Site
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Filter Images -->
-      <!-- Harcode and add filter images here -->
-      <!-- FIlters -->
-      <div class="col-6">
-      <!-- <div class="row row-cols-3 row-cols-md-5"> -->
-        <div class="col filter-prompt">{{ page.filter_prompt }}</div>
-        {% for filter in filters %}
-          <div class="col">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
+        <!-- Filter Images -->
+        <!-- Harcode and add filter images here -->
+        <!-- FIlters -->
+        <div class="col-6">
+        <!-- <div class="row row-cols-3 row-cols-md-5"> -->
+          <div class="row">
+            <div class="col filter-prompt">{{ page.filter_prompt }}</div>
+          </div>
+          <div class="row row-cols-1 row-cols-md-2">
+            {% for filter in filters %}
+              <div class="col">
+                <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
 
-            <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-scrollable">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                  </div>
-                  <div class="modal-body">
-                      <form name="{{ filter.facet }}" class='home-filter-form filter-form'>
-                        {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
-                          <div class="list-group">
-                            {% for option in filter.options %}
-                              <label class="list-group-item">
-                                <input class="form-check-input me-1" name="{{ filter.facet }}" type="checkbox" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
-                                {{ option.label }}
-                              </label>
-                            {% endfor %}
-                          </div>
-                        {# {% elif filter.widget == 'multiselect-spatial' %} #}
-                        {% else %}
-                          <p>Add new widget options to template</p>
-                        {% endif %}
-                      </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+                <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-scrollable">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                      <div class="modal-body">
+                          <form name="{{ filter.facet }}" class='home-filter-form filter-form'>
+                            {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
+                              <div class="list-group">
+                                {% for option in filter.options %}
+                                  <label class="list-group-item">
+                                    <input class="form-check-input me-1" name="{{ filter.facet }}" type="checkbox" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                                    {{ option.label }}
+                                  </label>
+                                {% endfor %}
+                              </div>
+                            {# {% elif filter.widget == 'multiselect-spatial' %} #}
+                            {% else %}
+                              <p>Add new widget options to template</p>
+                            {% endif %}
+                          </form>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Apply</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
+            {% endfor %}
+            <div class="col">
+              <button type="button" class="btn btn-secondary" id='home-filter-button' onclick='go_to_results()'>Browse All &gt;&gt;</button>
             </div>
           </div>
-        {% endfor %}
-
-        <div class="col">
-          <button type="button" class="btn btn-secondary" id='home-filter-button' onclick='go_to_results()'>Browse All &gt;&gt;</button>
         </div>
-        <div class="col"></div>
+        <!-- end filters -->
       </div>
-      <!-- end filters -->
-
+    </div>
   </div>
 </div>
 

@@ -82,6 +82,9 @@
     --color-2: #E6D410;
     --color-3: #4D2908;
     --white: #fff;
+
+    /* Utils */
+    --border-radius: 2em;
 }
 
 
@@ -154,8 +157,10 @@ a {
 }
 
     a:hover {
+        cursor: pointer;
         outline: 1px 1px #fff;
         text-decoration: none;
+        transition: ;
     }
 
 a:target {}
@@ -165,15 +170,18 @@ img {
     max-width: 100%;
 }
 
-button {}
-
-.btn-primary {
-    border-radius: 0;
-    color: #fff;
-    font-weight: bold;
-    padding: .5em 1em;
+button,
+button.btn {
+    background: transparent;
+    border-radius: var(--border-radius);
+    color: var(--color-1);
+    border: 2px solid var(--color-1);
+    font-size: var(--font-size);
+    line-height: 1.75;
+    padding: 1em .5em;
     text-transform: uppercase;
 }
+
 
 
 /**

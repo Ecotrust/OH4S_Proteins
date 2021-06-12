@@ -1,8 +1,7 @@
-.header {
+header {
   background: var(--color-2);
   display: block;
   padding-top: 3rem;
-  padding-bottom: 1rem;
   position: relative;
 }
 

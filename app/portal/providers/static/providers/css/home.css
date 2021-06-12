@@ -11,10 +11,6 @@
   position: absolute;
 } */
 
-#categories-header {
-  border-right: 2px solid white;
-}
-
 .category-header {
   font-size: 20;
   font-weight: bold;

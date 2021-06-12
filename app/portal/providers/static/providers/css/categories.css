@@ -3,6 +3,11 @@
   text-align: center;
 }
 
+#categories-header {
+  border-right: 2px solid white;
+  padding: 30px 50px 20px 0;
+}
+
 hr {
   border-top: 0.1rem solid #0098a8;
 }
@@ -15,7 +20,20 @@ hr {
 }
 
 .filtering.container-fluid > .well {
+  padding-bottom: 50px;
+  padding-top: 38px;
   position: relative;
+}
+
+.filtering.container-fluid > .well:before {
+  border-left: 38px solid transparent;
+  border-right: 38px solid transparent;
+  border-top: 35px solid var(--color-2);
+  bottom: -35px;
+  left: 50%;
+  content: "";
+  position: absolute;
+  transform: translate(-38px);
 }
 
 .filtering.container-fluid > .well:after {
