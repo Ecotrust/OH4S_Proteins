@@ -20,11 +20,10 @@ def header(request, context, project_id=None):
             project = Project.objects.all()[0]
         project_context['title'] = project.title
         project_context['welcome'] = project.welcome
-        project_context['image'] = project.image
     else:
         project_context['title'] = settings.DEFAULT_PROJECT_TITLE
         project_context['welcome'] = settings.DEFAULT_PROJECT_WELCOME
-        project_context['image'] = settings.DEFAULT_PROJECT_IMAGE
+    project_context['image'] = settings.DEFAULT_PROJECT_IMAGE
 
     context['PROJECT_TITLE'] = project_context['title']
     context['PROJECT_WELCOME'] = project_context['welcome']
