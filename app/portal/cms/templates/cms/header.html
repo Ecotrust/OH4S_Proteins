@@ -2,13 +2,13 @@
 {% load wagtailcore_tags %}
 <header class="container-fluid header">
   <div class="row">
-    <div class="col-2">
-      <a href="/">
-        <img class="project-logo" src="{{ PROJECT_IMAGE }}">
-      </a>
-    </div>
-    <div class="col-10">
-      <h1>{% block site_title %}Oregon Harvest for Schools Directory{% endblock %}</h1>
-    </div>
+    <nav class="navbar">
+      <div class="container">
+        <a class="navbar-brand" href="/">
+          <img class="project-logo" src="{{ PROJECT_IMAGE }}">
+        </a>
+        <h1 class="navbar-text">{% block site_title %}Oregon Harvest for Schools Directory{% endblock %}</h1>
+      </div>
+    </nav>
   </div>
 </header>
