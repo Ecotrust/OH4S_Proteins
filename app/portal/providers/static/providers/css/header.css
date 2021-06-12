@@ -1,7 +1,9 @@
 .header {
-  background: #fff;
+  background: var(--color-2);
+  display: block;
   padding-top: 3rem;
   padding-bottom: 1rem;
+  position: relative;
 }
 
 .header-slim {
@@ -9,11 +11,20 @@
   margin-bottom: 0.5rem;
 }
 
+.navbar-brand {
+  align-items: center;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  height: 125px;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  width: 125px;
+}
+
 .project-logo {
-  max-width: 10vw;
-  box-shadow: 2px 2px 2px 2px rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  border-radius: 4px;
-  padding: 0.5rem;
-  max-height: 100%;
-  position: absolute;
+  height: auto;
+  width: 76px;
 }

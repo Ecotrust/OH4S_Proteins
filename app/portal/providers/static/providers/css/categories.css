@@ -11,7 +11,22 @@ hr {
 }
 
 .filtering {
-  background: #fff;
+  z-index: 0;
+}
+
+.filtering.container-fluid > .well {
+  position: relative;
+}
+
+.filtering.container-fluid > .well:after {
+  background: var(--color-2);
+  content: "";
+  height: 100%;
+  left: var(--bs-gutter-x,-.75rem);
+  position: absolute;
+  right: var(--bs-gutter-x,-.75rem);
+  top: 0;
+  z-index: -1;
 }
 
 .categories-container {

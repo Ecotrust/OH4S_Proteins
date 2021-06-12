@@ -84,11 +84,35 @@
     --white: #fff;
 }
 
+
+/**
+ * Wildcard
+ * all elements
+ *
+ */
+
+* {
+    box-sizing: border-box;
+}
+
+
+/**
+ * Body
+ * bottom of the cascade styling
+ *
+ */
+
 body {
     color: var(--color-3);
     font-family: var(--font-1);
     font-size: var(--font-size);
+
 }
+
+/**
+ * Headers
+ *
+ */
 
 h1,
 h3 {
@@ -118,6 +142,31 @@ h4 {
     font-size: var(--font-size-h4);
 }
 
+
+/**
+ * Components
+ * base styles for site elements
+ *
+ */
+
+a {
+    text-decoration: underline;
+}
+
+    a:hover {
+        outline: 1px 1px #fff;
+        text-decoration: none;
+    }
+
+a:target {}
+a:active {}
+
+img {
+    max-width: 100%;
+}
+
+button {}
+
 .btn-primary {
     border-radius: 0;
     color: #fff;
@@ -125,3 +174,10 @@ h4 {
     padding: .5em 1em;
     text-transform: uppercase;
 }
+
+
+/**
+ * Utilities
+ * classes that do something helpful
+ *
+ */
