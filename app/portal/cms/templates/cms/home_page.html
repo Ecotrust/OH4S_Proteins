@@ -19,7 +19,7 @@
     <div class="container">
       <div class="row">
         <div class="col-6" id="categories-header" class='filtering' >
-          <div class="subtitle">{{ page.welcome }}</div>
+          <h2 class="subtitle">{{ page.welcome }}</h2>
           <div class="welcome-text">{{ page.welcome_text|richtext }}</div>
           <div id="selection-links" class="row">
             <div class="col-6 context-link">
@@ -40,7 +40,9 @@
         <div class="col-6">
         <!-- <div class="row row-cols-3 row-cols-md-5"> -->
           <div class="row">
-            <div class="col filter-prompt">{{ page.filter_prompt }}</div>
+            <div class="col filter-prompt">
+              <h2 class="filter-title">{{ page.filter_prompt }}</h2>
+            </div>
           </div>
           <div class="row row-cols-1 row-cols-md-2">
             {% for filter in filters %}
@@ -51,7 +53,7 @@
                   <div class="modal-dialog modal-dialog-scrollable">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h5>
+                        <h3 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h3>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">

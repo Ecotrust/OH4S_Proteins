@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" viewBox="0 0 35 35">
+  <g id="Group_93" data-name="Group 93" transform="translate(-701 -213)">
+    <circle id="Ellipse_20" data-name="Ellipse 20" cx="17.5" cy="17.5" r="17.5" transform="translate(701 213)" fill="#fff"/>
+    <path id="Icon_material-person" data-name="Icon material-person" d="M16,16a5,5,0,1,0-5-5A5,5,0,0,0,16,16Zm0,2.5c-3.338,0-10,1.675-10,5V26H26V23.5C26,20.175,19.337,18.5,16,18.5Z" transform="translate(703 214)" fill="#79111e"/>
+  </g>
+</svg>
