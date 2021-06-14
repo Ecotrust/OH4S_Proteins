@@ -196,16 +196,37 @@
         <div class="flex-container">
           {% for product in provider.providerproduct_set.all %}
             <div class="product flex-item">
-              <!-- link is just a placeholder until modals are in place. RDH 20210611 -->
-              <a href="/providers/product/{{ product.id}}/" target="_blank">
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#product-{{ product.id }}">
                 <image src="{{ product.category.image_string }}" />
                 {{ product.name }}
-              </a>
+              </button>
             </div>
           {% endfor %}
       </div>
     </div>
   </div>
+{% endblock %}
+
+{% block modals %}
+  <!-- Modals -->
+  {% for product in provider.providerproduct_set.all %}
+    <div class="modal fade" id="product-{{ product.id }}" tabindex="-1" aria-labelledby="product-{{ product.id }}Label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="product-{{ product.id }}Label">{{ product.name }}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <image src="{{ product.category.image_string }}" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
 {% endblock %}
 
 {% block additional_js %}
