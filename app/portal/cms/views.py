@@ -6,5 +6,8 @@ def get_footer_context(request, context):
     footer = FooterPage.objects.all()[0]
     footer_context = footer.get_context(request)
     for key in footer_context.keys():
-        context[key] = footer_context[key]
+        if not key == 'page':
+            context[key] = footer_context[key]
+        else:
+            context['footer_page'] = footer_context['page']
     return context

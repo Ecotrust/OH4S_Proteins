@@ -38,7 +38,7 @@
     {% block footer_wrap %}
       <footer class="container-fluid header">
         {% block footer %}
-          {% include 'cms/footer_page.html' %}
+          {% include 'cms/footer_page.html' with page=footer_page %}
         {% endblock %}
       </footer>
     {% endblock footer_wrap %}
