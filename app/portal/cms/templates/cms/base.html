@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static "providers/libraries/bootstrap-5.0.1/css/bootstrap.min.css" %}">
     <link rel="stylesheet" href="{% static "providers/css/base.css" %}">
     <link rel="stylesheet" href="{% static "providers/css/header.css" %}">
+    <link rel="stylesheet" href="{% static "providers/css/footer.css" %}">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141387987-1"></script>
@@ -33,6 +34,14 @@
 
     {% block content %}
     {% endblock %}
+
+    {% block footer_wrap %}
+      <footer class="container-fluid header">
+        {% block footer %}
+          {% include 'cms/footer_page.html' %}
+        {% endblock %}
+      </footer>
+    {% endblock footer_wrap %}
 
     {% block modals %}
     {% endblock %}

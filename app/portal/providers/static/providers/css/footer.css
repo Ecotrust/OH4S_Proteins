@@ -1,0 +1,13 @@
+footer {
+  background: var(--color-2);
+  /* background: #E6D410; */
+}
+
+.footer-brand {
+  max-width: 125px;
+}
+
+.footer-brand img {
+  width: 76px;
+  height: auto;
+}

@@ -1,0 +1,23 @@
+{% load wagtailcore_tags %}
+{% load wagtailimages_tags %}
+
+<div class="row">
+  <div class="navbar">
+    <div class="container">
+      <div class="col footer-image">
+        <div class="navbar-brand footer-brand">
+          {% image page.footer_image width-76 %}
+        </div>
+      </div>
+      <div class="col footer-col footer-col-1">
+        {% include_block page.column_1 %}
+      </div>
+      <div class="col footer-col footer-col-2">
+        {% include_block page.column_2 %}
+      </div>
+      <div class="col footer-col footer-col-3">
+        {% include_block page.column_3 %}
+      </div>
+    </div>
+  </div>
+</div>
