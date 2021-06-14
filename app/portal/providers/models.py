@@ -225,6 +225,27 @@ class Provider(models.Model):
                     component_ids.append(component.id)
         return ComponentCategory.objects.filter(id__in=component_ids)
 
+    @property
+    def product_categories(self):
+        product_categories = {}
+        for product in self.providerproduct_set.all().order_by('name'):
+            product_ancestor_category = product.category.get_prime_ancestor()
+            if not product_ancestor_category.name in product_categories.keys():
+                product_categories[product_ancestor_category.name] = {
+                    'object': product_ancestor_category,
+                    'products': []
+                }
+            product_categories[product_ancestor_category.name]['products'].append([
+                product.name,
+                product.category.name
+            ])
+        ordered_categories = []
+        category_keys = [x for x in product_categories.keys()]
+        category_keys.sort()
+        for category_key in category_keys:
+            ordered_categories.append(product_categories[category_key])
+        return ordered_categories
+
     def get_address_string(self, locationType=None, fullAddress=True):
         if locationType == 'Business':
             fields = [

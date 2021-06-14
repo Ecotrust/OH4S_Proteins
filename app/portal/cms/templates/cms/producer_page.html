@@ -194,11 +194,11 @@
       <div class="col-6" id="provider-right-column">
         <h4>Products</h4>
         <div class="flex-container">
-          {% for product in provider.providerproduct_set.all %}
+          {% for category in provider.product_categories %}
             <div class="product flex-item">
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#product-{{ product.id }}">
-                <image src="{{ product.category.image_string }}" />
-                {{ product.name }}
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#category-{{ category.object.id }}">
+                <image src="{{ category.object.image_string }}" />
+                {{ category.object.name }}
               </button>
             </div>
           {% endfor %}
@@ -209,108 +209,43 @@
 
 {% block modals %}
   <!-- Modals -->
-  {% for product in provider.providerproduct_set.all %}
-    <div class="modal fade" id="product-{{ product.id }}" tabindex="-1" aria-labelledby="product-{{ product.id }}Label" aria-hidden="true">
+  {% for category in provider.product_categories %}
+    <div class="modal fade" id="category-{{ category.object.id }}" tabindex="-1" aria-labelledby="category-{{ category.object.id }}Label" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="product-{{ product.id }}Label">{{ product.name }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
             <div class="row">
               <div class="col">
-                <h1>{{ product.name }}</h1>
-                <p>{{ product.category }}</p>
+                <image src="{{ category.object.image_string }}" />
               </div>
-              {% if product.category.image_string %}
               <div class="col">
-                <image src="{{ product.category.image_string }}" />
+                <h1>{{ category.object.name }}</h1>
               </div>
-              {% endif %}
             </div>
-            <hr />
             <div class="row">
-              <div class="col">
-                <p><b><a href="/providers/provider/{{ product.provider.pk }}/">{{ product.provider.name }}</a></b><br />
-                  {% if product.provider.physicalAddressCity and product.provider.physicalAddressState %}
-                    {{ product.provider.physicalAddressCity }}, {{ product.provider.physicalAddressState.initialism }}
-                  {% else %}
-                    {{ product.provider.businessAddressCity }}, {{ product.provider.businessAddressState.initialism }}
-                  {% endif %}
-                </p>
-                {% if product.description %}
-                  <p>{{ product.description }}</p>
-                {% endif %}
-
-                {% if product.productLiabilityInsuranceAmount %}
-                  <p>
-                    <b>Liability Insurance Amount</b>:
-                      {{ product.productLiabilityInsuranceAmount }}
-                  </p>
-                {% endif %}
-
-                {% if product.deliveryMethods.all.count > 0 %}
-                  <b>Delivery Methods:</b>
-                  <ul class='product-details-list delivery-methods-list'>
-                    {% for method in product.deliveryMethods.all %}
-                      <li>{{ method.name }}</li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-
-                {% if product.distributors.all.count > 0 %}
-                  <b>Distributors:</b>
-                  <ul class='product-details-list distributors-list'>
-                    {% for distributor in product.distributors.all %}
-                      <li>{{ distributor.name }}</li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-
-                {% if product.regionalAvailability.all.count > 0 %}
-                  <b>Regional Availability (by county):</b>
-                  <ul class='product-details-list counties-list'>
-                    {% for subregion in product.regionalAvailability.all %}
-                      <li>{{ subregion.name }}</li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-
-                {% if product.orderMinimum %}
-                  <p>
-                    <b>Order Minimum:</b> {{ product.orderMinimum }}
-                  </p>
-                {% endif %}
-
-                {% if product.orderMinimum %}
-                  <p>
-                    <b>Delivery Minimum:</b> {{ product.deliveryMinimum }}
-                  </p>
-                {% endif %}
-
-                {% if product.productionPractices.all.count > 0 %}
-                  <b>Production Practices:</b>
-                  <ul class='product-details-list production-practices-list'>
-                    {% for practice in product.productionPractices.all %}
-                      <li>{{ practice.name }}</li>
-                    {% endfor %}
-                  </ul>
-                {% endif %}
-
-                {% if product.capacityValue and product.capacityValue > 0 and product.capacityMeasurement %}
-                  <p>
-                    <b>Production Capacity:</b> {{ product.capacityValue }} {{ product.capacityMeasurement }}
-                  </p>
-                {% endif %}
-
-                <p>Information last updated: {{ product.dateInfoUpdated }}</p>
-
+              <h3 class="col">Forms Available</h3>
+            </div>
+            <div class="row">
+              <div class="col category-column-header">
+                Variety
+              </div>
+              <div class="col category-column-header">
+                Form
               </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            {% for product in category.products %}
+              <div class="row">
+                <div class="col">
+                  {{ product.0 }}
+                </div>
+                <div class="col">
+                  {{ product.1 }}
+                </div>
+              </div>
+            {% endfor %}
           </div>
         </div>
       </div>
