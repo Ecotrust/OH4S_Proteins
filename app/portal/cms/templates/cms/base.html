@@ -28,20 +28,26 @@
     {% endblock %}
   </head>
   <body>
-    {% block header-content %}
-      {% include "cms/header.html" %}
-    {% endblock %}
+    <div class="body-wrap">
+      {% block header-content %}
+        {% include "cms/header.html" %}
+      {% endblock %}
 
-    {% block content %}
-    {% endblock %}
+      {% block main-wrap %}
+        <main>
+          {% block content %}
+          {% endblock %}
+        </main>
+      {% endblock %}
 
-    {% block footer_wrap %}
-      <footer class="container-fluid header">
-        {% block footer %}
-          {% include 'cms/footer_page.html' with page=footer_page %}
-        {% endblock %}
-      </footer>
-    {% endblock footer_wrap %}
+      {% block footer_wrap %}
+        <footer class="container-fluid header">
+          {% block footer %}
+            {% include 'cms/footer_page.html' with page=footer_page %}
+          {% endblock %}
+        </footer>
+      {% endblock footer_wrap %}
+    </div>
 
     {% block modals %}
     {% endblock %}

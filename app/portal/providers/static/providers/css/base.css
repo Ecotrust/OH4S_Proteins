@@ -16,6 +16,7 @@
          url("../fonts/Nunito/web/Nunito-Black.woff") format("woff"),
          url("../fonts/Nunito/web/Nunito-Black.ttf") format("truetype");
     font-style: normal;
+    font-weight: normal;
 }
 
 @font-face {
@@ -24,6 +25,7 @@
          url("../fonts/Nunito/web/Nunito-Bold.woff") format("woff"),
          url("../fonts/Nunito/web/Nunito-Bold.ttf") format("truetype");
     font-style: normal;
+    font-weight: normal;
 }
 
 @font-face {
@@ -40,6 +42,7 @@
          url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.woff") format("woff"),
          url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.ttf") format("truetype");
     font-style: normal;
+    font-weight: normal;
 }
 
 @font-face {
@@ -48,6 +51,7 @@
          url("../fonts/ZillaSlab/web/ZillaSlab-Medium.woff") format("woff"),
          url("../fonts/ZillaSlab/web/ZillaSlab-Medium.ttf") format("truetype");
     font-style: normal;
+    font-weight: normal;
 }
 
 
@@ -109,7 +113,16 @@ body {
     color: var(--color-3);
     font-family: var(--font-1);
     font-size: var(--font-size);
+}
 
+.body-wrap {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+}
+
+main {
+    flex-grow: 1;
 }
 
 /**
@@ -167,7 +180,17 @@ a:target {}
 a:active {}
 
 img {
+    height: auto;
     max-width: 100%;
+}
+
+h2.subtitle {
+    background: #fff;
+    display: inline-block;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    padding: 10px 16px 8px;
+    text-transform: uppercase;
 }
 
 button,
