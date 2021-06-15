@@ -1,15 +1,3 @@
-.filter-prompt  {
-    font-style: italic;
-    /* text-align: right; */
-    padding-top: 1rem;
-}
-
-/* #category-selection {
-  width: 100vw;
-  left: 0;
-  position: absolute;
-} */
-
 #categories_header {
     text-align: left;
 }

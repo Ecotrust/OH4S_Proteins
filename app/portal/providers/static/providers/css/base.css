@@ -147,6 +147,8 @@ h1 {
 h2 {
     color: var(--color-3);
     font-size: var(--font-size-h2);
+    letter-spacing: 0.06375em;
+    line-height: 1.25;
 }
 
 h3 {
@@ -186,14 +188,36 @@ img {
     max-width: 100%;
 }
 
-h2.subtitle {
+.subtitle {
     background: #fff;
     display: inline-block;
-    letter-spacing: 0.06375em;
-    line-height: 1.25;
     padding: 10px 20px 9px;
     text-transform: uppercase;
 }
+
+.filter-title {
+    border-bottom: 2px solid #fff;
+    display: inline-block;
+    font-family: var(--font-2-black);
+    font-size: 1em;
+    padding: 0 4px 6px 0;
+    text-transform: uppercase;
+}
+
+    .filter-title:before {
+        background-image: url('/static/providers/img/icons/i_filter.svg');
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        content: '';
+        display: inline-block;
+        height: 22.2px;
+        margin-right: 12px;
+        padding-bottom: 6px;
+        position: relative;
+        vertical-align: middle;
+        width: 18px;
+    }
+
 
 button,
 button.btn {
@@ -207,8 +231,6 @@ button.btn {
     text-transform: uppercase;
     text-align: left;
 }
-
-
 
 /**
  * Utilities
