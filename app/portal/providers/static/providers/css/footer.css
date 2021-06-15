@@ -12,7 +12,9 @@ footer {
   height: auto;
 }
 
-.footer-col .block-image {
+.footer-col .block-image img {
   height: auto;
-  width: 42px;
+  max-height: 36px;
+  width: auto;
+  max-width: 30px
 }
