@@ -3,7 +3,8 @@ from django.conf import settings
 
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField, StreamField
-from wagtail.core.blocks import RichTextBlock
+from wagtail.core.blocks import RichTextBlock, URLBlock, RawHTMLBlock, StructBlock, CharBlock, PageChooserBlock
+from wagtail.embeds.blocks import EmbedBlock
 from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
 from wagtail.images.edit_handlers import ImageChooserPanel
@@ -13,6 +14,14 @@ from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from providers.views import header as get_header_context, get_category_context, get_homepage_filter_context, get_results_filter_context
 from providers.models import Provider
 from cms.views import get_footer_context
+
+class LinkBlock(StructBlock):
+    text = CharBlock()
+    link = URLBlock()
+
+class InternalLinkBlock(StructBlock):
+    text = CharBlock()
+    link = PageChooserBlock()
 
 class PortalPage(Page):
 
@@ -129,6 +138,9 @@ class ContentPage(PortalPage):
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
             'embed', 'code'
         ])),
+        ('google_form', LinkBlock(label="Google Form Link", template="cms/google_form.html", help_text="The URL for the Google form. This will be loaded into a popup when clicked.")),
+        ('HTML', RawHTMLBlock(label="Custom HTML", help_text="For fine-tuning very specific/custom blocks.")),
+        ('Embedded_Media', EmbedBlock(label="Embedded Media"))
     ])
 
     content_panels = Page.content_panels + [
@@ -149,12 +161,9 @@ class FooterPage(Page):
     )
     column_1 = StreamField([
         ('image', ImageChooserBlock()),
-        ('internal_link', RichTextBlock(features=[
-            'bold', 'italic', 'link', 'superscript', 'subscript'
-        ])),
-        ('external_link', RichTextBlock(features=[
-            'bold', 'italic', 'link', 'superscript', 'subscript'
-        ])),
+        ('externalLink', LinkBlock(label="External Link", template="cms/external_link.html")),
+        ('internalLink', InternalLinkBlock(label="Internal Link", template="cms/internal_link.html")),
+        ('google_form', LinkBlock(label="Google Form Link", template="cms/google_form_footer.html", help_text="The URL for the Google form. This will be loaded into a popup when clicked.")),
         ('text', RichTextBlock(features=[
             'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
@@ -163,12 +172,9 @@ class FooterPage(Page):
     ])
     column_2 = StreamField([
         ('image', ImageChooserBlock()),
-        ('internal_link', RichTextBlock(features=[
-            'bold', 'italic', 'link', 'superscript', 'subscript'
-        ])),
-        ('external_link', RichTextBlock(features=[
-            'bold', 'italic', 'link', 'superscript', 'subscript'
-        ])),
+        ('externalLink', LinkBlock(label="External Link", template="cms/external_link.html")),
+        ('internalLink', InternalLinkBlock(label="Internal Link", template="cms/internal_link.html")),
+        ('google_form', LinkBlock(label="Google Form Link", template="cms/google_form_footer.html", help_text="The URL for the Google form. This will be loaded into a popup when clicked.")),
         ('text', RichTextBlock(features=[
             'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
@@ -177,12 +183,9 @@ class FooterPage(Page):
     ])
     column_3 = StreamField([
         ('image', ImageChooserBlock()),
-        ('internal_link', RichTextBlock(features=[
-            'bold', 'italic', 'link', 'superscript', 'subscript'
-        ])),
-        ('external_link', RichTextBlock(features=[
-            'bold', 'italic', 'link', 'superscript', 'subscript'
-        ])),
+        ('externalLink', LinkBlock(label="External Link", template="cms/external_link.html")),
+        ('internalLink', InternalLinkBlock(label="Internal Link", template="cms/internal_link.html")),
+        ('google_form', LinkBlock(label="Google Form Link", template="cms/google_form_footer.html", help_text="The URL for the Google form. This will be loaded into a popup when clicked.")),
         ('text', RichTextBlock(features=[
             'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',

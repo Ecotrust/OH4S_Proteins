@@ -1,6 +1,6 @@
 footer {
   background: var(--color-2);
-  /* background: #E6D410; */
+  bottom: 0;
 }
 
 .footer-brand {
@@ -12,9 +12,33 @@ footer {
   height: auto;
 }
 
+<<<<<<< HEAD
 .footer-col .block-image img {
   height: auto;
   max-height: 36px;
   width: auto;
   max-width: 30px
+=======
+footer div.footer-modal-launcher,
+footer a.link-external,
+footer a.link-internal {
+  color: var(--color-3);
+  text-decoration: underline;
+  font-family: var(--font-2-black);
+  font-size: var(--font-size-h4);
+  cursor: pointer;
+}
+
+div.footer-col {
+  padding: 0.4rem;
+  min-height: 100%;
+}
+
+div.footer-col>div.block-text>p{
+  margin-bottom: 0;
+}
+
+footer .navbar>div.footer-container {
+  align-items: flex-start;
+>>>>>>> origin/main
 }
