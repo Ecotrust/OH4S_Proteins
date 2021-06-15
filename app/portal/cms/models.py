@@ -2,16 +2,30 @@ from django.db import models
 from django.conf import settings
 
 from wagtail.core.models import Page
-from wagtail.core.fields import RichTextField
-from wagtail.admin.edit_handlers import FieldPanel
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.core.blocks import RichTextBlock
+from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
 from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.blocks import ImageChooserBlock
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
 from providers.views import header as get_header_context, get_category_context, get_homepage_filter_context, get_results_filter_context
 from providers.models import Provider
+from cms.views import get_footer_context
 
-class HomePage(Page):
+class PortalPage(Page):
+
+    class Meta:
+        abstract = True
+
+    def get_context(self, request):
+        context = super().get_context(request)
+        context = get_header_context(request, context)
+        context = get_footer_context(request, context)
+        return context
+
+class HomePage(PortalPage):
     welcome = models.CharField(max_length=255, default='Welcome', verbose_name='Welcome Title')
     welcome_text = RichTextField(
         blank=True,
@@ -47,12 +61,11 @@ class HomePage(Page):
     def get_context(self, request):
         # Update context to include only published posts, ordered by reverse-chron
         context = super().get_context(request)
-        context = get_header_context(request, context)
         context = get_category_context(request, context)
         context = get_homepage_filter_context(request, context)
         return context
 
-class ResultsPage(Page):
+class ResultsPage(PortalPage):
     subtitle = models.CharField(max_length=255, default='Results', help_text="Page header subtitle")
     results_count_message_before = models.CharField(max_length=255, blank=True, default='We found', help_text="Text before result count")
     results_count_message_after = models.CharField(max_length=255, blank=True, default='producers that meet your criteria', help_text="Text after result count")
@@ -77,11 +90,10 @@ class ResultsPage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context = get_header_context(request, context)
         context = get_results_filter_context(request, context)
         return context
 
-class ProducerPage(RoutablePageMixin, Page):
+class ProducerPage(RoutablePageMixin, PortalPage):
     subtitle = models.CharField(max_length=255, default='Producer Profile', help_text="Page header subtitle")
 
     @route(r'^$') # will override the default Page serving mechanism
@@ -106,11 +118,9 @@ class ProducerPage(RoutablePageMixin, Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context = get_header_context(request, context)
         return context
 
-
-class ContentPage(Page):
+class ContentPage(PortalPage):
     content_title = RichTextField(blank=True, default='Page Title')
     content = RichTextField(blank=True, default='Page content...')
 
@@ -121,5 +131,61 @@ class ContentPage(Page):
 
     def get_context(self, request):
         context = super().get_context(request)
-        context = get_header_context(request, context)
         return context
+
+class FooterPage(Page):
+    footer_image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+    column_1 = StreamField([
+        ('image', ImageChooserBlock()),
+        ('internal_link', RichTextBlock(features=[
+            'bold', 'italic', 'link', 'superscript', 'subscript'
+        ])),
+        ('external_link', RichTextBlock(features=[
+            'bold', 'italic', 'link', 'superscript', 'subscript'
+        ])),
+        ('text', RichTextBlock(features=[
+            'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
+            'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
+            'embed', 'code'
+        ])),
+    ])
+    column_2 = StreamField([
+        ('image', ImageChooserBlock()),
+        ('internal_link', RichTextBlock(features=[
+            'bold', 'italic', 'link', 'superscript', 'subscript'
+        ])),
+        ('external_link', RichTextBlock(features=[
+            'bold', 'italic', 'link', 'superscript', 'subscript'
+        ])),
+        ('text', RichTextBlock(features=[
+            'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
+            'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
+            'embed', 'code'
+        ])),
+    ])
+    column_3 = StreamField([
+        ('image', ImageChooserBlock()),
+        ('internal_link', RichTextBlock(features=[
+            'bold', 'italic', 'link', 'superscript', 'subscript'
+        ])),
+        ('external_link', RichTextBlock(features=[
+            'bold', 'italic', 'link', 'superscript', 'subscript'
+        ])),
+        ('text', RichTextBlock(features=[
+            'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
+            'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
+            'embed', 'code'
+        ])),
+    ])
+
+    content_panels = Page.content_panels + [
+        ImageChooserPanel('footer_image'),
+        StreamFieldPanel('column_1'),
+        StreamFieldPanel('column_2'),
+        StreamFieldPanel('column_3'),
+    ]
