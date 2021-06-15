@@ -11,3 +11,8 @@ footer {
   width: 76px;
   height: auto;
 }
+
+.footer-col .block-image {
+  height: auto;
+  width: 42px;
+}
