@@ -12,13 +12,6 @@ footer {
   height: auto;
 }
 
-<<<<<<< HEAD
-.footer-col .block-image img {
-  height: auto;
-  max-height: 36px;
-  width: auto;
-  max-width: 30px
-=======
 footer div.footer-modal-launcher,
 footer a.link-external,
 footer a.link-internal {
@@ -34,11 +27,17 @@ div.footer-col {
   min-height: 100%;
 }
 
+div.footer-col .block-image img {
+  height: auto;
+  max-height: 36px;
+  width: auto;
+  max-width: 30px;
+}
+
 div.footer-col>div.block-text>p{
   margin-bottom: 0;
 }
 
 footer .navbar>div.footer-container {
   align-items: flex-start;
->>>>>>> origin/main
 }
