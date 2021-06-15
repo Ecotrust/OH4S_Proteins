@@ -16,7 +16,6 @@
          url("../fonts/Nunito/web/Nunito-Black.woff") format("woff"),
          url("../fonts/Nunito/web/Nunito-Black.ttf") format("truetype");
     font-style: normal;
-    font-weight: normal;
 }
 
 @font-face {
@@ -187,9 +186,9 @@ img {
 h2.subtitle {
     background: #fff;
     display: inline-block;
-    letter-spacing: 0.05em;
-    line-height: 1;
-    padding: 10px 16px 8px;
+    letter-spacing: 0.06375em;
+    line-height: 1.25;
+    padding: 10px 20px 9px;
     text-transform: uppercase;
 }
 
