@@ -230,7 +230,33 @@ button.btn {
     padding: .312em 1.5em;
     text-transform: uppercase;
     text-align: left;
+    transition:  0.2s all ease;
 }
+
+.filter-btn {
+    font-family: var(--font-1-medium);
+    letter-spacing: 0.025em;
+    position: relative;
+}
+    .filter-btn:after {
+        border-top: 7.5px solid #fff;
+        border-right:  7.5px solid transparent;
+        border-left:  7.5px solid transparent;
+        content: '';
+        position: absolute;
+        right:  20px;
+        top:  50%;
+        transform:  translate(0,-50%);
+    }
+
+    .filter-btn:hover {
+        background: rgba(255,255,255,1);
+    }
+
+    .filter-btn:hover:after {
+        border-top-color:  var(--color-3);
+    }
+
 
 /**
  * Utilities

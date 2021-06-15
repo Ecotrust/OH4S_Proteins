@@ -18,7 +18,7 @@
   <div class="well">
     <div class="container">
       <div class="row">
-        <div class="col-6" id="categories-header" class='filtering' >
+        <div class="col-6 pe-4 pt-4 pb-4" id="categories-header" class='filtering' >
           <h2 class="subtitle">{{ page.welcome }}</h2>
           <div class="welcome-text">{{ page.welcome_text|richtext }}</div>
           <div id="selection-links" class="row">
@@ -37,14 +37,14 @@
         <!-- Filter Images -->
         <!-- Harcode and add filter images here -->
         <!-- FIlters -->
-        <div class="col-6 p-4">
+        <div class="col-6 pt-4 pb-4 ps-4">
         <!-- <div class="row row-cols-3 row-cols-md-5"> -->
-          <div class="row px-md-4">
+          <div class="row ps-md-3 pt-1 pb-1">
             <div class="col filter-prompt">
               <h2 class="filter-title">{{ page.filter_prompt }}</h2>
             </div>
           </div>
-          <div class="row justify-content-center align-items-center p-md-4">
+          <div class="row justify-content-center align-items-center ps-md-3 pt-3 pb-2">
             <div class="col text-center">
               <img src="{% static "/providers/img/icons/i_hand.svg" %}" />
             </div>
@@ -52,10 +52,10 @@
               <img src="{% static "/providers/img/icons/i_availability.svg" %}" />
             </div>
           </div>
-          <div class="row row-cols-1 row-cols-md-2 align-items-center px-md-4 py-md-2">
+          <div class="row row-cols-1 row-cols-md-2 align-items-center ps-md-3 pt-2 pb-2">
             {% for filter in filters %}
               <div class="col p-2">
-                <button type="button" class="btn w-100" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
+                <button type="button" class="btn w-100 filter-btn" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
 
                 <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-scrollable">
