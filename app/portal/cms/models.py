@@ -122,7 +122,14 @@ class ProducerPage(RoutablePageMixin, PortalPage):
 
 class ContentPage(PortalPage):
     content_title = RichTextField(blank=True, default='Page Title')
-    content = RichTextField(blank=True, default='Page content...')
+    content = StreamField([
+        ('image', ImageChooserBlock()),
+        ('text', RichTextBlock(blank=True,features=[
+            'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
+            'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
+            'embed', 'code'
+        ])),
+    ])
 
     content_panels = Page.content_panels + [
         FieldPanel('content_title', classname="full"),

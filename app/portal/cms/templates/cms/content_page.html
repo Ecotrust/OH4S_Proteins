@@ -9,6 +9,16 @@
 {% block body_class %}template-content{% endblock %}
 
 {% block content %}
-  {{ page.content_title|richtext }}
-  {{ page.content|richtext }}
+  <div class="container">
+    <div class="row">
+      <div class="content-page-title">
+        {{ page.content_title|richtext }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="page-content">
+        {{ page.content }}
+      </div>
+    </div>
+  </div>
 {% endblock %}
