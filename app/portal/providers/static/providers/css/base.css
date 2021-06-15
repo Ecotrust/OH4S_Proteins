@@ -64,9 +64,9 @@
 :root {
 
     /* Text */
-    --font-1: "ZillaSlab Medium", Georgia, serif;
-    --font-1-medium: var(--font-1);
-    --font-1-semibold: "ZillaSlab Medium", Georgia, serif;
+    --font-1: "ZillaSlab SemiBold", Georgia, serif;
+    --font-1-medium: "ZillaSlab Medium", Georgia, serif;
+    --font-1-semibold: var(--font-1);
     --font-1-bold: "ZillaSlab Bold", Georgia, serif;
 
     --font-2: "Nunito Bold", sans-serif;
@@ -165,14 +165,17 @@ h4 {
  */
 
 a {
-    text-decoration: underline;
+    color: inherit;
+    border-bottom: 1px solid var(--color-3);
+    text-decoration: none;
+    transition: all 0.2s ease-in-out;
 }
 
     a:hover {
+        color:  inherit;
         cursor: pointer;
-        outline: 1px 1px #fff;
+        border-bottom: 1px solid #fff;
         text-decoration: none;
-        transition: ;
     }
 
 a:target {}

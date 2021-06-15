@@ -13,3 +13,18 @@
 #categories_header {
     text-align: left;
 }
+
+.welcome-text {
+    font-size: 1.375em;
+    padding: 10px 14px;
+}
+
+.welcome-text > p:last-child {
+    font-family: var(--font-1-medium);
+    font-size: .875em;
+    line-height: 1.5;
+}
+
+#selection-links {
+    padding:  0 14px;
+}
