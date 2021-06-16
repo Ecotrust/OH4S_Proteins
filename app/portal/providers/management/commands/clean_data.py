@@ -53,6 +53,30 @@ class Command(BaseCommand):
                     print("--- Removing: {dupe.name}, {dupe.id}, dupe of {prime.name}, {prime.id}".format(dupe=dupe, prime=prime))
                     dupe.delete()
 
+        grass_id = ProductionPractice.objects.filter(name='Grass-fed')[0]
+        for practice in ProductionPractice.objects.filter(name__icontains='grass'):
+            if not practice == grass_id:
+                for provider in practice.provider_set.all():
+                    provider.productionPractices.remove(practice)
+                    provider.productionPractices.add(grass_id) # this will not duplicate grass_id if already associated.
+                practice.delete()
+
+        kosher_id = ProductionPractice.objects.filter(name='Kosher')[0]
+        for practice in ProductionPractice.objects.filter(name__icontains='kosher'):
+            if not practice == kosher_id:
+                for provider in practice.provider_set.all():
+                    provider.productionPractices.remove(practice)
+                    provider.productionPractices.add(kosher_id) # this will not duplicate kosher_id if already associated.
+                practice.delete()
+
+        usda_inspected_id = ProductionPractice.objects.filter(name='USDA Inspected')[0]
+        for practice in ProductionPractice.objects.filter(name__icontains='usda').filter(name__icontains='inspected'):
+            if not practice == usda_inspected_id:
+                for provider in practice.provider_set.all():
+                    provider.productionPractices.remove(practice)
+                    provider.productionPractices.add(usda_inspected_id) # this will not duplicate usda_inspected_id if already associated.
+                practice.delete()
+
         removed_ids = []
         for prime in ProductionPractice.objects.all():
             if prime.id not in removed_ids:
