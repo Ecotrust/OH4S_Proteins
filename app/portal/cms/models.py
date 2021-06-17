@@ -41,7 +41,7 @@ class HomePage(PortalPage):
         features=[
             'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
-            'embed', 'code'
+            'embed'
         ],
         default='<p><b>We connect school food buyers with Oregon producers who ' +
             'are ready to sell to schools</b></p>' +
@@ -83,7 +83,7 @@ class ResultsPage(PortalPage):
     features=[
     'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
     'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
-    'embed', 'code'
+    'embed'
     ],
     default='<p>Try removing filters to see more results</p>',
     help_text='Helpful advice for users confused by their results'
@@ -104,6 +104,22 @@ class ResultsPage(PortalPage):
 
 class ProducerPage(RoutablePageMixin, PortalPage):
     subtitle = models.CharField(max_length=255, default='Producer Profile', help_text="Page header subtitle")
+    bottom_blurb = StreamField([
+        ('image', ImageChooserBlock()),
+        ('text', RichTextBlock(blank=True,features=[
+            'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
+            'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
+            'embed'
+        ])),
+        ('google_form', LinkBlock(label="Google Form Link", template="cms/google_form.html", help_text="The URL for the Google form. This will be loaded into a popup when clicked.")),
+        ('HTML', RawHTMLBlock(label="Custom HTML", help_text="For fine-tuning very specific/custom blocks.")),
+        ('Embedded_Media', EmbedBlock(label="Embedded Media"))
+    ], min_num=0, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('subtitle', classname="full"),
+        FieldPanel('bottom_blurb', classname="full"),
+    ]
 
     @route(r'^$') # will override the default Page serving mechanism
     @route(r'^(\d+)/$')
@@ -136,7 +152,7 @@ class ContentPage(PortalPage):
         ('text', RichTextBlock(blank=True,features=[
             'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
-            'embed', 'code'
+            'embed'
         ])),
         ('google_form', LinkBlock(label="Google Form Link", template="cms/google_form.html", help_text="The URL for the Google form. This will be loaded into a popup when clicked.")),
         ('HTML', RawHTMLBlock(label="Custom HTML", help_text="For fine-tuning very specific/custom blocks.")),
@@ -167,7 +183,7 @@ class FooterPage(Page):
         ('text', RichTextBlock(features=[
             'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
-            'embed', 'code'
+            'embed'
         ])),
     ])
     column_2 = StreamField([
@@ -178,7 +194,7 @@ class FooterPage(Page):
         ('text', RichTextBlock(features=[
             'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
-            'embed', 'code'
+            'embed'
         ])),
     ])
     column_3 = StreamField([
@@ -189,7 +205,7 @@ class FooterPage(Page):
         ('text', RichTextBlock(features=[
             'h2', 'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
-            'embed', 'code'
+            'embed'
         ])),
     ])
 

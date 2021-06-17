@@ -158,6 +158,29 @@ class ProductionPractice(models.Model):
     class Meta:
         ordering = ('name',)
 
+class Language(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.name
+
+class ContactMethod(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+class School(models.Model):
+    name = models.CharField(max_length=255)
+    addressLine1 = models.CharField(max_length=255, verbose_name="Address Line 1", blank=True, null=True, default=None)
+    addressLine2 = models.CharField(max_length=255, verbose_name="Address Line 2", blank=True, null=True, default=None)
+    addressCity = models.CharField(max_length=255, verbose_name="City")
+    addressState = models.ForeignKey(PoliticalRegion, on_delete=models.PROTECT, verbose_name="State", related_name="schoolAddresses")
+    addressZipCode = models.CharField(max_length=25, verbose_name="Zip Code", blank=True, null=True, default=None)
+
+    def __str__(self):
+        return self.name
+
 class Provider(models.Model):
     TERNARY_YES_NO_CHOICES = (
         ('Unknown', 'Unknown'),
@@ -170,6 +193,7 @@ class Provider(models.Model):
     dateInfoAdded = models.DateTimeField(auto_now_add=True, verbose_name='Record created date')
     dateInfoUpdated = models.DateTimeField(auto_now=True, verbose_name='Date information updated', help_text="This is automatic.")
     soldToSchoolsBefore = models.CharField(max_length=20, choices=TERNARY_YES_NO_CHOICES, default='Unknown', verbose_name='This supplier has sold to schools before')
+    schoolsSoldTo = models.ManyToManyField(School, blank=True, verbose_name='Schools this supplier has done business with before')
     description = models.TextField(blank=True, null=True, default=None, verbose_name="Brief Description", help_text="2-3 Sentences")
     primaryContactFirstName = models.CharField(max_length=100, blank=True, null=True, default=None, verbose_name="Primary contact's first name")
     primaryContactLastName = models.CharField(max_length=100, blank=True, null=True, default=None, verbose_name="Primary contact's last name")
@@ -193,6 +217,9 @@ class Provider(models.Model):
     cellPhone = PhoneNumberField(blank=True, null=True, default=None, verbose_name="Cell Phone")
     email = models.EmailField(max_length=255, null=True, blank=True, default=None)
     websiteAddress = models.URLField(max_length=255, null=True, blank=True, default=None, verbose_name="Website Address", help_text="Try to include either http:// (good) or https:// (better if available)")
+
+    preferredLanguage = models.ManyToManyField(Language, blank=True, verbose_name='Preferred contact language')
+    preferredContactMethod = models.ManyToManyField(ContactMethod, blank=True, verbose_name='Preferred contact method')
 
     identities = models.ManyToManyField(Identity, blank=True)
 
@@ -245,6 +272,26 @@ class Provider(models.Model):
         for category_key in category_keys:
             ordered_categories.append(product_categories[category_key])
         return ordered_categories
+
+    @property
+    def dateUpdated(self):
+        monthNames=[
+            'None',
+            'Jan.',
+            'Feb.',
+            'Mar.',
+            'Apr.',
+            'May',
+            'June',
+            'July',
+            'Aug.',
+            'Sep.',
+            'Oct.',
+            'Nov.',
+            'Dec.',
+        ]
+        updateString = '{month} {day}, {year}'.format(month=monthNames[self.dateInfoUpdated.month], day=self.dateInfoUpdated.day, year=self.dateInfoUpdated.year)
+        return updateString
 
     def get_address_string(self, locationType=None, fullAddress=True):
         if locationType == 'Business':
