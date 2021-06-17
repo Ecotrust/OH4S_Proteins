@@ -259,13 +259,13 @@ button.btn {
     }
 
 
-.filter-btn {
+.btn-filter {
     font-family: var(--font-1-medium);
     letter-spacing: 0.025em;
     position: relative;
 }
 
-    .filter-btn:after {
+    .btn-filter:after {
         border-top: 7.5px solid #fff;
         border-right:  7.5px solid transparent;
         border-left:  7.5px solid transparent;
@@ -277,7 +277,7 @@ button.btn {
         transition:  0.2s all ease;
     }
 
-    .filter-btn:hover:after {
+    .btn-filter:hover:after {
         border-top-color:  var(--color-3);
     }
 
@@ -331,34 +331,34 @@ button.btn-secondary {
  *
  */
 
-.modal .btn-secondary {
+.modal-filter .btn-secondary {
     background: var(--color-2-55);
 }
     
-    .modal .btn-secondary:after {
+    .modal-filter .btn-secondary:after {
         background-image:  url("/static/providers/img/icons/i_arrow-right_white@2x.png");
     }
 
-    .modal .btn-secondary:hover {
+    .modal-filter .btn-secondary:hover {
         background: var(--color-2);
     }   
 
-.modal-content {
+.modal-filter .modal-content {
     border: none;
     padding:  4rem 2rem 2rem;
 }
 
-.modal-header {
+.modal-filter .modal-header {
     border:  none;
     padding-left: 25%;
 }
 
-.modal-body {
+.modal-filter .modal-body {
     color:  var(--color-3);
     padding-left: 25%;
 }
 
-.modal-footer {
+.modal-filter .modal-footer {
     border: none;
 }
 
