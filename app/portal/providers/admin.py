@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.urls import reverse
 from django.utils.html import format_html
-from .models import PoliticalRegion, PoliticalSubregion, DeliveryMethod, DeliveryMethod, Distributor, Provider, CapacityMeasurement, ComponentCategory, ProductCategory, Product, ProviderProduct, Identity, ProductionPractice
+from .models import PoliticalRegion, PoliticalSubregion, DeliveryMethod, DeliveryMethod, Distributor, Provider, CapacityMeasurement, ComponentCategory, ProductCategory, Product, ProviderProduct, Identity, ProductionPractice, School, Language, ContactMethod
 
 # class ProductInline(admin.StackedInline):
 class ProductInline(admin.TabularInline):
@@ -41,7 +41,7 @@ class ProductInline(admin.TabularInline):
     )
 
 class ProviderAdmin(admin.ModelAdmin):
-    filter_horizontal = ('identities', 'deliveryMethods', 'regionalAvailability', 'distributors', 'productionPractices')
+    filter_horizontal = ('schoolsSoldTo', 'identities', 'deliveryMethods', 'regionalAvailability', 'distributors', 'productionPractices', 'preferredLanguage', 'preferredContactMethod')
 
     list_display = ('name','outreachConductor','businessAddressCity',
     'businessAddressState','soldToSchoolsBefore','dateInfoUpdated')
@@ -75,6 +75,7 @@ class ProviderAdmin(admin.ModelAdmin):
                 'name',
                 ('outreachConductor', 'dateInfoUpdated',),
                 'soldToSchoolsBefore',
+                'schoolsSoldTo',
                 'description',
                 ('primaryContactFirstName', 'primaryContactLastName',),
             )
@@ -101,6 +102,8 @@ class ProviderAdmin(admin.ModelAdmin):
                 ('officePhone', 'cellPhone',),
                 'email',
                 'websiteAddress',
+                'preferredLanguage',
+                'preferredContactMethod',
             )
         }),
         ('Liability', {
@@ -164,6 +167,9 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ('full_name','capacityMeasurement','image')
     form = CategoryForm
 
+admin.site.register(School)
+admin.site.register(Language)
+admin.site.register(ContactMethod)
 admin.site.register(PoliticalRegion)
 admin.site.register(PoliticalSubregion)
 admin.site.register(DeliveryMethod)
