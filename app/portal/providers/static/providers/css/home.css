@@ -16,3 +16,15 @@
 #selection-links {
     padding:  0 14px;
 }
+
+.template-home .modal-filter .modal-content {
+    padding:  4rem 2rem 2rem;
+}
+
+.template-home .modal-filter .modal-header {
+    padding-left: 25%;
+}
+
+.template-home .modal-filter .modal-body {
+    padding-left: 25%;
+}

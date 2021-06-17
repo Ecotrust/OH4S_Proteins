@@ -44,3 +44,9 @@
 .template-results #categories-header {
 	border-right: none;
 }
+
+.template-results .list-group-item {
+	font-size: 1em;
+	letter-spacing: 0;
+	padding: .5rem 1rem;
+}

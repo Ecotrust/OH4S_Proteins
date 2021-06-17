@@ -46,7 +46,7 @@
                   <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
 
                   <div class="modal fade modal-filter" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-dialog modal-dialog-scrollable modal-xl">
                       <div class="modal-content">
                         <div class="modal-header">
                           <h3 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h3>
@@ -56,12 +56,14 @@
                           <form name="{{ filter.facet }}" class="filter-form">
                             {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
                               <div class="list-group">
+                                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 align-items-center">
                                 {% for option in filter.options %}
                                   <label class="list-group-item">
                                     <input class="form-check-input me-1" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
                                     {{ option.label }}
                                   </label>
                                 {% endfor %}
+                              </div>
                               </div>
                             {# {% elif filter.widget == 'multiselect-spatial' %} #}
                             {% else %}
