@@ -42,14 +42,14 @@ function populateFilterResults(arr) {
   resultsWrap.innerHTML = "";
   arr.forEach((provider, i) => {
     let providerUrl = `/producer/${provider.id}/`;
-    let addCol = true;
-    let providerCard = providerToCard(provider.name, providerUrl, addCol);
+    let providerCard = providerToCard(provider, providerUrl);
     resultsWrap.insertAdjacentHTML('beforeend', providerCard);
+    insertProductIcons(provider);
   });
 }
 
 $(document).ready(function() {
-  
+
   $('#filter-form').submit(function(event) {
     event.preventDefault();
   });
@@ -122,10 +122,42 @@ function filterQuery() {
  * Create HTML with class card fromn array
  * @type {[function]}
  */
-const providerToCard = (name, providerUrl) => {
-  const cardElement = `<div class="col"><a class="card h-100" href="${providerUrl}"><div class="card-body"><h5 class="card=title">${name}</h5></div></a></div>`;
+const providerToCard = (provider, providerUrl) => {
+  const cardElement = `<div class="col" id="results-card-${provider.id}">` +
+      `<a class="card h-100" href="${providerUrl}">` +
+        `<div class="card-body">` +
+          `<h5 class="card=title">${provider.name}</h5>` +
+          `<p>${provider.businessAddressCity}, ${provider.businessAddressState.initialism}</p>` +
+          `<div class='producer-products'></div>` +
+        `</div>` +
+      `</a>` +
+    `</div>`;
   return cardElement;
 }
+
+/**
+ * Insert html into results provider card: images of product categories
+ * @type {[function]}
+ */
+const insertProductIcons = (provider) => {
+  const imgWidth = 30;
+  const imgMargin = 10;
+  var providerCard = $(`#results-card-${provider.id}`);
+  var productImgDiv = providerCard.find('.producer-products').first();
+  var remainingCategoryCount = provider.product_categories.length;
+  var maxImgShown = parseInt(productImgDiv.width()/(imgWidth+imgMargin)) - 2;
+  var extraCategories = remainingCategoryCount - maxImgShown;
+  provider.product_categories.forEach((category, i) => {
+    if (i < maxImgShown) {
+        productImgDiv.append(`<img class="producer-product-image" src="${category.image}" style="width: ${imgWidth}px; margin-right: ${imgMargin}px"/>`);
+    }
+  });
+  if (extraCategories > 0) {
+    productImgDiv.append(`<span class="extra-products-count">+${extraCategories}</span>`);
+  }
+}
+
+
 
 /**
  * Get CSRF cookie
