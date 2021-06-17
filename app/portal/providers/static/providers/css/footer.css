@@ -12,13 +12,6 @@ footer {
   height: auto;
 }
 
-.footer-col .block-image img {
-  height: auto;
-  max-height: 36px;
-  width: auto;
-  max-width: 30px
-}
-
 footer div.footer-modal-launcher,
 footer a.link-external,
 footer a.link-internal {
@@ -32,6 +25,13 @@ footer a.link-internal {
 div.footer-col {
   padding: 0.4rem;
   min-height: 100%;
+}
+
+div.footer-col .block-image img {
+  height: auto;
+  max-height: 36px;
+  width: auto;
+  max-width: 30px;
 }
 
 div.footer-col>div.block-text>p{

@@ -23,10 +23,9 @@ from wagtail.core import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
 
 urlpatterns = [
-    path('providers/', include('providers.urls')),
-    path('admin/', admin.site.urls),
-    path('cms/', include(wagtailadmin_urls)),
-    path('documents/', include(wagtaildocs_urls)),
-    re_path(r'', include(wagtail_urls)),
+    re_path(r'^providers/?', include('providers.urls')),
+    re_path(r'^admin/?', admin.site.urls),
+    re_path(r'^cms/?', include(wagtailadmin_urls)),
+    re_path(r'^/?', include(wagtail_urls)),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
