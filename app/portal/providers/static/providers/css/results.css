@@ -5,3 +5,15 @@
 .results-advice {
 	font-size: 1.06375rem;
 }
+
+#results-count {
+	border-radius: 50%;
+	border: 2px solid #fff;
+	color: var(--color-1);
+	display: inline-block;
+	font-family: var(--font-2-black);
+	font-size: 1.5rem;
+	line-height: 1;
+	margin: 0 5px;
+	padding: .6125em;
+}
