@@ -6,7 +6,26 @@
 	font-size: 1.06375rem;
 }
 
-#results-count {
+#results-count:empty {
+	background: transparent;
+	display: inline-block;
+	height: 2rem;
+	margin: 0px 5px;
+	position: relative;
+	width: 60px;
+}
+
+	#results-count:empty:before {
+		content: "...";
+		font-family: var(--font-1-medium);
+		left:  50%;
+		letter-spacing: 2px;
+		position: absolute;
+		top: 50%;
+		transform: translate(-50%,-50%);
+	}
+
+#results-count:not(:empty) {
 	border-radius: 50%;
 	border: 2px solid #fff;
 	color: var(--color-1);
@@ -15,5 +34,9 @@
 	font-size: 1.5rem;
 	line-height: 1;
 	margin: 0 5px;
-	padding: .6125em;
+	padding: .6875em;
+}
+
+#categories-header h3 {
+	margin: 1rem 0 2rem;
 }
