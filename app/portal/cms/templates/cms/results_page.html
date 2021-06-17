@@ -23,83 +23,81 @@
           {{ page.filter_advice|richtext }}
           {{ page.filter_prompt|richtext }}
         </div>
-      </div>
-      <!-- FIlters -->
-      <div class="col-12 col-md-6 pt-4 pb-4 ps-4">
-        <div class="row ps-md-3 pt-1 pb-4">
-          <div class="col filter-prompt">
-            <h2 class="filter-title">{{ page.filter_prompt|richtext }}</h2>
+      
+        <!-- FIlters -->
+        <div class="col-12 col-md-6 pt-4 pb-4 ps-4">
+          <div class="row ps-md-3 pt-1 pb-4">
+            <div class="col filter-prompt">
+              <h2 class="filter-title">{{ page.filter_prompt|richtext }}</h2>
+            </div>
           </div>
-        </div>
-        <div class="row row-cols-1 row-cols-md-2 align-items-center ps-md-3 pt-2 pb-2">
-          {% for filter in filters %}
-            {% if filter.visible %}
-              <div class="col">
-            {% else %}
-              <div style="display: none;">
-            {% endif %}
-                <button type="button" class="btn btn-primary w-100" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
-                {% for option in filter.options %}
-                  {% if option.state %}
-                    <span class="badge bg-primary">{{ option.name }}</span>
-                  {% endif %}
-                {% endfor %}
-                <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-scrollable">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h3 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h3>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                      </div>
-                      <div class="modal-body">
-                        <form name="{{ filter.facet }}">
-                          {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
-                            <div class="list-group">
-                              {% for option in filter.options %}
-                                <label class="list-group-item">
-                                  <input class="form-check-input me-1" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
-                                  {{ option.label }}
-                                </label>
-                              {% endfor %}
-                            </div>
-                          {# {% elif filter.widget == 'multiselect-spatial' %} #}
-                          {% else %}
-                            <p>Add new widget options to template</p>
-                          {% endif %}
-                        </form>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-primary" onclick=filterQuery() data-bs-dismiss="modal">Apply</button>
+          <div class="row row-cols-1 row-cols-md-2 align-items-center ps-md-3 pt-2 pb-2">
+            {% for filter in filters %}
+              {% if filter.visible %}
+                <div class="py-2">
+              {% else %}
+                <div style="display: none;">
+              {% endif %}
+                  <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
+
+                  <div class="modal fade modal-filter" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h3 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h3>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form name="{{ filter.facet }}" class="filter-form">
+                            {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
+                              <div class="list-group">
+                                {% for option in filter.options %}
+                                  <label class="list-group-item">
+                                    <input class="form-check-input me-1" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                                    {{ option.label }}
+                                  </label>
+                                {% endfor %}
+                              </div>
+                            {# {% elif filter.widget == 'multiselect-spatial' %} #}
+                            {% else %}
+                              <p>Add new widget options to template</p>
+                            {% endif %}
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <div class="w-100 btn-toolbar justify-content-between">
+                            <button type="button" class="btn-clear">Clear</button>
+                            <button type="button" class="btn btn-primarybtn-apply" onclick="filterQuery()" data-bs-dismiss="modal">Apply</button>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
             {% endfor %}
           </div>
-      </div>
+        </div>
       <!-- end filters -->
     </div>
   </div>
 </div>
 
-  <div class="container">
-    <div class="well categories-container">
-      <div class="row p-4">
-        <div class="col text-center">
-          <em>Matching Providers</em>
-        </div>
+<div class="container">
+  <div class="well categories-container">
+    <div class="row p-4">
+      <div class="col text-center">
+        <em>Matching Providers</em>
       </div>
-      <div id="filter-results-wrap" class="row row-cols-2 g-1">
-        <div class="d-flex justify-content-end">
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+    </div>
+    <div id="filter-results-wrap" class="row row-cols-2 g-1">
+      <div class="d-flex justify-content-end">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
       </div>
     </div>
   </div>
+</div>
 
 {% endblock %}
 
