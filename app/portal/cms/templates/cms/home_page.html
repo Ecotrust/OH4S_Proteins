@@ -38,7 +38,6 @@
         <!-- Harcode and add filter images here -->
         <!-- FIlters -->
         <div class="col-12 col-md-6 pt-4 pb-4 ps-4">
-        <!-- <div class="row row-cols-3 row-cols-md-5"> -->
           <div class="row ps-md-3 pt-1 pb-4">
             <div class="col filter-prompt">
               <h2 class="filter-title">{{ page.filter_prompt }}</h2>
@@ -55,9 +54,9 @@
           <div class="row row-cols-1 row-cols-md-2 align-items-center ps-md-3 pt-2 pb-2">
             {% for filter in filters %}
               <div class="py-2">
-                <button type="button" class="btn w-100 filter-btn" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
+                <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
 
-                <div class="modal fade" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
+                <div class="modal fade modal-filter" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-scrollable modal-lg">
                     <div class="modal-content">
                       <div class="modal-header">
@@ -92,7 +91,7 @@
                 </div>
               </div>
             {% endfor %}
-            <div class="col py-2">
+            <div class="col-12 col-md-6 py-2">
               <button type="button" class="btn btn-secondary w-100" id='home-filter-button' onclick='go_to_results()'>Browse All Providers</button>
             </div>
           </div>
