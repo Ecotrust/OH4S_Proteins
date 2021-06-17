@@ -24,7 +24,6 @@
          url("../fonts/Nunito/web/Nunito-Bold.woff") format("woff"),
          url("../fonts/Nunito/web/Nunito-Bold.ttf") format("truetype");
     font-style: normal;
-    font-weight: normal;
 }
 
 @font-face {
@@ -41,7 +40,6 @@
          url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.woff") format("woff"),
          url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.ttf") format("truetype");
     font-style: normal;
-    font-weight: normal;
 }
 
 @font-face {
@@ -50,7 +48,6 @@
          url("../fonts/ZillaSlab/web/ZillaSlab-Medium.woff") format("woff"),
          url("../fonts/ZillaSlab/web/ZillaSlab-Medium.ttf") format("truetype");
     font-style: normal;
-    font-weight: normal;
 }
 
 

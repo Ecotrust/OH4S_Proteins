@@ -1,14 +1,21 @@
 {% load static %}
 {% load wagtailcore_tags %}
-<HTML>
+<!doctype html>
+<html lang="en">
   <head>
+    
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>OH4S</title>
+
     <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
-    <link rel="stylesheet" href="{% static "providers/css/normalize.css" %}">
-    <link rel="stylesheet" href="{% static "providers/libraries/bootstrap-5.0.1/css/bootstrap.min.css" %}">
-    <link rel="stylesheet" href="{% static "providers/css/base.css" %}">
-    <link rel="stylesheet" href="{% static "providers/css/header.css" %}">
-    <link rel="stylesheet" href="{% static "providers/css/footer.css" %}">
+    <link rel="stylesheet" href="{% static 'providers/css/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'providers/libraries/bootstrap-5.0.1/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'providers/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'providers/css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'providers/css/footer.css' %}">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141387987-1"></script>
@@ -20,9 +27,8 @@
       gtag('config', 'UA-141387987-1', { 'allow_ad_personalization_signals': false });
     </script>
 
-    <script src="{% static "providers/libraries/jquery-3.6.0.min.js" %}"></script>
-    {# <script src="{% static "providers/libraries/popper.min.js" %}"></script> #}
-    <script src="{% static "providers/libraries/bootstrap-5.0.1/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static 'providers/libraries/jquery-3.6.0.min.js' %}"></script>
+    <script src="{% static 'providers/libraries/bootstrap-5.0.1/js/bootstrap.bundle.min.js' %}"></script>
 
     {% block additional_header %}
     {% endblock %}
@@ -52,6 +58,9 @@
     {% block modals %}
     {% endblock %}
 
+    {% block js %}
+      <script src="{% static '/providers/js/base.js' %}"></script>
+    {% endblock %}
 
     {% block additional_js %}
     {% endblock %}
