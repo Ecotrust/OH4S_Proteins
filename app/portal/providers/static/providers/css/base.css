@@ -262,6 +262,11 @@ button.btn {
         width: 18px;
     }
 
+/* For any richtext elements inside a filter-title */
+.filter-title * {
+    display: inline;
+}
+
 
 .btn-filter {
     font-family: var(--font-1-medium);
