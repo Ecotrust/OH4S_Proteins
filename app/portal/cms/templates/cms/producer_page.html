@@ -84,6 +84,67 @@
                 {{ provider.websiteAddress }}
               </a>
             {% endif %}
+            {% if provider.businessAddressCity and provider.businessAddressState %}
+                <h4>
+                  {% if provider.physicalAddressCity and not provider.physicalAddressIsSame %}
+                    Business Address:
+                  {% else %}
+                    Location:
+                  {% endif %}
+                </h4>
+                <p>
+                  {% if provider.businessAddressLine1 %}
+                    {{ provider.businessAddressLine1 }}<br />
+                  {% endif %}
+                  {% if provider.businessAddressLine2 and not provider.businessAddressLine2 == '' %}
+                    {{ provider.businessAddressLine2 }}<br />
+                  {% endif %}
+                  {{ provider.businessAddressCity }}, {{ provider.businessAddressState.initialism }}
+                  {% if provider.businessAddressZipCode and not provider.businessAddressZipCode == '' %}
+                    <br />
+                    {{ provider.businessAddressZipCode }}
+                  {% endif %}
+                </p>
+              {% if not provider.physicalAddressIsSame and provider.physicalAddressCity and provider.physicalAddressState %}
+                  <h4>Physical Location:</h4>
+                  <p>
+                    {% if provider.physicalAddressLine1 and not provider.physicalAddressLine1 == '' %}
+                      {{ provider.physicalAddressLine1 }}<br />
+                    {% endif %}
+                    {% if provider.physicalAddressLine2 and not provider.physicalAddressLine2 == '' %}
+                      {{ provider.physicalAddressLine2 }}<br />
+                    {% endif %}
+                    {{ provider.physicalAddressCity }}, {{ provider.physicalAddressState.initialism }}
+                    {% if provider.physicalAddressZipCode and not provider.physicalAddressZipCode == '' %}
+                      <br />
+                      {{ provider.physicalAddressZipCode }}
+                    {% endif %}
+                  </p>
+              {% endif %}
+            {% endif %}
+            {% if provider.regionalAvailability.all.count > 0 %}
+              <h4>Availability By County</h4>
+              <div class='expandable'>
+                {% for county in provider.regionalAvailability.all %}
+                  <div>
+                    {{ county.name }}
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+            {% if provider.productLiabilityInsurance == 'Yes' %}
+              {% if provider.productLiabilityInsuranceAmount %}
+                <h4>Liability Insurance</h4>
+                <div>
+                  {{ provider.productLiabilityInsuranceAmount }}
+                </div>
+              {% else %}
+                <h4>Has Liability Insurance</h4>
+                <div>
+                  {{ provider.productLiabilityInsurance }}
+                </div>
+              {% endif %}
+            {% endif %}
             {% if provider.identities.all.count > 0 %}
               <h4>
                 Self-Identifiers
@@ -124,44 +185,6 @@
             {% endif %}
           </div>
           <div class="col-6" id="provider-left-right">
-            {% if provider.businessAddressCity and provider.businessAddressState %}
-                <h4>
-                  {% if provider.physicalAddressCity and not provider.physicalAddressIsSame %}
-                    Business Address:
-                  {% else %}
-                    Location:
-                  {% endif %}
-                </h4>
-                <p>
-                  {% if provider.businessAddressLine1 %}
-                    {{ provider.businessAddressLine1 }}<br />
-                  {% endif %}
-                  {% if provider.businessAddressLine2 and not provider.businessAddressLine2 == '' %}
-                    {{ provider.businessAddressLine2 }}<br />
-                  {% endif %}
-                  {{ provider.businessAddressCity }}, {{ provider.businessAddressState.initialism }}
-                  {% if provider.businessAddressZipCode and not provider.businessAddressZipCode == '' %}
-                    <br />
-                    {{ provider.businessAddressZipCode }}
-                  {% endif %}
-                </p>
-              {% if not provider.physicalAddressIsSame and provider.physicalAddressCity and provider.physicalAddressState %}
-                  <h4>Physical Location:</h4>
-                  <p>
-                    {% if provider.physicalAddressLine1 and not provider.physicalAddressLine1 == '' %}
-                      {{ provider.physicalAddressLine1 }}<br />
-                    {% endif %}
-                    {% if provider.physicalAddressLine2 and not provider.physicalAddressLine2 == '' %}
-                      {{ provider.physicalAddressLine2 }}<br />
-                    {% endif %}
-                    {{ provider.physicalAddressCity }}, {{ provider.physicalAddressState.initialism }}
-                    {% if provider.physicalAddressZipCode and not provider.physicalAddressZipCode == '' %}
-                      <br />
-                      {{ provider.physicalAddressZipCode }}
-                    {% endif %}
-                  </p>
-              {% endif %}
-            {% endif %}
             {% if provider.deliveryMethods.all.count > 0 %}
               <h4>Delivery</h4>
               {% for method in provider.deliveryMethods.all %}
@@ -178,19 +201,61 @@
                 </div>
               {% endfor %}
             {% endif %}
-            {% if provider.regionalAvailability.all.count > 0 %}
-              <h4>Availability By County</h4>
-              <div class='expandable'>
-                {% for county in provider.regionalAvailability.all %}
+            {% if provider.orderMinimum %}
+              <h4>Order Minimum</h4>
+              <div>
+                {{ provider.orderMinimum }}
+              </div>
+            {% endif %}
+            {% if provider.preferredContactMethod.all.count > 0 %}
+              <h4>Best Way To Contact</h4>
+              {% for method in provider.preferredContactMethod.all %}
+                <div>
+                  {{ method.name }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            {% if provider.preferredLanguage.all.count > 0 %}
+              <h4>
+                Language{% if provider.preferredLanguage.all.count > 1 %}s{% endif %}
+                Spoken
+              </h4>
+              {% for language in provider.preferredLanguage.all %}
+                <div>
+                  {{ language.name }}
+                </div>
+              {% endfor %}
+            {% endif %}
+            {% if provider.soldToSchoolsBefore == 'Yes' %}
+              {% if provider.schoolsSoldTo.all.count > 0 %}
+                <h4>School Districts Sold To</h4>
+                {% for district in provider.schoolsSoldTo.all %}
                   <div>
-                    {{ county.name }}
+                    {{ district.name }}
                   </div>
                 {% endfor %}
-              </div>
+              {% else %}
+                <h4>Has sold to schools before</h4>
+                <div>
+                  {{ provider.soldToSchoolsBefore }}
+                </div>
+              {% endif %}
+            {% endif %}
+            {% if provider.notes %}
+              <h4>Additional Notes</h4>
+                <div>
+                  {{ provider.notes }}
+                </div>
             {% endif %}
           </div>
         </div>
+        <div class="row">
+          <div class="col-12 update-tag">
+            Information last updated: {{ provider.dateUpdated }}
+          </div>
+        </div>
       </div>
+
       <div class="col-6" id="provider-right-column">
         <h4>Products</h4>
         <div class="flex-container">

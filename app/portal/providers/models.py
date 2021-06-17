@@ -273,6 +273,26 @@ class Provider(models.Model):
             ordered_categories.append(product_categories[category_key])
         return ordered_categories
 
+    @property
+    def dateUpdated(self):
+        monthNames=[
+            'None',
+            'Jan.',
+            'Feb.',
+            'Mar.',
+            'Apr.',
+            'May',
+            'June',
+            'July',
+            'Aug.',
+            'Sep.',
+            'Oct.',
+            'Nov.',
+            'Dec.',
+        ]
+        updateString = '{month} {day}, {year}'.format(month=monthNames[self.dateInfoUpdated.month], day=self.dateInfoUpdated.day, year=self.dateInfoUpdated.year)
+        return updateString
+
     def get_address_string(self, locationType=None, fullAddress=True):
         if locationType == 'Business':
             fields = [

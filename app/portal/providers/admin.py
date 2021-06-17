@@ -115,7 +115,8 @@ class ProviderAdmin(admin.ModelAdmin):
             'fields': (
                 'deliveryMethods',
                 'regionalAvailability',
-                ('orderMinimum', 'deliveryMinimum',),
+                # ('orderMinimum', 'deliveryMinimum',),
+                'orderMinimum',
                 'distributors',
             )
         }),
