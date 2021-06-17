@@ -116,7 +116,7 @@ def get_results_filter_context(request, context={}):
         'name': 'Producer Identity',
         'facet': 'identities',
         'widget': 'multiselect',
-        'visible': False,
+        'visible': True,
         'options': []
     }
     for identity in Identity.objects.all().order_by('name'):
@@ -132,7 +132,7 @@ def get_results_filter_context(request, context={}):
         'facet': 'availability',
         'widget': 'multiselect-spatial',
         'data-layer': None,
-        'visible': False,
+        'visible': True,
         'options': []
     }
     for county in PoliticalSubregion.objects.all().order_by('name'):
@@ -147,7 +147,7 @@ def get_results_filter_context(request, context={}):
         'name': 'USDA Meal Components',
         'facet': 'component_categories',
         'widget': 'multiselect',
-        'visible': False,
+        'visible': True,
         'options': []
     }
     for category in ComponentCategory.objects.all().order_by('order', 'name'):
