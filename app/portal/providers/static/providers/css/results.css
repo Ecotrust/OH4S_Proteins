@@ -40,3 +40,7 @@
 #categories-header h3 {
 	margin: 1rem 0 2rem;
 }
+
+.template-results #categories-header {
+	border-right: none;
+}

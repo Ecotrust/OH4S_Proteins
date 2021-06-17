@@ -33,7 +33,7 @@
     {% block additional_header %}
     {% endblock %}
   </head>
-  <body>
+  <body class="{% block body_class %}template-base{% endblock %}">
     <div class="body-wrap">
       {% block header-content %}
         {% include "cms/header.html" %}
