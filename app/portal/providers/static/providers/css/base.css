@@ -325,6 +325,21 @@ button.btn-secondary {
 
 
 /*
+ * Richtext fields
+ *
+ */
+
+[data-block-key] {
+    font-family: var(--font-1-medium);
+}
+
+[data-block-key] strong,
+[data-block-key] b {
+    font-family: var(--font-1-bold);
+    font-weight: normal;
+}
+
+/*
  * Forms
  *
  */
