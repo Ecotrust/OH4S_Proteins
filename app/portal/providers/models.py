@@ -670,6 +670,7 @@ class ProviderProduct(models.Model):
     capacityMeasurement = models.ForeignKey(CapacityMeasurement, null=True, blank=True, default=None, on_delete=models.SET_NULL, verbose_name="Capacity (Measurement)")
     description = models.TextField(null=True, blank=True, default=None, help_text="Discription shown in search view", verbose_name="Product Description")
     notes = models.TextField(null=True, blank=True, default=None, verbose_name="Additional Notes")
+    packSize = models.TextField(null=True, blank=True, default=None, help_text="Unit size of orders and other details", verbose_name="Packaging Info")
 
     #######################################################################
     #   The following may need to be "Provider Specific"
