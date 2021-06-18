@@ -56,7 +56,7 @@
             </div>
             <div class="col-11">
               <p><b>
-                <a href = "mailto: {{ provider.email }}?subject = OH4S Inquiry">
+                <a href = "mailto:{{ provider.email }}?subject=OH4S%20Inquiry">
                   {{ provider.email }}
                 </a>
               </b></p>
@@ -306,15 +306,46 @@
               <div class="col category-column-header">
                 Form
               </div>
+              <div class="col category-column-header">
+                USDA Meal Components
+              </div>
+              {% if category.pack_size_present %}
+                <div class="col category-column-header">
+                  Pack Size
+                </div>
+              {% endif %}
+              {% if category.notes_present %}
+                <div class="col category-column-header">
+                  Notes
+                </div>
+              {% endif %}
             </div>
             {% for product in category.products %}
               <div class="row">
                 <div class="col">
-                  {{ product.0 }}
+                  {{ product.variety }}
                 </div>
                 <div class="col">
-                  {{ product.1 }}
+                  {{ product.form }}
                 </div>
+                <div class="col">
+                  {{ product.usda_meal_components }}
+                </div>
+                {% if category.pack_size_present %}
+                  <div class="col">
+                    {% if product.pack_size %}
+                      {{ product.pack_size }}
+                    {% endif %}
+                  </div>
+                {% endif %}
+                {% if category.notes_present %}
+                  <div class="col">
+                    {% if product.notes %}
+                      {{ product.notes }}
+                    {% endif %}
+                  </div>
+                {% endif %}
+
               </div>
             {% endfor %}
           </div>

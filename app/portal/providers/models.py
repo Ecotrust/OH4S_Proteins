@@ -260,12 +260,25 @@ class Provider(models.Model):
             if not product_ancestor_category.name in product_categories.keys():
                 product_categories[product_ancestor_category.name] = {
                     'object': product_ancestor_category,
-                    'products': []
+                    'products': [],
+                    'descriptions_present': False,
+                    'pack_size_present': False,
+                    'notes_present': False
                 }
-            product_categories[product_ancestor_category.name]['products'].append([
-                product.name,
-                product.category.name
-            ])
+            if product.description:
+                product_categories[product_ancestor_category.name]['descriptions_present'] = True
+            if product.packSize:
+                product_categories[product_ancestor_category.name]['pack_size_present'] = True
+            if product.notes:
+                product_categories[product_ancestor_category.name]['notes_present'] = True
+            product_categories[product_ancestor_category.name]['products'].append({
+                'variety': product.name,
+                'form': product.category.name,
+                'description': product.description,
+                'pack_size': product.packSize,
+                'notes': product.notes,
+                'usda_meal_components': ', '.join([x.name for x in product.category.componentCategories.all()]),
+            })
         ordered_categories = []
         category_keys = [x for x in product_categories.keys()]
         category_keys.sort()
