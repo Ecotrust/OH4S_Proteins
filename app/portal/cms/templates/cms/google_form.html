@@ -1,5 +1,5 @@
 {% load wagtailcore_tags %}
-<button class="btn btn-primary modal-launcher" data-bs-toggle="modal" data-bs-target="#{{ value.text|slugify }}{{ value.link|slugify }}Modal">{{ value.text }}</button>
+<div class="modal-launcher" data-bs-toggle="modal" data-bs-target="#{{ value.text|slugify }}{{ value.link|slugify }}Modal">{{ value.text }}</div>
 
 <div class="modal fade" id="{{ value.text|slugify }}{{ value.link|slugify }}Modal" tabindex="-1" aria-labelledby="{{ value.text|slugify }}{{ value.link|slugify }}Label" aria-hidden="true">
   <div class="modal-dialog">
