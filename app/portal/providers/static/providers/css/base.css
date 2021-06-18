@@ -262,6 +262,11 @@ button.btn {
         width: 18px;
     }
 
+/* For any richtext elements inside a filter-title */
+.filter-title * {
+    display: inline;
+}
+
 
 .btn-filter {
     font-family: var(--font-1-medium);
@@ -320,6 +325,21 @@ button.btn-secondary {
 
 
 /*
+ * Richtext fields
+ *
+ */
+
+[data-block-key] {
+    font-family: var(--font-1-medium);
+}
+
+[data-block-key] strong,
+[data-block-key] b {
+    font-family: var(--font-1-bold);
+    font-weight: normal;
+}
+
+/*
  * Forms
  *
  */
@@ -349,17 +369,14 @@ button.btn-secondary {
 
 .modal-filter .modal-content {
     border: none;
-    padding:  4rem 2rem 2rem;
 }
 
 .modal-filter .modal-header {
     border:  none;
-    padding-left: 25%;
 }
 
 .modal-filter .modal-body {
     color:  var(--color-3);
-    padding-left: 25%;
 }
 
 .modal-filter .modal-footer {
