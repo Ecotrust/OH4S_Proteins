@@ -273,7 +273,7 @@ class Provider(models.Model):
                 product_categories[product_ancestor_category.name]['notes_present'] = True
 
             product_name = product.name
-            if product_name.split(',')[0].lower() == product_ancestor_category.name.lower():
+            if ',' in product_name and product_name.split(',')[0].lower() == product_ancestor_category.name.lower():
                 product_name = ','.join(product_name.split(',')[1:])
             product_categories[product_ancestor_category.name]['products'].append({
                 'variety': product_name,
