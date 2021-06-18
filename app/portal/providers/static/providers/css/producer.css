@@ -13,3 +13,8 @@
     flex: 100%;
   }
 }
+
+.category-column-header,
+.img-container {
+  text-align: center;
+}

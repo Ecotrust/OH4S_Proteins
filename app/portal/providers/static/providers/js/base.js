@@ -12,7 +12,12 @@ $(document).ready(function() {
 	$('.modal-footer').find('.btn-apply').on('click', function(e) {
 		let $checked = $('.modal.show form input:checked')
 		if ($checked.length > 0) {
-			
+
 		}
-	})
+	});
+
+	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+	var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+	  return new bootstrap.Tooltip(tooltipTriggerEl)
+	});
 });

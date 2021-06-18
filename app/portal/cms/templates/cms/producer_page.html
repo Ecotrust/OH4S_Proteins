@@ -4,7 +4,7 @@
 
 {% block additional_header %}
   {{ block.super }}
-  <link rel="stylesheet" href="{% static "providers/css/producer.css" %}">
+  <link rel="stylesheet" href="{% static 'providers/css/producer.css' %}">
 {% endblock %}
 
 {% block body_class %}template-producer{% endblock %}
@@ -307,11 +307,11 @@
                 Form
               </div>
               <div class="col category-column-header">
-                USDA Meal Components
+                Components
               </div>
               {% if category.pack_size_present %}
                 <div class="col category-column-header">
-                  Pack Size
+                  Packaging
                 </div>
               {% endif %}
               {% if category.notes_present %}
@@ -324,6 +324,9 @@
               <div class="row">
                 <div class="col">
                   {{ product.variety }}
+                  {% if product.description %}
+                    <span class='info-icon' data-bs-toggle="tooltip" data-bs-placement="top" title="{{ product.description }}">&#9432;</span>
+                  {% endif %}
                 </div>
                 <div class="col">
                   {{ product.form }}
@@ -339,9 +342,9 @@
                   </div>
                 {% endif %}
                 {% if category.notes_present %}
-                  <div class="col">
+                  <div class="col img-container">
                     {% if product.notes %}
-                      {{ product.notes }}
+                      <img src="{% static 'providers/img/icons/i_note.svg' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ product.notes }}" />
                     {% endif %}
                   </div>
                 {% endif %}
