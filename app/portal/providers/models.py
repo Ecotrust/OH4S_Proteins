@@ -271,8 +271,12 @@ class Provider(models.Model):
                 product_categories[product_ancestor_category.name]['pack_size_present'] = True
             if product.notes:
                 product_categories[product_ancestor_category.name]['notes_present'] = True
+
+            product_name = product.name
+            if product_name.split(',')[0].lower() == product_ancestor_category.name.lower():
+                product_name = ','.join(product_name.split(',')[1:])
             product_categories[product_ancestor_category.name]['products'].append({
-                'variety': product.name,
+                'variety': product_name,
                 'form': product.category.name,
                 'description': product.description,
                 'pack_size': product.packSize,
