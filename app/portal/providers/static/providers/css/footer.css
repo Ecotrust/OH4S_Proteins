@@ -16,10 +16,14 @@ footer div.footer-modal-launcher,
 footer a.link-external,
 footer a.link-internal {
   color: var(--color-3);
+  cursor: pointer;
+  display: inline-block;
   text-decoration: underline;
   font-family: var(--font-2-black);
   font-size: var(--font-size-h4);
-  cursor: pointer;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  vertical-align: middle;
 }
 
 div.footer-col {

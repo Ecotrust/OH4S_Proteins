@@ -183,8 +183,10 @@ main a {
         text-decoration: none;
     }
 
-a:target {}
-a:active {}
+main a:target {}
+main a:active {
+    cursor: pointer;
+}
 
 img {
     height: auto;
@@ -389,3 +391,13 @@ button.btn-secondary {
  * classes that do something helpful
  *
  */
+
+.link-internal:after {
+    background-image: url("/static/providers/img/icons/i_play-right.svg");
+    content: "";
+    display: inline-block;
+    height: 15px;
+    margin: 0 8px 2px;
+    vertical-align: middle;
+    width: 15px;
+}
