@@ -392,12 +392,20 @@ button.btn-secondary {
  *
  */
 
-.link-internal:after {
-    background-image: url("/static/providers/img/icons/i_play-right.svg");
+.link-internal:after,
+.link-external:after {
     content: "";
     display: inline-block;
     height: 15px;
     margin: 0 8px 2px;
     vertical-align: middle;
     width: 15px;
+}
+
+.link-internal:after {
+    background-image: url("/static/providers/img/icons/i_play-right.svg");
+}
+
+.link-external:after {
+    background-image: url("/static/providers/img/icons/i_external-link.svg");
 }
