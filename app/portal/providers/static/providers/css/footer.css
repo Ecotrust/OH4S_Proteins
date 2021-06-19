@@ -22,6 +22,7 @@ footer a.link-internal {
   font-family: var(--font-2-black);
   font-size: var(--font-size-h4);
   letter-spacing: 1px;
+  margin: 0.5rem 0;
   text-transform: uppercase;
   vertical-align: middle;
 }
