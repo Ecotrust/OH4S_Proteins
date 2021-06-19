@@ -14,26 +14,7 @@ class ProductInline(admin.TabularInline):
                 'name',
                 'category',
                 'description',
-            )
-        }),
-        ('Liability', {
-            'fields': (
-                ('productLiabilityInsurance', 'productLiabilityInsuranceAmount',),
-            )
-        }),
-        ('Availability', {
-            'fields': (
-                'deliveryMethods',
-                'regionalAvailability',
-                ('orderMinimum', 'deliveryMinimum',),
-                'distributors',
-            )
-        }),
-        ('Additional Info', {
-            'fields': (
-                'productionPractices',
-                ('capacityValue', 'capacityMeasurement',),
-                # 'image',
+                'packSize',
                 'notes',
             )
         }),
@@ -134,26 +115,6 @@ class ProviderAdmin(admin.ModelAdmin):
         # }),
     )
 
-    # add_form_template = '%s/TEKDB/templates/admin/CitationsForm.html' % BASE_DIR
-    # change_form_template = 'admin/ProviderForm.html'
-
-# class ProductAdmin(admin.ModelAdmin):
-#
-#     def add_view(self, request, form_url='', extra_context=None):
-#         from urllib.parse import urlparse, parse_qs
-#         extra_context = extra_context or {}
-#         # import ipdb; ipdb.set_trace()
-#         querystring = urlparse(request.get_raw_uri()).query
-#         if '_provider' in parse_qs(querystring).keys():
-#             try:
-#                 extra_context['provider'] = int(parse_qs(querystring)['_provider'])
-#             except Exception as e:
-#                 pass
-#         return super().add_view(
-#             request, form_url, extra_context=extra_context,
-#         )
-#
-#     # add_form_template = 'admin/ProductForm.html'
 
 class CategoryForm(forms.ModelForm):
     class Meta:

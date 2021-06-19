@@ -260,12 +260,29 @@ class Provider(models.Model):
             if not product_ancestor_category.name in product_categories.keys():
                 product_categories[product_ancestor_category.name] = {
                     'object': product_ancestor_category,
-                    'products': []
+                    'products': [],
+                    'descriptions_present': False,
+                    'pack_size_present': False,
+                    'notes_present': False
                 }
-            product_categories[product_ancestor_category.name]['products'].append([
-                product.name,
-                product.category.name
-            ])
+            if product.description:
+                product_categories[product_ancestor_category.name]['descriptions_present'] = True
+            if product.packSize:
+                product_categories[product_ancestor_category.name]['pack_size_present'] = True
+            if product.notes:
+                product_categories[product_ancestor_category.name]['notes_present'] = True
+
+            product_name = product.name
+            if ',' in product_name and product_name.split(',')[0].lower() == product_ancestor_category.name.lower():
+                product_name = ','.join(product_name.split(',')[1:])
+            product_categories[product_ancestor_category.name]['products'].append({
+                'variety': product_name,
+                'form': product.category.name,
+                'description': product.description,
+                'pack_size': product.packSize,
+                'notes': product.notes,
+                'usda_meal_components': ', '.join([x.name for x in product.category.componentCategories.all()]),
+            })
         ordered_categories = []
         category_keys = [x for x in product_categories.keys()]
         category_keys.sort()
@@ -670,6 +687,7 @@ class ProviderProduct(models.Model):
     capacityMeasurement = models.ForeignKey(CapacityMeasurement, null=True, blank=True, default=None, on_delete=models.SET_NULL, verbose_name="Capacity (Measurement)")
     description = models.TextField(null=True, blank=True, default=None, help_text="Discription shown in search view", verbose_name="Product Description")
     notes = models.TextField(null=True, blank=True, default=None, verbose_name="Additional Notes")
+    packSize = models.TextField(null=True, blank=True, default=None, help_text="Unit size of orders and other details", verbose_name="Packaging Info")
 
     #######################################################################
     #   The following may need to be "Provider Specific"
