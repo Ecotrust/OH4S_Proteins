@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from django.conf import settings
+from django.views.generic import RedirectView
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail.core import urls as wagtail_urls
@@ -24,8 +25,10 @@ from wagtail.documents import urls as wagtaildocs_urls
 
 urlpatterns = [
     re_path(r'^providers/?', include('providers.urls')),
-    re_path(r'^admin/?', admin.site.urls),
-    re_path(r'^cms/?', include(wagtailadmin_urls)),
+    re_path(r'^admin/', admin.site.urls),
+    re_path(r'^admin$', RedirectView.as_view(url='admin/')),
+    re_path(r'^cms/', include(wagtailadmin_urls)),
+    re_path(r'^cms$', RedirectView.as_view(url='cms/')),
     re_path(r'^/?', include(wagtail_urls)),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

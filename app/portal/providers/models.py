@@ -119,6 +119,14 @@ class Distributor(models.Model):
             'businessAddressZipCode': self.businessAddressZipCode
         }
 
+    @property
+    def has_popup(self):
+        # If we have any info about how to contact the distributor, make it available
+        if self.phone != None or self.email != None or self.websiteAddress != None or self.fax != None or self.businessAddressLine1 != None:
+            return True
+        else:
+            return False
+
     class Meta:
         ordering = ('name',)
 

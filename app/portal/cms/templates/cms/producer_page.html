@@ -154,9 +154,7 @@
                   {{ identity.name }}
                   {% if identity.description %}
                     &nbsp; &nbsp;
-                    <span onclick="alert('{{ identity.description }}')">
-                      &#9432;
-                    </span>
+                    <span class='info-icon' data-bs-toggle="tooltip" data-bs-placement="top" title="{{ identity.description }}">&#9432;</span>
                   {% endif %}
                 </div>
               {% endfor %}
@@ -176,9 +174,7 @@
                   {% endif %}
                   {% if practice.description %}
                      &nbsp; &nbsp;
-                    <span onclick="alert('{{ practice.description }}')">
-                      &#9432;
-                    </span>
+                    <span class='info-icon' data-bs-toggle="tooltip" data-bs-placement="top" title="{{ practice.description }}">&#9432;</span>
                   {% endif %}
                 </div>
               {% endfor %}
@@ -196,7 +192,11 @@
             {% if provider.distributors.all.count > 0 %}
               <h4>Distributors</h4>
               {% for distributor in provider.distributors.all %}
-                <div>
+                {% if distributor.has_popup %}
+                  <div data-bs-toggle="modal" data-bs-target="#distributor-{{ distributor.id }}">
+                {% else %}
+                  <div>
+                {% endif %}
                   {{ distributor.name }}
                 </div>
               {% endfor %}
@@ -351,6 +351,73 @@
 
               </div>
             {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+  {% for distributor in provider.distributors.all %}
+    <div class="modal fade" id="distributor-{{ distributor.id }}" tabindex="-1" aria-labelledby="distributor-{{ dstributor.id }}Label" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>{{ distributor.name }}</h3>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            {% if distributor.websiteAddress %}
+              <div class='distributor-form-field'>
+                <b>Website:</b>
+                <a href="{{ distributor.websiteAddress}}" target="_blank">
+                  {{ distributor.websiteAddress}}
+                </a>
+              </div>
+            {% endif %}
+            {% if distributor.email %}
+              <div class='distributor-form-field'>
+                <b>Email:</b>
+                <a href = "mailto:{{ distributor.email }}">
+                  {{ distributor.email }}
+                </a>
+              </div>
+            {% endif %}
+            {% if distributor.phone %}
+              <div class='distributor-form-field'>
+                <b>Phone:</b> {{ distributor.phone.as_national }}
+              </div>
+            {% endif %}
+            {% if distributor.fax %}
+              <div class='distributor-form-field'>
+                <b>Fax:</b> {{ distributor.fax.as_national }}
+              </div>
+            {% endif %}
+            {% if distributor.primaryContactFirstName  or distributor.primaryContactLastName %}
+              <div class='distributor-form-field'>
+                <b>Primary Contact:</b> {{ distributor.primaryContactFirstName }} {{ distributor.primaryContactLastName }}
+              </div>
+            {% endif %}
+            {% if distributor.businessAddressLine1 or distributor.businessAddressCity or distributor.businessAddressState %}
+              <div class='distributor-form-field'>
+                <b>Address:</b>
+                <div class='distributor-address'>
+                  {% if distributor.businessAddressLine1 %}
+                    {{ distributor.businessAddressLine1 }} <br />
+                    {% if distributor.businessAddressLine2 %}
+                      {{ distributor.businessAddressLine2 }} <br />
+                    {% endif %}
+                  {% endif %}
+                  {% if distributor.businessAddressCity %}
+                    {{ distributor.businessAddressCity }},
+                  {% endif %}
+                  {% if distributor.businessAddressState %}
+                    {{ distributor.businessAddressState.initialism }} <br />
+                  {% endif %}
+                  {% if distributor.businessAddressZipCode %}
+                    {{ distributor.businessAddressZipCode }}
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
           </div>
         </div>
       </div>
