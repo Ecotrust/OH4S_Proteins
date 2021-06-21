@@ -70,7 +70,9 @@
     --font-2-bold: var(--font-2);
     --font-2-black: "Nunito Black", sans-serif;
 
-    --font-size: 16px;
+    --font-size: 12px;
+    --font-size-medium: 14px;
+    --font-size-large: 16px;
     --font-size-p: 1.125em;
     --font-size-h1: 2.875em;
     --font-size-h2: 1em;
@@ -87,6 +89,19 @@
 
     /* Utils */
     --border-radius: 2em;
+
+    /* 
+     * Breakpoints 
+     * 
+     * NOTE: screen vars appear not to work with @media queries; use for reference
+     * won't work:  `@media min-width(var(--screen-small))`
+     * instead:  `@media min-width(23.5em)`
+     * 
+     * */
+    --screen-small: 23.5em;
+    --screen-medium: 48em;
+    --screen-large: 80em;
+
 }
 
 
@@ -386,6 +401,7 @@ button.btn-secondary {
 }
 
 
+
 /**
  * Utilities
  * classes that do something helpful
@@ -408,4 +424,32 @@ button.btn-secondary {
 
 .link-external:after {
     background-image: url("/static/providers/img/icons/i_external-link.svg");
+}
+
+.screen-min-medium {
+    display: none;
+}
+
+
+
+/**
+ * Media Queries
+ * 
+ */
+
+@media screen and (min-width: 23.5em) {
+    body {
+        font-size: var(--font-size-medium);
+    }
+}
+
+/* Medium Screen */
+@media screen and (min-width:  48em) {
+    body {
+        font-size: var(--font-size-large);
+    }
+
+    .screen-min-medium {
+        display: flex;
+    }
 }

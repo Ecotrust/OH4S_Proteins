@@ -3,10 +3,6 @@
   /* text-align: center; */
 }
 
-#categories-header {
-  border-right: 2px solid white;
-}
-
 hr {
   border-top: 0.1rem solid #0098a8;
 }
@@ -172,4 +168,11 @@ li > label {
 #collapse-product-category {
   max-height: 50vh;
   overflow-y: auto;
+}
+
+
+@media screen and (min-width:  48em) {
+  #categories-header {
+    border-right: 2px solid white;
+  }
 }
