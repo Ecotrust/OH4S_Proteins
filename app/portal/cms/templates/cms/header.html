@@ -4,12 +4,12 @@
   <div class="row">
     <nav class="navbar">
       <div class="container">
-        <div class="col-2">
+        <div class="col-3">
           <a class="navbar-brand" href="/">
-            <img class="project-logo" src="/media/{{ header_image.file }}">
+            <img class="project-logo" src="{{ header_image }}">
           </a>
         </div>
-        <div class="col-10">
+        <div class="col-9">
           <h1 class="navbar-text">{% block site_title %}{{ header_title }}{% endblock %}</h1>
         </div>
       </div>

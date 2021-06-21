@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 
 # Create your views here.
 def get_footer_context(request, context):
@@ -17,10 +18,10 @@ def get_header_context(request, context):
     headers = Header.objects.all()
     if headers.count() == 0:
         title = 'Oregon Harvest for Schools Directory'
-        image = 'providers/img/defaults/logo-oh4s-large.jpg'
+        image = '{}providers/img/defaults/logo-oh4s-large.jpg'.format(settings.STATIC_URL)
     else:
         title = headers[0].title
-        image = headers[0].image
+        image = "/media/{}".format(headers[0].image.file)
 
     context['header_title'] = title
     context['header_image'] = image
