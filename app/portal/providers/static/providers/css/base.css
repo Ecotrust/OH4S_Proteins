@@ -70,7 +70,8 @@
     --font-2-bold: var(--font-2);
     --font-2-black: "Nunito Black", sans-serif;
 
-    --font-size: 12px;
+    --font-size: 1em;
+    --font-size-small:  12px;
     --font-size-medium: 14px;
     --font-size-large: 16px;
     --font-size-p: 1.125em;
@@ -128,7 +129,7 @@ html {
 body {
     color: var(--color-3);
     font-family: var(--font-1);
-    font-size: var(--font-size);
+    font-size: var(--font-size-small);
     height: 100%;
 }
 
@@ -439,17 +440,23 @@ button.btn-secondary {
 
 @media screen and (min-width: 23.5em) {
     body {
-        font-size: var(--font-size-medium);
+        font-size: var(--font-size-small);
     }
 }
 
 /* Medium Screen */
 @media screen and (min-width:  48em) {
     body {
-        font-size: var(--font-size-large);
+        font-size: var(--font-size-medium);
     }
 
     .screen-min-medium {
         display: flex;
+    }
+}
+
+@media screen and (min-width:  70em) {
+    body {
+        font-size: var(--font-size-large);
     }
 }

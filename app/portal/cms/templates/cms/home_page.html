@@ -39,7 +39,7 @@
               <img src="{% static "/providers/img/icons/i_availability.svg" %}" />
             </div>
           </div>
-          <div class="row row-cols-1 row-cols-md-2 align-items-center ps-md-3 pt-2 pb-2">
+          <div class="row row-cols-1 row-cols-xl-2 align-items-center ps-md-3 pt-2 pb-2">
             {% for filter in filters %}
               <div class="py-2">
                 <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
@@ -79,7 +79,7 @@
                 </div>
               </div>
             {% endfor %}
-            <div class="col-12 col-md-6 py-2">
+            <div class="col-12 col-xl-6 py-2">
               <button type="button" class="btn btn-secondary w-100" id='home-filter-button' onclick='go_to_results()'>Browse All Providers</button>
             </div>
           </div>
@@ -98,7 +98,7 @@
       </div>
     </div>
 
-    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 g-1">
+    <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-xl-6 g-2">
       <div class="col categories-flex-container">
         <div class="card h-100 category-link" onclick="go_to_results()">
           <div class="category-container">
