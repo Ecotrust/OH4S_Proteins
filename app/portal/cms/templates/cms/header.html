@@ -4,10 +4,14 @@
   <div class="row">
     <nav class="navbar">
       <div class="container">
-        <a class="navbar-brand" href="/">
-          <img class="project-logo" src="{{ PROJECT_IMAGE }}">
-        </a>
-        <h1 class="navbar-text">{% block site_title %}Oregon Harvest for Schools Directory{% endblock %}</h1>
+        <div class="col-2">
+          <a class="navbar-brand" href="/">
+            <img class="project-logo" src="/media/{{ header_image.file }}">
+          </a>
+        </div>
+        <div class="col-10">
+          <h1 class="navbar-text">{% block site_title %}{{ header_title }}{% endblock %}</h1>
+        </div>
       </div>
     </nav>
   </div>
