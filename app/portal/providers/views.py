@@ -207,16 +207,22 @@ def get_results_filter_context(request, context={}):
     details_filter = {
         'name': 'Product Details',
         'facet': 'product_forms',
-        'widget': 'multiselect',
+        'widget': 'compound-multiselect',
         'visible': True,
-        'options': []
+        'option_categories': [],
+        'options': {}
     }
     for category in ProductCategory.objects.exclude(parent=None).order_by('name'):
-        details_filter['options'].append({
+        prime_name = category.get_prime_ancestor().name
+        if prime_name not in details_filter['options'].keys():
+            details_filter['options'][prime_name] = []
+        details_filter['options'][prime_name].append({
             'value': category.pk,
             'label': category.name,
             'state': 'product_forms' in current_state.keys() and category.pk in [int(x) for x in current_state['product_forms']]
         })
+    details_filter['option_categories'] = [x for x in details_filter['options'].keys()]
+    details_filter['option_categories'].sort()
     filters.append(details_filter)
 
     distributor_filter = {
