@@ -1,6 +1,7 @@
 footer {
   background: var(--color-2);
   bottom: 0;
+  padding: 3rem 0;
 }
 
 .footer-brand {
@@ -8,8 +9,8 @@ footer {
 }
 
 .footer-brand img {
-  width: 76px;
   height: auto;
+  width: 48px;
 }
 
 footer div.footer-modal-launcher,
@@ -54,5 +55,18 @@ div.footer-col>div.block-text>p{
 }
 
 footer .navbar>div.footer-container {
-  align-items: flex-start;
+  align-items: center;
+  flex-direction: column;
+}
+
+@media screen and (min-width: 23.5em) {
+  footer .navbar>div.footer-container {
+    align-items: flex-start;
+    flex-direction: row;
+  }
+
+  .footer-brand img {
+    width: 76px;
+    height: auto;
+  }
 }

@@ -70,7 +70,10 @@
     --font-2-bold: var(--font-2);
     --font-2-black: "Nunito Black", sans-serif;
 
-    --font-size: 16px;
+    --font-size: 1em;
+    --font-size-small:  12px;
+    --font-size-medium: 14px;
+    --font-size-large: 16px;
     --font-size-p: 1.125em;
     --font-size-h1: 2.875em;
     --font-size-h2: 1em;
@@ -87,6 +90,19 @@
 
     /* Utils */
     --border-radius: 2em;
+
+    /* 
+     * Breakpoints 
+     * 
+     * NOTE: screen vars appear not to work with @media queries; use for reference
+     * won't work:  `@media min-width(var(--screen-small))`
+     * instead:  `@media min-width(23.5em)`
+     * 
+     * */
+    --screen-small: 23.5em;
+    --screen-medium: 48em;
+    --screen-large: 80em;
+
 }
 
 
@@ -113,7 +129,7 @@ html {
 body {
     color: var(--color-3);
     font-family: var(--font-1);
-    font-size: var(--font-size);
+    font-size: var(--font-size-small);
     height: 100%;
 }
 
@@ -319,6 +335,35 @@ button.btn-secondary {
     }
 
 
+button.btn-back {
+    font-family: var(--font-1-medium);
+    font-size: .875em;
+    letter-spacing: 0.025em;
+    line-height: 1;
+    position: relative;
+    padding-left:  48px;
+    text-align: right;
+}
+    
+    button.btn-back:after {
+        background-image:  url("/static/providers/img/icons/i_arrow-left_white@2x.png");
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        content: '';
+        height: 18px;
+        position: absolute;
+        left: 12px;
+        top:  50%;
+        transform:  translate(0,-50%);
+        width: 18px;
+    }
+
+    button.btn-back:hover {
+        color:  var(--color-1);
+        background:  rgba(255,255,255,0.55);
+    }
+
+
 .btn-clear {
     border: 2px solid var(--color-2);
     border-radius: 0;
@@ -386,6 +431,7 @@ button.btn-secondary {
 }
 
 
+
 /**
  * Utilities
  * classes that do something helpful
@@ -408,4 +454,58 @@ button.btn-secondary {
 
 .link-external:after {
     background-image: url("/static/providers/img/icons/i_external-link.svg");
+}
+
+.screen-min-medium {
+    display: none;
+}
+
+.seperator-right {
+    border-right:  2px solid #fff;
+}
+
+.icon-circle {
+    align-items: center;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    height: 36px;
+    justify-content: center;
+    width: 36px;
+}
+
+.icon-circle img {
+    max-height: 20px;
+    width: auto;
+    max-width: 20px;
+}
+
+
+
+/**
+ * Media Queries
+ * 
+ */
+
+@media screen and (min-width: 23.5em) {
+    body {
+        font-size: var(--font-size-small);
+    }
+}
+
+/* Medium Screen */
+@media screen and (min-width:  48em) {
+    body {
+        font-size: var(--font-size-medium);
+    }
+
+    .screen-min-medium {
+        display: flex;
+    }
+}
+
+@media screen and (min-width:  70em) {
+    body {
+        font-size: var(--font-size-large);
+    }
 }
