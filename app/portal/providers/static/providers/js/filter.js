@@ -95,9 +95,11 @@ function toggleEnableFilterBtns() {
 }
 
 function filterQuery() {
-  // disable addition query
+  // Disable addition query
   toggleEnableFilterBtns();
-
+  // Add results spinner
+  showResultsSpinner();
+  
   var filterReq = {};
   var allFormsObj = document.forms;
   var allFormsArr = document.querySelectorAll('form');
