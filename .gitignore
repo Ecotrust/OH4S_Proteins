@@ -3,6 +3,9 @@ app/portal/static
 app/portal/providers/static/providers/img/oh4s/
 app/portal/providers/static/providers/libraries/bootstrap-4.2.1-dist/
 app/portal/media/category_images/
+app/portal/media/original_images/
+app/portal/media/images/
+deploy/backups/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

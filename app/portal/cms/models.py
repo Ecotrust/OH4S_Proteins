@@ -10,10 +10,11 @@ from wagtail.images.models import Image, AbstractImage, AbstractRendition
 from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.snippets.models import register_snippet
 
-from providers.views import header as get_header_context, get_category_context, get_homepage_filter_context, get_results_filter_context
+from providers.views import get_category_context, get_homepage_filter_context, get_results_filter_context
 from providers.models import Provider
-from cms.views import get_footer_context
+from cms.views import get_header_context, get_footer_context
 
 class LinkBlock(StructBlock):
     text = CharBlock()
@@ -215,3 +216,21 @@ class FooterPage(Page):
         StreamFieldPanel('column_2'),
         StreamFieldPanel('column_3'),
     ]
+
+@register_snippet
+class Header(models.Model):
+    title = models.CharField(max_length=255)
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+
+    panels = [
+        FieldPanel('title'),
+        FieldPanel('image')
+    ]
+
+    def __str__(self):
+        return self.title
