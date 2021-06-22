@@ -118,13 +118,18 @@
 
 .category-column-header,
 .img-container {
-  text-align: center;
+  /*text-align: center;*/
 }
 
 .distributor-address {
   margin-left: 1.5rem;
 }
 
+img.provider-product-image {
+  max-height: 120px;
+  width: auto;
+  max-width: 120px;
+}
 
 /* Responsive layout - from one column layout (100%) to two-column layout (50%) */
 @media (min-width: 48em) {
