@@ -12,7 +12,7 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.snippets.models import register_snippet
 
-from providers.views import header as get_category_context, get_homepage_filter_context, get_results_filter_context
+from providers.views import get_category_context, get_homepage_filter_context, get_results_filter_context
 from providers.models import Provider
 from cms.views import get_header_context, get_footer_context
 
