@@ -298,10 +298,10 @@
 
       <div class="col-6" id="provider-right-column">
         <h4>Products</h4>
-        <div class="flex-container">
+        <div class="row row-cols-1 row-cols-md-2 justify-content-stretch my-2 g-3">
           {% for category in provider.product_categories %}
-            <div class="product flex-item">
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#category-{{ category.object.id }}">
+            <div class="col product">
+              <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#category-{{ category.object.id }}">
                 <image src="{{ category.object.image_string }}" />
                 {{ category.object.name }}
               </button>

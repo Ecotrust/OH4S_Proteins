@@ -15,7 +15,7 @@
   border-bottom: 2px solid var(--color-2);
   color:  var(--color-3);
   display: inline-block;
-  margin: 2rem auto .75rem;
+  margin: 2rem auto 1rem;
   padding-bottom:  .375rem;
   text-transform: uppercase;
 }
@@ -88,6 +88,32 @@
   right: -1px;
   top: 3rem;
   width: 2px;
+}
+
+#provider-right-column .btn-filter {
+  height: 100%;
+}
+
+  #provider-right-column .btn-filter:after {
+    border-top-color: var(--color-1);
+  }
+
+  #provider-right-column .btn-filter:hover:before {
+    background: var(--color-2);
+    border-radius: 2em;
+    bottom: 0;
+    content: "";
+    left: 0;
+    opacity: .35;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+
+#provider-right-column .btn-filter img {
+  height: 50px;
+  margin-right: 10px;
+  width: 50px;
 }
 
 .category-column-header,
