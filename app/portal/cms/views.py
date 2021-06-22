@@ -18,7 +18,7 @@ def get_header_context(request, context):
     headers = Header.objects.all()
     if headers.count() == 0:
         title = 'Oregon Harvest for Schools Directory'
-        image = '{}providers/img/defaults/logo-oh4s-large.jpg'.format(settings.STATIC_URL)
+        image = '{}providers/img/defaults/OH4S-2021-Logo-Cranberry-RGB.svg'.format(settings.STATIC_URL)
     else:
         title = headers[0].title
         image = "/media/{}".format(headers[0].image.file)

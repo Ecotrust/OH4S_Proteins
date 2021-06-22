@@ -5,6 +5,8 @@ footer {
 }
 
 .footer-brand {
+  margin: 0 auto;
+  position: relative;
   max-width: 125px;
 }
 
@@ -41,6 +43,7 @@ footer a.link-internal {
 div.footer-col {
   padding: 0.4rem;
   min-height: 100%;
+  text-align: center;
 }
 
 div.footer-col .block-image img {
@@ -69,8 +72,15 @@ footer .navbar>div.footer-container {
     flex-direction: row;
   }
 
+  .footer-brand {
+    margin: 0;
+    position: static;
+  }
+  
   .footer-brand img {
     width: 76px;
+    margin: 0;
+    position: static;
     height: auto;
   }
 }
