@@ -216,11 +216,16 @@ def get_results_filter_context(request, context={}):
         prime_name = category.get_prime_ancestor().name
         if prime_name not in details_filter['options'].keys():
             details_filter['options'][prime_name] = []
+        if ' > ' in str(category):
+            label = ' > '.join(str(category).split(' > ')[1:])
+        else:
+            label = str(category)
         details_filter['options'][prime_name].append({
             'value': category.pk,
-            'label': category.name,
+            'label': label,
             'state': 'product_forms' in current_state.keys() and category.pk in [int(x) for x in current_state['product_forms']]
         })
+        details_filter['options'][prime_name] = sorted(details_filter['options'][prime_name], key = lambda i: (i['label'].lower()))
     details_filter['option_categories'] = [x for x in details_filter['options'].keys()]
     details_filter['option_categories'].sort()
     filters.append(details_filter)

@@ -22,7 +22,16 @@ function populateFilterForms(filterArr) {
   filterArr.forEach((filter, i) => {
     var facet = filter.facet;
     if (filter.visible) {
-      filter.options.forEach((option, i) => {
+      if (filter.widget == 'compound-multiselect') {
+        var options = [];
+        for (var i = 0; i < filter.option_categories.length; i++) {
+          opt_name = filter.option_categories[i];
+          options.push(filter.options[opt_name]);
+        }
+      } else {
+        var options = filter.options;
+      }
+      options.forEach((option, i) => {
         if (option.state == true) {
           document.querySelector(`input[name="${facet}"][value="${option.value}"]`).checked = true;
         }
