@@ -439,12 +439,19 @@ button.btn-back {
  *
  */
 
+.link-internal {
+    position: relative;
+}
+
 .link-internal:after,
 .link-external:after {
+    bottom: 0;
     content: "";
     display: inline-block;
     height: 15px;
     margin: 0 8px 2px;
+    position: absolute;
+    right: -32px;
     vertical-align: middle;
     width: 15px;
 }
