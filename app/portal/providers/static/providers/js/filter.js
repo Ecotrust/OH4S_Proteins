@@ -120,7 +120,19 @@ function showResultsSpinner() {
   </div>`;
 }
 
+// Disable all filter buttons until query finishes
+function toggleEnableFilterBtns() {
+  document.querySelectorAll('.btn-filter').forEach(function(btn) {
+    btn.toggleAttribute('disabled');
+  });
+}
+
 function filterQuery() {
+  // Disable addition query
+  toggleEnableFilterBtns();
+  // Add results spinner
+  showResultsSpinner();
+  
   var filterReq = {};
   var allFormsObj = document.forms;
   var allFormsArr = document.querySelectorAll('form');
@@ -144,6 +156,8 @@ function filterQuery() {
     },
     data: JSON.stringify(filterReq),
     success: function(response) {
+      // enable additional queries
+      toggleEnableFilterBtns();
       // needs work
       updateFilterForms(response[1]);
       populateFilterResults(response[0].providers);

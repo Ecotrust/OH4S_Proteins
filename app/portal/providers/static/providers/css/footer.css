@@ -5,6 +5,8 @@ footer {
 }
 
 .footer-brand {
+  margin: 0 auto;
+  position: relative;
   max-width: 125px;
 }
 
@@ -23,7 +25,7 @@ footer a.link-internal {
   font-family: var(--font-2-black);
   font-size: var(--font-size-h4);
   letter-spacing: 1px;
-  margin: 0.5rem 0;
+  margin: 0;
   text-transform: uppercase;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
@@ -41,6 +43,7 @@ footer a.link-internal {
 div.footer-col {
   padding: 0.4rem;
   min-height: 100%;
+  text-align: center;
 }
 
 div.footer-col .block-image img {
@@ -56,7 +59,11 @@ div.footer-col>div.block-text>p{
 
 footer .navbar>div.footer-container {
   align-items: center;
-  flex-direction: column;
+  flex-direction: column-reverse;
+}
+
+[class*="block"] {
+  margin: 0 0 1rem;
 }
 
 @media screen and (min-width: 23.5em) {
@@ -65,8 +72,15 @@ footer .navbar>div.footer-container {
     flex-direction: row;
   }
 
+  .footer-brand {
+    margin: 0;
+    position: static;
+  }
+  
   .footer-brand img {
     width: 76px;
+    margin: 0;
+    position: static;
     height: auto;
   }
 }

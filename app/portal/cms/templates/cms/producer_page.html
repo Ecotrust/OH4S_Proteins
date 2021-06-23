@@ -317,15 +317,15 @@
   <!-- Modals -->
   {% for category in provider.product_categories %}
     <div class="modal fade" id="category-{{ category.object.id }}" tabindex="-1" aria-labelledby="category-{{ category.object.id }}Label" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog modal-xl">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <div class="row">
-              <div class="col">
-                <image src="{{ category.object.image_string }}" />
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <image src="{{ category.object.image_string }}" class="provider-product-image" />
               </div>
               <div class="col">
                 <h1>{{ category.object.name }}</h1>
@@ -334,29 +334,41 @@
             <div class="row">
               <h3 class="col">Forms Available</h3>
             </div>
-            <div class="row">
-              <div class="col category-column-header">
-                Variety
-              </div>
-              <div class="col category-column-header">
-                Form
-              </div>
-              <div class="col category-column-header">
-                Components
-              </div>
-              {% if category.pack_size_present %}
+            {% if category.pack_size_present %}
+              <!-- Use 5 cols if pack size coloumn -->
+              <div class="row row-cols-sm-1 row-cols-lg-5">
+            {% else %}
+              <!-- Use 4 cols if no pack size coloumn -->
+              <div class="row row-cols-sm-1 row-cols-lg-4">
+            {% endif %}
                 <div class="col category-column-header">
-                  Packaging
+                  <h4>Variety</h4>
                 </div>
-              {% endif %}
-              {% if category.notes_present %}
                 <div class="col category-column-header">
-                  Notes
+                  <h4>Form</h4>
                 </div>
-              {% endif %}
+                <div class="col category-column-header">
+                  <h4>Components</h4>
+                </div>
+                {% if category.pack_size_present %}
+                  <div class="col category-column-header">
+                    <h4>Packaging</h4>
+                  </div>
+                {% endif %}
+                {% if category.notes_present %}
+                  <div class="col category-column-header">
+                    <h4>Notes</h4>
+                  </div>
+                {% endif %}
             </div>
             {% for product in category.products %}
-              <div class="row">
+              {% if category.pack_size_present %}
+                 <!-- Use 5 cols if pack size coloumn -->
+                <div class="row row-cols-sm-1 row-cols-lg-5">
+              {% else %}
+                <!-- Use 4 cols if no pack size coloumn -->
+                <div class="row row-cols-sm-1 row-cols-lg-4">
+              {% endif %}
                 <div class="col">
                   {{ product.variety }}
                   {% if product.description %}
