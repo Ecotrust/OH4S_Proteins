@@ -213,9 +213,12 @@ def get_results_filter_context(request, context={}):
         'options': {}
     }
     for category in ProductCategory.objects.exclude(parent=None).order_by('name'):
-        prime_name = category.get_prime_ancestor().name
+        prime_category = category.get_prime_ancestor()
+        prime_name = prime_category.name
         if prime_name not in details_filter['options'].keys():
             details_filter['options'][prime_name] = []
+            details_filter['option_categories'].append((prime_name, prime_category.id))
+
         if ' > ' in str(category):
             label = ' > '.join(str(category).split(' > ')[1:])
         else:
@@ -226,7 +229,6 @@ def get_results_filter_context(request, context={}):
             'state': 'product_forms' in current_state.keys() and category.pk in [int(x) for x in current_state['product_forms']]
         })
         details_filter['options'][prime_name] = sorted(details_filter['options'][prime_name], key = lambda i: (i['label'].lower()))
-    details_filter['option_categories'] = [x for x in details_filter['options'].keys()]
     details_filter['option_categories'].sort()
     filters.append(details_filter)
 
@@ -504,8 +506,8 @@ def filter(request):
       providers_response['providers'].append(p.to_json())
 
     # TODO: determine correct filters that can be universally applied given current provider context
-    filters_reponse = request.POST
+    filters_response = [x for x in request.POST.keys()][0]
     # TODO: apply provided filter state from request to this new filter list
 
-    data = [providers_response, filters_reponse]
+    data = [providers_response, filters_response]
     return JsonResponse(data, safe=False)

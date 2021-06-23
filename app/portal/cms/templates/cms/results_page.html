@@ -56,12 +56,12 @@
                               <div class="list-group">
                                 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 align-items-center">
                                 {% if filter.widget == 'compound-multiselect' %}
-                                  {% for category in filter.option_categories %}
-                                    {% if filter.options|get_item:category|length > 0 %}
-                                      <div class="compound-multiselect-category">
-                                        <h4 data-bs-toggle="collapse" data-bs-target="#{{ category|slugify }}"=>{{ category }}</h4>
-                                        <div class="compound-multiselect-category-options collapse" id="{{ category|slugify }}">
-                                          {% for option in filter.options|get_item:category %}
+                                  {% for category_tuple in filter.option_categories %}
+                                    {% if filter.options|get_item:category_tuple.0|length > 0 %}
+                                      <div class="compound-multiselect-category" id="compound-multiselect-category-{{ filter.facet }}-{{ category_tuple.1 }}">
+                                        <h4 data-bs-toggle="collapse" data-bs-target="#{{ category_tuple.0|slugify }}-{{ category_tuple.1 }}"=>{{ category_tuple.0 }}</h4>
+                                        <div class="compound-multiselect-category-options collapse" id="{{ category_tuple.0|slugify }}-{{ category_tuple.1 }}">
+                                          {% for option in filter.options|get_item:category_tuple.0 %}
                                             <label class="list-group-item">
                                               <input class="form-check-input me-1" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
                                               {{ option.label }}
