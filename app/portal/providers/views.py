@@ -503,11 +503,17 @@ def filter(request):
 
     providers_response = {'providers': []}
     for p in providers:
-      providers_response['providers'].append(p.to_json())
+      providers_response['providers'].append({
+        'id': p.id,
+        'name': p.name,
+        'businessAddressCity': p.businessAddressCity,
+        'businessAddressState': {
+            'initialism': p.businessAddressState.initialism
+        },
+        'product_categories': [{'image':x['object'].image_string} for x in p.product_categories]
+      })
 
-    # TODO: determine correct filters that can be universally applied given current provider context
     filters_response = [x for x in request.POST.keys()][0]
-    # TODO: apply provided filter state from request to this new filter list
 
     data = [providers_response, filters_response]
     return JsonResponse(data, safe=False)
