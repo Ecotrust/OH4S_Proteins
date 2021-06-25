@@ -3,6 +3,12 @@
   /* text-align: center; */
 }
 
+.category-header {
+  font-family: var(--font-2-black);
+  font-size:  1.125rem;
+  letter-spacing: 1px;
+}
+
 hr {
   border-top: 0.1rem solid #0098a8;
 }
@@ -20,8 +26,8 @@ hr {
 .filtering.container-fluid > .well:before {
   border-left: 38px solid transparent;
   border-right: 38px solid transparent;
-  border-top: 35px solid var(--color-2);
-  bottom: -35px;
+  border-top: 30px solid var(--color-2);
+  bottom: -25px;
   left: 50%;
   content: "";
   position: absolute;
