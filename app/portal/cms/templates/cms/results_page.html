@@ -1,6 +1,7 @@
 {% extends "cms/base.html" %}
 {% load static %}
 {% load wagtailcore_tags %}
+{% load cms_extras %}
 
 {% block additional_header %}
   <link rel="stylesheet" href="{% static "providers/css/categories.css" %}">
@@ -51,15 +52,33 @@
                         </div>
                         <div class="modal-body">
                           <form name="{{ filter.facet }}" class="filter-form">
-                            {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
+                            {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' or filter.widget == 'compound-multiselect' %}
                               <div class="list-group">
                                 <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 align-items-center">
-                                {% for option in filter.options %}
-                                  <label class="list-group-item">
-                                    <input class="form-check-input me-1" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
-                                    {{ option.label }}
-                                  </label>
-                                {% endfor %}
+                                {% if filter.widget == 'compound-multiselect' %}
+                                  {% for category_tuple in filter.option_categories %}
+                                    {% if filter.options|get_item:category_tuple.0|length > 0 %}
+                                      <div class="compound-multiselect-category" id="compound-multiselect-category-{{ filter.facet }}-{{ category_tuple.1 }}">
+                                        <h4 data-bs-toggle="collapse" data-bs-target="#{{ category_tuple.0|slugify }}-{{ category_tuple.1 }}"=>{{ category_tuple.0 }}</h4>
+                                        <div class="compound-multiselect-category-options collapse" id="{{ category_tuple.0|slugify }}-{{ category_tuple.1 }}">
+                                          {% for option in filter.options|get_item:category_tuple.0 %}
+                                            <label class="list-group-item">
+                                              <input class="form-check-input me-1" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                                              {{ option.label }}
+                                            </label>
+                                          {% endfor %}
+                                        </div>
+                                      </div>
+                                    {% endif %}
+                                  {% endfor %}
+                                {% else %}
+                                  {% for option in filter.options %}
+                                    <label class="list-group-item">
+                                      <input class="form-check-input me-1" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                                      {{ option.label }}
+                                    </label>
+                                  {% endfor %}
+                                {% endif %}
                               </div>
                               </div>
                             {# {% elif filter.widget == 'multiselect-spatial' %} #}

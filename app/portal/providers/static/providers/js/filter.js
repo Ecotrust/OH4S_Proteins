@@ -22,13 +22,46 @@ function populateFilterForms(filterArr) {
   filterArr.forEach((filter, i) => {
     var facet = filter.facet;
     if (filter.visible) {
-      filter.options.forEach((option, i) => {
+      if (filter.widget == 'compound-multiselect') {
+        var options = [];
+        for (var i = 0; i < filter.option_categories.length; i++) {
+          opt_name = filter.option_categories[i][0];
+          options.push(filter.options[opt_name]);
+        }
+      } else {
+        var options = filter.options;
+      }
+      options.forEach((option, i) => {
         if (option.state == true) {
           document.querySelector(`input[name="${facet}"][value="${option.value}"]`).checked = true;
         }
       });
     }
   });
+}
+
+function updateFilterForms(filterDef) {
+  // The code below is specific to the 'product_categories' and 'product_forms'
+  // filters of the OH4S portal - we  wouldn't want (or know how) to do
+  // this for every possible 'compound-multiselect' field. In the future, if
+  // this is re-used, perhaps the 'filter' variable set in results_page.html
+  // could track and define these relationships and be handled in a generic
+  // way here...
+
+  var filter_obj = JSON.parse(filterDef);
+  var filter_update_fields = Object.keys(filter_obj);
+  if (filter_update_fields.indexOf('product_categories') >= 0 && filter_obj['product_categories'].length > 0){
+    // hide all product_form categories
+    $('.compound-multiselect-category').hide();
+    // loop through product_categories ids
+    filter_obj['product_categories'].forEach((category_id, i) => {
+      // show each corresponding product_form category
+      $('#compound-multiselect-category-product_forms-'+category_id).show();
+    });
+  } else {
+    $('.compound-multiselect-category').show();
+  }
+
 }
 
 function populateFilterResults(arr) {
@@ -126,7 +159,7 @@ function filterQuery() {
       // enable additional queries
       toggleEnableFilterBtns();
       // needs work
-      populateFilterForms([response[1]]);
+      updateFilterForms(response[1]);
       populateFilterResults(response[0].providers);
     }
   });

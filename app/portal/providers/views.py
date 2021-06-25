@@ -207,16 +207,29 @@ def get_results_filter_context(request, context={}):
     details_filter = {
         'name': 'Product Details',
         'facet': 'product_forms',
-        'widget': 'multiselect',
+        'widget': 'compound-multiselect',
         'visible': True,
-        'options': []
+        'option_categories': [],
+        'options': {}
     }
     for category in ProductCategory.objects.exclude(parent=None).order_by('name'):
-        details_filter['options'].append({
+        prime_category = category.get_prime_ancestor()
+        prime_name = prime_category.name
+        if prime_name not in details_filter['options'].keys():
+            details_filter['options'][prime_name] = []
+            details_filter['option_categories'].append((prime_name, prime_category.id))
+
+        if ' > ' in str(category):
+            label = ' > '.join(str(category).split(' > ')[1:])
+        else:
+            label = str(category)
+        details_filter['options'][prime_name].append({
             'value': category.pk,
-            'label': category.name,
+            'label': label,
             'state': 'product_forms' in current_state.keys() and category.pk in [int(x) for x in current_state['product_forms']]
         })
+        details_filter['options'][prime_name] = sorted(details_filter['options'][prime_name], key = lambda i: (i['label'].lower()))
+    details_filter['option_categories'].sort()
     filters.append(details_filter)
 
     distributor_filter = {
@@ -490,11 +503,17 @@ def filter(request):
 
     providers_response = {'providers': []}
     for p in providers:
-      providers_response['providers'].append(p.to_json())
+      providers_response['providers'].append({
+        'id': p.id,
+        'name': p.name,
+        'businessAddressCity': p.businessAddressCity,
+        'businessAddressState': {
+            'initialism': p.businessAddressState.initialism
+        },
+        'product_categories': [{'image':x['object'].image_string} for x in p.product_categories]
+      })
 
-    # TODO: determine correct filters that can be universally applied given current provider context
-    filters_reponse = request.POST
-    # TODO: apply provided filter state from request to this new filter list
+    filters_response = [x for x in request.POST.keys()][0]
 
-    data = [providers_response, filters_reponse]
+    data = [providers_response, filters_response]
     return JsonResponse(data, safe=False)
