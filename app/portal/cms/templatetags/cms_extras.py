@@ -13,8 +13,6 @@ from django.template.defaulttags import register
 def get_item(dictionary, key):
     return dictionary.get(key)
 
-
-
 # Atempting to implement anchor tags, according to:
 #    https://erev0s.com/blog/wagtail-list-tips-and-tricks/#anchor-links-in-streamfield-rich-text-editor
 
