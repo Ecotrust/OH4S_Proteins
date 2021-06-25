@@ -51,6 +51,7 @@
 }
 
 
+
 /**
  * Global Variables
  * variables below are applied appropriately through this stylesheet
@@ -106,6 +107,8 @@
 }
 
 
+
+
 /**
  * Wildcard
  * all elements
@@ -119,6 +122,8 @@
 html {
     height: 100%;
 }
+
+
 
 /**
  * Body
@@ -144,6 +149,8 @@ main {
     flex-grow: 1;
     padding-bottom: 5vh;
 }
+
+
 
 /**
  * Headers
@@ -179,6 +186,7 @@ h3 {
 h4 {
     font-size: var(--font-size-h4);
 }
+
 
 
 /**
@@ -217,7 +225,6 @@ label {
     letter-spacing: 2px;
 }
 
-
 button,
 button.btn {
     background: transparent;
@@ -247,6 +254,11 @@ button.btn {
         background: rgba(255,255,255,1);   
         border: 2px solid var(--color-1);
     }
+
+
+.card {
+    border-radius: 0;
+}
 
 
 
@@ -380,7 +392,8 @@ button.btn-back {
 }
 
 
-/*
+
+/**
  * Richtext fields
  *
  */
@@ -395,7 +408,9 @@ button.btn-back {
     font-weight: normal;
 }
 
-/*
+
+
+/**
  * Forms
  *
  */
@@ -406,9 +421,11 @@ button.btn-back {
     padding:  1rem;
 }
 
-/*
+
+
+/**
  * Modal
- *
+ * 
  */
 
 .modal-filter .btn-secondary {
