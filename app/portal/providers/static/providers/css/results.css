@@ -9,8 +9,8 @@
 #results-count:empty {
 	background: transparent;
 	display: inline-block;
-	height: 2rem;
-	margin: 0px 5px;
+	height: 1em;
+	margin: 0px 1ch;
 	position: relative;
 	width: 60px;
 }
@@ -26,15 +26,25 @@
 	}
 
 #results-count:not(:empty) {
-	border-radius: 50%;
-	border: 2px solid #fff;
 	color: var(--color-1);
 	display: inline-block;
 	font-family: var(--font-2-black);
 	font-size: 1.5rem;
 	line-height: 1;
-	margin: 0 5px;
-	padding: .6875em;
+	margin: 0 1ch;
+	padding: 0;
+	position: relative;
+}
+
+#results-count:not(:empty)::after {
+	content: "";
+	border:  2px solid #fff;
+	border-radius: 50%;
+	left: 50%;
+	position: absolute;
+	padding:  calc(35% + 1ch);
+	transform: translate(-50%, -50%);
+	top: 49%;
 }
 
 #categories-header h3 {
