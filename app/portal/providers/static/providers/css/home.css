@@ -3,14 +3,19 @@
 }
 
 .welcome-text {
-    font-size: 1.375em;
-    padding: 10px 14px;
+    font-size: 1.25em;
+    padding: 10px 14px 0;
+}
+
+.welcome-text [data-block-key] strong, 
+.welcome-text [data-block-key] b {
+    font-family: var(--font-1-semibold);
+    font-weight: normal;
 }
 
 .welcome-text > p:last-child {
     font-family: var(--font-1-medium);
     font-size: .875em;
-    line-height: 1.5;
 }
 
 #selection-links {

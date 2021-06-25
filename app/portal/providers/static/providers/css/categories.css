@@ -12,8 +12,8 @@ hr {
 }
 
 .filtering.container-fluid > .well {
-  padding-bottom: 50px;
-  padding-top: 38px;
+  padding-bottom: 2rem;
+  padding-top: 2rem;
   position: relative;
 }
 
@@ -156,7 +156,7 @@ hr {
   bottom: 0;
   content: "";
   left: 0;
-  opacity: .35;
+  opacity: .55;
   position: absolute;
   right: 0;
   top: 0;

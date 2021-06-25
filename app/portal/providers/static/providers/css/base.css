@@ -130,6 +130,7 @@ body {
     color: var(--color-3);
     font-family: var(--font-1);
     font-size: var(--font-size-small);
+    font-weight: normal;
     height: 100%;
 }
 
@@ -221,11 +222,12 @@ button,
 button.btn {
     background: transparent;
     border-radius: var(--border-radius);
-    color: var(--color-1);
-    border: 2px solid var(--color-1);
-    font-size: var(--font-size);
+    color: var(--color-3);
+    border: 2px solid var(--color-3);
+    font-size: .875rem;
+    font-weight: normal;
     line-height: 2;
-    padding: .5rem 1.5rem;
+    padding: .375rem 1rem;
     text-transform: uppercase;
     text-align: left;
     transition:  0.2s all ease;
@@ -236,12 +238,14 @@ button.btn {
     button.btn:focus {
         color: var(--color-1);
         background: rgba(255,255,255,0.55);
+        border: 2px solid var(--color-1);
     }
 
     button:active,
     button.btn:active {
         color: var(--color-1);
         background: rgba(255,255,255,1);   
+        border: 2px solid var(--color-1);
     }
 
 
@@ -288,8 +292,8 @@ button.btn {
 
 
 .btn-filter {
-    font-family: var(--font-1-medium);
-    letter-spacing: 0.025em;
+    font-family: var(--font-1-bold);
+    letter-spacing: 0.01rem;
     position: relative;
 }
 
@@ -299,7 +303,7 @@ button.btn {
         border-left:  7.5px solid transparent;
         content: '';
         position: absolute;
-        right:  20px;
+        right:  15px;
         top:  50%;
         transform:  translate(0,-50%);
         transition:  0.2s all ease;
@@ -311,28 +315,32 @@ button.btn {
 
 
 button.btn-secondary {
-    font-family: var(--font-1-medium);
-    letter-spacing: 0.025em;
+    font-family: var(--font-1-bold);
+    letter-spacing: 0.01em;
     position: relative;
-    padding-right:  60px;
+    padding-right:  40px;
 }
     
     .btn-secondary:after {
-        background-image:  url("/static/providers/img/icons/i_arrow-right@2x.png");
+        background-image:  url("/static/providers/img/icons/i_arrow-right_white@2x.png");
         background-size: 100% auto;
         background-repeat: no-repeat;
         content: '';
-        height: 20px;
+        height: 15px;
         position: absolute;
-        right: 20px;
+        right: 15px;
         top:  50%;
         transform:  translate(0,-50%);
-        width: 20px;
+        width: 15px;
     }
 
     .btn-secondary:hover {
-        color:  var(--color-1);
         background:  rgba(255,255,255,0.55);
+        color:  var(--color-1);
+    }
+
+    .btn-secondary:hover::after {
+        background-image:  url("/static/providers/img/icons/i_arrow-right@2x.png");
     }
 
 

@@ -47,7 +47,6 @@ div.footer-col {
 }
 
 div.footer-col .block-image img {
-  height: auto;
   max-height: 36px;
   width: auto;
   max-width: 30px;
@@ -67,6 +66,7 @@ footer .navbar>div.footer-container {
 }
 
 @media screen and (min-width: 23.5em) {
+
   footer .navbar>div.footer-container {
     align-items: flex-start;
     flex-direction: row;
@@ -83,4 +83,13 @@ footer .navbar>div.footer-container {
     position: static;
     height: auto;
   }
+
+}
+
+@media screen and (min-width:  48em) {
+  
+  div.footer-col {
+    text-align: left;
+  }
+
 }
