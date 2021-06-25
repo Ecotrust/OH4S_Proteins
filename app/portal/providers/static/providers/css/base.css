@@ -226,7 +226,8 @@ label {
 }
 
 button,
-button.btn {
+button.btn,
+button:not(.btn-close) {
     background: transparent;
     border-radius: var(--border-radius);
     color: var(--color-3);
@@ -242,14 +243,17 @@ button.btn {
     button:hover,
     button:focus,
     button.btn:hover,
-    button.btn:focus {
+    button.btn:focus,
+    button:not(.btn-close):hover,
+    button:not(.btn-close):focus {
         color: var(--color-1);
         background: rgba(255,255,255,0.55);
         border: 2px solid var(--color-1);
     }
 
     button:active,
-    button.btn:active {
+    button.btn:active,
+    button:not(.btn-close):active {
         color: var(--color-1);
         background: rgba(255,255,255,1);   
         border: 2px solid var(--color-1);
@@ -391,6 +395,19 @@ button.btn-back {
     padding: .5rem 1rem;
 }
 
+
+button.btn-close,
+button.btn-close:hover {
+    background:  url("/static/providers/img/icons/i_exit.svg");
+    background-repeat: no-repeat;
+    opacity: 1;
+}
+
+button.btn-close:hover {
+    border: none;
+    outline:  0;
+    opacity: .55;
+}
 
 
 /**
