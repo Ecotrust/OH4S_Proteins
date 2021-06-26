@@ -251,6 +251,7 @@ class Filter(models.Model):
     facet = models.CharField(
         max_length=255,
         choices = FACET_CHOICES,
+        unique = True,
         default = None,
         blank = True
     )
