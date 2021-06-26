@@ -221,8 +221,8 @@ img {
 
 label {
     font-family: var(--font-1-semibold);
-    font-size:  1.25rem;
-    letter-spacing: 2px;
+    font-size:  1.125rem;
+    letter-spacing: 0.05em;
 }
 
 button,
@@ -389,7 +389,7 @@ button.btn-back {
     }
 
 
-.btn-clear {
+button.btn-clear {
     border: 2px solid var(--color-2);
     border-radius: 0;
     padding: .5rem 1rem;
@@ -435,7 +435,7 @@ button.btn-close:hover {
 .list-group-item {
     border:  none;
     color:  var(--color-3);
-    padding:  1rem;
+    padding: .5rem 1rem;
 }
 
 
@@ -445,16 +445,18 @@ button.btn-close:hover {
  * 
  */
 
-.modal-filter .btn-secondary {
-    background: var(--color-2-55);
+.modal-filter button.btn-clear,
+.modal-filter button.btn-secondary {
+    padding:  .25rem 1rem;
 }
-    
-    .modal-filter .btn-secondary:after {
-        background-image:  url("/static/providers/img/icons/i_arrow-right_white@2x.png");
-    }
+
+.modal-filter button.btn-secondary {
+    background: var(--color-2);
+    padding-right: 80px;
+}
 
     .modal-filter .btn-secondary:hover {
-        background: var(--color-2);
+        background: var(--color-2-55);
     }   
 
 .modal-filter .modal-content {
