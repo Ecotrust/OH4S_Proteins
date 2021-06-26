@@ -57,6 +57,7 @@ def get_homepage_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='identities')
         identity_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -67,6 +68,7 @@ def get_homepage_filter_context(request, context={}):
     except Exception as e:
         identity_filter = {
             'name': 'Producer Identity',
+            'title': 'Producer Identity',
             'facet': 'identities',
             'image': '/static/providers/img/defaults/filter_header.png',
             'widget': 'multiselect',
@@ -87,6 +89,7 @@ def get_homepage_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='availability')
         availability_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -97,6 +100,7 @@ def get_homepage_filter_context(request, context={}):
     except Exception as e:
         availability_filter = {
             'name': 'Availability',
+            'title': 'Availability',
             'facet': 'availability',
             'image': '/static/providers/img/defaults/filter_header.png',
             'widget': 'multiselect',
@@ -117,6 +121,7 @@ def get_homepage_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='component_categories')
         component_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -127,6 +132,7 @@ def get_homepage_filter_context(request, context={}):
     except Exception as e:
         component_filter = {
             'name': 'USDA Meal Components',
+            'title': 'USDA Meal Components',
             'facet': 'component_categories',
             'image': '/static/providers/img/defaults/filter_header.png',
             'widget': 'multiselect',
@@ -172,6 +178,7 @@ def get_results_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='identities')
         identity_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -183,6 +190,7 @@ def get_results_filter_context(request, context={}):
     except Exception as e:
         identity_filter = {
             'name': 'Producer Identity',
+            'title': 'Producer Identity',
             'facet': 'identities',
             'image': '/static/providers/img/defaults/filter_header.png',
             'blurb': 'You can select multiple options to get more inclusive results.',
@@ -203,6 +211,7 @@ def get_results_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='availability')
         availability_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -214,6 +223,7 @@ def get_results_filter_context(request, context={}):
     except Exception as e:
         availability_filter = {
             'name': 'Availability',
+            'title': 'Availability',
             'facet': 'availability',
             'image': '/static/providers/img/defaults/filter_header.png',
             'blurb': 'You can select multiple options to get more inclusive results.',
@@ -234,6 +244,7 @@ def get_results_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='component_categories')
         component_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -245,6 +256,7 @@ def get_results_filter_context(request, context={}):
     except Exception as e:
         component_filter = {
             'name': 'USDA Meal Components',
+            'title': 'USDA Meal Components',
             'facet': 'component_categories',
             'image': '/static/providers/img/defaults/filter_header.png',
             'blurb': 'You can select multiple options to get more inclusive results.',
@@ -266,6 +278,7 @@ def get_results_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='physical_counties')
         location_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -277,6 +290,7 @@ def get_results_filter_context(request, context={}):
     except Exception as e:
         location_filter = {
             'name': 'Producer Location',
+            'title': 'Producer Location',
             'facet': 'physical_counties',
             'image': '/static/providers/img/defaults/filter_header.png',
             'blurb': 'You can select multiple options to get more inclusive results.',
@@ -297,6 +311,7 @@ def get_results_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='delivery_methods')
         delivery_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -308,6 +323,7 @@ def get_results_filter_context(request, context={}):
     except Exception as e:
         delivery_filter = {
             'name': 'Delivery Method',
+            'title': 'Delivery Method',
             'facet': 'delivery_methods',
             'image': '/static/providers/img/defaults/filter_header.png',
             'blurb': 'You can select multiple options to get more inclusive results.',
@@ -328,6 +344,7 @@ def get_results_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='product_categories')
         category_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -339,6 +356,7 @@ def get_results_filter_context(request, context={}):
     except Exception as e:
         category_filter = {
             'name': 'Product Type',
+            'title': 'Product Type',
             'facet': 'product_categories',
             'image': '/static/providers/img/defaults/filter_header.png',
             'blurb': 'You can select multiple options to get more inclusive results.',
@@ -360,6 +378,7 @@ def get_results_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='product_forms')
         details_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -372,6 +391,7 @@ def get_results_filter_context(request, context={}):
     except Exception as e:
         details_filter = {
             'name': 'Product Details',
+            'title': 'Product Details',
             'facet': 'product_forms',
             'image': '/static/providers/img/defaults/filter_header.png',
             'blurb': 'You can select multiple options to get more inclusive results.',
@@ -406,6 +426,7 @@ def get_results_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='distributors')
         distributor_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -417,6 +438,7 @@ def get_results_filter_context(request, context={}):
     except Exception as e:
         distributor_filter = {
             'name': 'Distributors',
+            'title': 'Distributors',
             'facet': 'distributors',
             'image': '/static/providers/img/defaults/filter_header.png',
             'blurb': 'You can select multiple options to get more inclusive results.',
@@ -437,6 +459,7 @@ def get_results_filter_context(request, context={}):
         filter_obj = cms_filters.get(facet='practices')
         practice_filter = {
             'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
@@ -448,6 +471,7 @@ def get_results_filter_context(request, context={}):
     except Exception as e:
         practice_filter = {
             'name': 'Production Practices',
+            'title': 'Production Practices',
             'facet': 'practices',
             'image': '/static/providers/img/defaults/filter_header.png',
             'blurb': 'You can select multiple options to get more inclusive results.',

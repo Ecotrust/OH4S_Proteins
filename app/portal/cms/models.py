@@ -248,6 +248,7 @@ class Filter(models.Model):
         ('product_forms', 'Product details'),
     )
     name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, null=True, default=None)
     facet = models.CharField(
         max_length=255,
         choices = FACET_CHOICES,
