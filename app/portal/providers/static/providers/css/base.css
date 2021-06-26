@@ -92,6 +92,10 @@
     /* Utils */
     --border-radius: 2em;
 
+    /* Animations */
+    --trans-hover: 0.2s all ease-in-out;
+
+
     /* 
      * Breakpoints 
      * 
@@ -103,7 +107,6 @@
     --screen-small: 23.5em;
     --screen-medium: 48em;
     --screen-large: 80em;
-
 }
 
 
@@ -199,7 +202,7 @@ main a {
     color: inherit;
     border-bottom: 1px solid var(--color-3);
     text-decoration: none;
-    transition: all 0.2s ease-in-out;
+    transition: var(--trans-hover);
 }
 
     main a:hover {
@@ -238,7 +241,7 @@ button:not(.btn-close) {
     padding: .375rem 1rem;
     text-transform: uppercase;
     text-align: left;
-    transition:  0.2s all ease;
+    transition: var(--trans-hover);
 }
     button:hover,
     button:focus,
@@ -322,7 +325,7 @@ button:not(.btn-close) {
         right:  15px;
         top:  50%;
         transform:  translate(0,-50%);
-        transition:  0.2s all ease;
+        transition: var(--trans-hover);
     }
 
     .btn-filter:hover:after {
@@ -436,6 +439,16 @@ button.btn-close:hover {
     border:  none;
     color:  var(--color-3);
     padding: .5rem 1rem;
+}
+
+input[type="checkbox"] {
+    border:  2px solid var(--color-3);
+    cursor: pointer;
+    transition: var(--trans-hover);
+}
+
+input[type="checkbox"]:hover {
+    background: var(--color-2-55);
 }
 
 

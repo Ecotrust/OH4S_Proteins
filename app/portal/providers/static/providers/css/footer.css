@@ -28,7 +28,7 @@ footer a.link-internal {
   margin: 0;
   text-transform: uppercase;
   text-decoration: none;
-  transition: all 0.2s ease-in-out;
+  transition: var(--trans-hover);
   vertical-align: middle;
 }
 
