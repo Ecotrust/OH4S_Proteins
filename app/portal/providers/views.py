@@ -101,7 +101,7 @@ def get_homepage_filter_context(request, context={}):
             'image': '/static/providers/img/defaults/filter_header.png',
             'widget': 'multiselect',
             'blurb': 'You can select multiple options to get more inclusive results.',
-            'order': 10,
+            'order': 1,
             'options': []
         }
 
@@ -131,7 +131,7 @@ def get_homepage_filter_context(request, context={}):
             'image': '/static/providers/img/defaults/filter_header.png',
             'widget': 'multiselect',
             'blurb': 'You can select multiple options to get more inclusive results.',
-            'order': 20,
+            'order': 2,
             'options': []
         }
 
@@ -142,6 +142,9 @@ def get_homepage_filter_context(request, context={}):
             'state': False
         })
     filters.append(component_filter)
+
+    # Re-Order filters by 'order'
+    filters.sort(key=lambda x: x['order'])
 
     context['filters'] = filters
     return context
@@ -154,7 +157,7 @@ def get_results_filter_context(request, context={}):
     filters = []
     current_state = {}
     cms_filters = Filter.objects.all()
-    
+
     if request.method == "POST":
         try:
             current_state = json.loads(request.body)
@@ -461,7 +464,7 @@ def get_results_filter_context(request, context={}):
         })
     filters.append(practice_filter)
 
-    # Re-Order filters if 'order' is available
+    # Re-Order filters by 'order'
     filters.sort(key=lambda x: x['order'])
 
     context['filters'] = filters
