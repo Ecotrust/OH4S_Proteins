@@ -58,7 +58,7 @@ def get_homepage_filter_context(request, context={}):
         identity_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'widget': 'multiselect',
@@ -88,7 +88,7 @@ def get_homepage_filter_context(request, context={}):
         availability_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'widget': 'multiselect',
@@ -118,7 +118,7 @@ def get_homepage_filter_context(request, context={}):
         component_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'widget': 'multiselect',
@@ -173,7 +173,7 @@ def get_results_filter_context(request, context={}):
         identity_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'visible': True,
@@ -204,7 +204,7 @@ def get_results_filter_context(request, context={}):
         availability_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'visible': True,
@@ -235,7 +235,7 @@ def get_results_filter_context(request, context={}):
         component_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'visible': True,
@@ -267,7 +267,7 @@ def get_results_filter_context(request, context={}):
         location_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'visible': True,
@@ -298,7 +298,7 @@ def get_results_filter_context(request, context={}):
         delivery_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'visible': True,
@@ -329,7 +329,7 @@ def get_results_filter_context(request, context={}):
         category_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'visible': True,
@@ -361,7 +361,7 @@ def get_results_filter_context(request, context={}):
         details_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'visible': True,
@@ -407,7 +407,7 @@ def get_results_filter_context(request, context={}):
         distributor_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'visible': True,
@@ -438,7 +438,7 @@ def get_results_filter_context(request, context={}):
         practice_filter = {
             'name': filter_obj.name,
             'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
             'order': filter_obj.order,
             'visible': True,
