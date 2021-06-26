@@ -291,7 +291,7 @@ button:not(.btn-close) {
     font-family: var(--font-2-black);
     font-size: 1em;
     margin-bottom: 0;
-    padding: 0 2px .9375rem 0;
+    padding: 0 2px .5rem 0;
     text-transform: uppercase;
 }
 
@@ -319,10 +319,10 @@ button:not(.btn-close) {
     background: transparent;
     border: 2px solid #fff;
     color: var(--color-3);
-    font-size: .875em;
-    letter-spacing: 0.0125em;
+    font-size: .75em;
+    letter-spacing: 0.05em;
     line-height: 1.5;
-    padding: .5rem 40px .5rem .75rem;
+    padding: .4375rem 40px .375rem .6375rem;
     position: relative;
     transition: var(--trans-hover);
 }
