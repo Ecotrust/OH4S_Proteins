@@ -486,10 +486,14 @@ input[type="checkbox"] {
     transition: var(--trans-hover);
 }
 
-input[type="checkbox"]:hover {
-    background: var(--color-2-55);
-}
+    input[type="checkbox"]:hover {
+        background: var(--color-2-55);
+    }
 
+    input[type="checkbox"]:checked {
+        background-color:  var(--color-3);
+        border-color: var(--color-3);
+    }
 
 
 /**
