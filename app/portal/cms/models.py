@@ -234,3 +234,36 @@ class Header(models.Model):
 
     def __str__(self):
         return self.title
+
+@register_snippet
+class Filter(models.Model):
+    FACET_CHOICES = (
+        (None, '----------'),
+        ('identities', 'Self Identity'),
+        ('availability', 'Availability by County'),
+        ('component_categories', 'USDA Meal Component'),
+        ('physical_counties', 'Producer Location: County'),
+        ('delivery_methods', 'Delivery Methods'),
+        ('product_categories', 'Product Categories'),
+        ('product_forms', 'Product details'),
+    )
+    name = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, null=True, default=None)
+    facet = models.CharField(
+        max_length=255,
+        choices = FACET_CHOICES,
+        unique = True,
+        default = None,
+        blank = True
+    )
+    blurb = RichTextField(blank=True, default='You can select multiple options to include more producers.')
+    image = models.ForeignKey(
+        'wagtailimages.Image',
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL
+    )
+    order = models.IntegerField(default=10)
+
+    def __str__(self):
+        return "{} - {}: {}".format(self.order, self.name, self.facet)

@@ -50,10 +50,22 @@
                     <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h3 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h3>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
+                          <div class='row'>
+                            {% if filter.image %}
+                              <div class='col-3'>
+                                <img src='{{ filter.image }}' class='filter-modal-header-image'>
+                              </div>
+                            {% endif %}
+                            <div class='col'>
+                              <h3 class="modal-title" id="{{filter.facet}}-modal-label">
+                                {{ filter.title }}
+                              </h3>
+                              {{ filter.blurb|safe }}
+                            </div>
+                          </div>
                           <form name="{{ filter.facet }}" class="filter-form">
                             {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' or filter.widget == 'compound-multiselect' %}
                               <div class="list-group">

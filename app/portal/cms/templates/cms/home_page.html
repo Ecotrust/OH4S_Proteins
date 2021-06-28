@@ -48,25 +48,37 @@
                   <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h3 class="modal-title" id="{{filter.facet}}-modal-label">{{ filter.name }}</h3>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                          <form name="{{ filter.facet }}" class='home-filter-form filter-form'>
-                            {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
-                              <div class="list-group">
-                                {% for option in filter.options %}
-                                  <label class="list-group-item">
-                                    <input class="form-check-input me-1" name="{{ filter.facet }}" type="checkbox" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
-                                    {{ option.label }}
-                                  </label>
-                                {% endfor %}
-                              </div>
-                            {# {% elif filter.widget == 'multiselect-spatial' %} #}
-                            {% else %}
-                              <p>Add new widget options to template</p>
-                            {% endif %}
-                          </form>
+                        <div class='row'>
+                          {% if filter.image %}
+                            <div class='col-3'>
+                              <img src='{{ filter.image }}' class='filter-modal-header-image'>
+                            </div>
+                          {% endif %}
+                          <div class='col'>
+                            <h3 class="modal-title" id="{{filter.facet}}-modal-label">
+                              {{ filter.title }}
+                            </h3>
+                            {{ filter.blurb|safe }}
+                          </div>
+                        </div>
+                        <form name="{{ filter.facet }}" class='home-filter-form filter-form'>
+                          {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' %}
+                            <div class="list-group">
+                              {% for option in filter.options %}
+                                <label class="list-group-item">
+                                  <input class="form-check-input me-1" name="{{ filter.facet }}" type="checkbox" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                                  {{ option.label }}
+                                </label>
+                              {% endfor %}
+                            </div>
+                          {# {% elif filter.widget == 'multiselect-spatial' %} #}
+                          {% else %}
+                            <p>Add new widget options to template</p>
+                          {% endif %}
+                        </form>
                       </div>
                       <div class="modal-footer">
                         <div class="w-100 btn-toolbar justify-content-between">

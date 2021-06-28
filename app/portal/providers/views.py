@@ -4,6 +4,7 @@ from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity, PoliticalSubregion, ComponentCategory, DeliveryMethod, Distributor, ProductionPractice
 from providers.forms import FilterForm
+
 import json
 
 def header(request, context, project_id=None):
@@ -47,15 +48,35 @@ def index(request):
     return render(request, "index.html", context)
 
 def get_homepage_filter_context(request, context={}):
+    from cms.models import Filter
     # Build and return Homepage Filter Context
     filters = []
+    cms_filters = Filter.objects.all()
 
-    identity_filter = {
-        'name': 'Producer Identity',
-        'facet': 'identities',
-        'widget': 'multiselect',
-        'options': []
-    }
+    try:
+        filter_obj = cms_filters.get(facet='identities')
+        identity_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        identity_filter = {
+            'name': 'Producer Identity',
+            'title': 'Producer Identity',
+            'facet': 'identities',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'widget': 'multiselect',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 0,
+            'options': []
+        }
+
     for identity in Identity.objects.all().order_by('name'):
         identity_filter['options'].append({
             'value': identity.pk,
@@ -64,13 +85,30 @@ def get_homepage_filter_context(request, context={}):
         })
     filters.append(identity_filter)
 
-    availability_filter = {
-        'name': 'Availability By County',
-        'facet': 'availability',
-        'widget': 'multiselect-spatial',
-        'data-layer': None,
-        'options': []
-    }
+    try:
+        filter_obj = cms_filters.get(facet='availability')
+        availability_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        availability_filter = {
+            'name': 'Availability',
+            'title': 'Availability',
+            'facet': 'availability',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'widget': 'multiselect',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 1,
+            'options': []
+        }
+
     for county in PoliticalSubregion.objects.all().order_by('name'):
         availability_filter['options'].append({
             'value': county.pk,
@@ -79,12 +117,30 @@ def get_homepage_filter_context(request, context={}):
         })
     filters.append(availability_filter)
 
-    component_filter = {
-        'name': 'USDA Meal Components',
-        'facet': 'component_categories',
-        'widget': 'multiselect',
-        'options': []
-    }
+    try:
+        filter_obj = cms_filters.get(facet='component_categories')
+        component_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        component_filter = {
+            'name': 'USDA Meal Components',
+            'title': 'USDA Meal Components',
+            'facet': 'component_categories',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'widget': 'multiselect',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 2,
+            'options': []
+        }
+
     for category in ComponentCategory.objects.all().order_by('order', 'name'):
         component_filter['options'].append({
             'value': category.pk,
@@ -93,15 +149,21 @@ def get_homepage_filter_context(request, context={}):
         })
     filters.append(component_filter)
 
+    # Re-Order filters by 'order'
+    filters.sort(key=lambda x: x['order'])
+
     context['filters'] = filters
     return context
 
 @csrf_exempt
 def get_results_filter_context(request, context={}):
+    from cms.models import Filter
     # Based on current applied filters in request.body
     # add 'filters' to context and build it with current filter state
     filters = []
     current_state = {}
+    cms_filters = Filter.objects.all()
+
     if request.method == "POST":
         try:
             current_state = json.loads(request.body)
@@ -112,13 +174,31 @@ def get_results_filter_context(request, context={}):
                 print(e)
                 current_state = {}
 
-    identity_filter = {
-        'name': 'Producer Identity',
-        'facet': 'identities',
-        'widget': 'multiselect',
-        'visible': True,
-        'options': []
-    }
+    try:
+        filter_obj = cms_filters.get(facet='identities')
+        identity_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        identity_filter = {
+            'name': 'Producer Identity',
+            'title': 'Producer Identity',
+            'facet': 'identities',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'visible': True,
+            'widget': 'multiselect',
+            'order': 0,
+            'options': []
+        }
     for identity in Identity.objects.all().order_by('name'):
         identity_filter['options'].append({
             'value': identity.pk,
@@ -127,14 +207,31 @@ def get_results_filter_context(request, context={}):
         })
     filters.append(identity_filter)
 
-    availability_filter = {
-        'name': 'Availability By County',
-        'facet': 'availability',
-        'widget': 'multiselect-spatial',
-        'data-layer': None,
-        'visible': True,
-        'options': []
-    }
+    try:
+        filter_obj = cms_filters.get(facet='availability')
+        availability_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        availability_filter = {
+            'name': 'Availability',
+            'title': 'Availability',
+            'facet': 'availability',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 1,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
     for county in PoliticalSubregion.objects.all().order_by('name'):
         availability_filter['options'].append({
             'value': county.pk,
@@ -143,13 +240,31 @@ def get_results_filter_context(request, context={}):
         })
     filters.append(availability_filter)
 
-    component_filter = {
-        'name': 'USDA Meal Components',
-        'facet': 'component_categories',
-        'widget': 'multiselect',
-        'visible': True,
-        'options': []
-    }
+    try:
+        filter_obj = cms_filters.get(facet='component_categories')
+        component_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        component_filter = {
+            'name': 'USDA Meal Components',
+            'title': 'USDA Meal Components',
+            'facet': 'component_categories',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 2,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
     for category in ComponentCategory.objects.all().order_by('order', 'name'):
         component_filter['options'].append({
             'value': category.pk,
@@ -158,14 +273,32 @@ def get_results_filter_context(request, context={}):
         })
     filters.append(component_filter)
 
-    location_filter = {
-        'name': 'Producer Location',
-        'facet': 'physical_counties',
-        'widget': 'multiselect-spatial',
-        'data-layer': None,
-        'visible': True,
-        'options': []
-    }
+
+    try:
+        filter_obj = cms_filters.get(facet='physical_counties')
+        location_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        location_filter = {
+            'name': 'Producer Location',
+            'title': 'Producer Location',
+            'facet': 'physical_counties',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 3,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
     for county in PoliticalSubregion.objects.all().order_by('name'):
         location_filter['options'].append({
             'value': county.pk,
@@ -174,13 +307,31 @@ def get_results_filter_context(request, context={}):
         })
     filters.append(location_filter)
 
-    delivery_filter = {
-        'name': 'Delivery Method',
-        'facet': 'delivery_methods',
-        'widget': 'multiselect',
-        'visible': True,
-        'options': []
-    }
+    try:
+        filter_obj = cms_filters.get(facet='delivery_methods')
+        delivery_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        delivery_filter = {
+            'name': 'Delivery Method',
+            'title': 'Delivery Method',
+            'facet': 'delivery_methods',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 4,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
     for method in DeliveryMethod.objects.all().order_by('name'):
         delivery_filter['options'].append({
             'value': method.pk,
@@ -189,13 +340,32 @@ def get_results_filter_context(request, context={}):
         })
     filters.append(delivery_filter)
 
-    category_filter = {
-        'name': 'Product Type',
-        'facet': 'product_categories',
-        'widget': 'multiselect',
-        'visible': True,
-        'options': []
-    }
+    try:
+        filter_obj = cms_filters.get(facet='product_categories')
+        category_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        category_filter = {
+            'name': 'Product Type',
+            'title': 'Product Type',
+            'facet': 'product_categories',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 5,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+
     for category in ProductCategory.objects.filter(parent=None).order_by('name'):
         category_filter['options'].append({
             'value': category.pk,
@@ -204,14 +374,34 @@ def get_results_filter_context(request, context={}):
         })
     filters.append(category_filter)
 
-    details_filter = {
-        'name': 'Product Details',
-        'facet': 'product_forms',
-        'widget': 'compound-multiselect',
-        'visible': True,
-        'option_categories': [],
-        'options': {}
-    }
+    try:
+        filter_obj = cms_filters.get(facet='product_forms')
+        details_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'visible': True,
+            'widget': 'compound-multiselect',
+            'option_categories': [],
+            'options': {}
+        }
+    except Exception as e:
+        details_filter = {
+            'name': 'Product Details',
+            'title': 'Product Details',
+            'facet': 'product_forms',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 6,
+            'visible': True,
+            'widget': 'compound-multiselect',
+            'option_categories': [],
+            'options': {}
+        }
+
     for category in ProductCategory.objects.exclude(parent=None).order_by('name'):
         prime_category = category.get_prime_ancestor()
         prime_name = prime_category.name
@@ -232,13 +422,31 @@ def get_results_filter_context(request, context={}):
     details_filter['option_categories'].sort()
     filters.append(details_filter)
 
-    distributor_filter = {
-        'name': 'Distributors',
-        'facet': 'distributors',
-        'widget': 'multiselect',
-        'visible': True,
-        'options': []
-    }
+    try:
+        filter_obj = cms_filters.get(facet='distributors')
+        distributor_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        distributor_filter = {
+            'name': 'Distributors',
+            'title': 'Distributors',
+            'facet': 'distributors',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 7,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
     for distributor in Distributor.objects.all().order_by('name'):
         distributor_filter['options'].append({
             'value': distributor.pk,
@@ -247,13 +455,31 @@ def get_results_filter_context(request, context={}):
         })
     filters.append(distributor_filter)
 
-    practice_filter = {
-        'name': 'Production Practices',
-        'facet': 'practices',
-        'widget': 'multiselect',
-        'visible': True,
-        'options': []
-    }
+    try:
+        filter_obj = cms_filters.get(facet='practices')
+        practice_filter = {
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        practice_filter = {
+            'name': 'Production Practices',
+            'title': 'Production Practices',
+            'facet': 'practices',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 8,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
     for practice in ProductionPractice.objects.all().order_by('name'):
         practice_filter['options'].append({
             'value': practice.pk,
@@ -261,6 +487,9 @@ def get_results_filter_context(request, context={}):
             'state': 'practices' in current_state.keys() and practice.pk in [int(x) for x in current_state['practices']]
         })
     filters.append(practice_filter)
+
+    # Re-Order filters by 'order'
+    filters.sort(key=lambda x: x['order'])
 
     context['filters'] = filters
     context['filters_json'] = json.dumps(filters)
