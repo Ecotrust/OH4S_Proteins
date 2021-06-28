@@ -127,6 +127,20 @@ function toggleEnableFilterBtns() {
   });
 }
 
+
+function addActiveFilterClass(form) {
+  // add class back for filter wraps with checked filters
+  form.closest('.filter-wrap').classList.add('filter-active');
+}
+
+
+function removeActiveFilterClass(form) {
+  // remove active filter class from form
+  // add class back for filter wraps with checked filters
+  form.closest('.filter-wrap').classList.remove('filter-active');
+}
+
+
 function filterQuery() {
   // Disable addition query
   toggleEnableFilterBtns();
@@ -137,15 +151,23 @@ function filterQuery() {
   var allFormsObj = document.forms;
   var allFormsArr = document.querySelectorAll('form');
   allFormsArr.forEach((form, i) => {
+    var noneChecked = true;
     // Loop through add form elements
     for (var i = 0; i < form.elements.length; i++) {
       var option = form.elements.item(i);
       if (option.checked === true) {
+        noneChecked = false;
         if (typeof(filterReq[form.name]) === "undefined") {
           filterReq[form.name] = [];
         }
         filterReq[form.name].push(option.value);
+        // Style filter button
+        // okay to do multiple times, bc class only added once using classList.add()
+        addActiveFilterClass(form);
       }
+    }
+    if (noneChecked) {
+      removeActiveFilterClass(form);
     }
   });
 
@@ -156,9 +178,9 @@ function filterQuery() {
     },
     data: JSON.stringify(filterReq),
     success: function(response) {
-      // enable additional queries
+      // Enable additional queries
       toggleEnableFilterBtns();
-      // needs work
+      // Needs work
       updateFilterForms(response[1]);
       populateFilterResults(response[0].providers);
     }

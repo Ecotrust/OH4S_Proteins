@@ -41,7 +41,7 @@
           </div>
           <div class="row row-cols-1 row-cols-xl-2 align-items-center ps-md-3 pt-2 pb-2">
             {% for filter in filters %}
-              <div class="py-2">
+              <div class="py-2 filter-wrap">
                 <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
 
                 <div class="modal fade modal-filter" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">

@@ -354,7 +354,7 @@ button:not(.btn-close) {
     position: relative;
 }
 
-    .btn-filter:after {
+    .btn-filter::after {
         border-top: 7.5px solid #fff;
         border-right:  7.5px solid transparent;
         border-left:  7.5px solid transparent;
@@ -366,10 +366,20 @@ button:not(.btn-close) {
         transition: var(--trans-hover);
     }
 
-    .btn-filter:hover:after {
+    .btn-filter:hover::after {
         border-top-color:  var(--color-3);
     }
 
+/* Active Filter */
+.filter-wrap.filter-active .btn-filter {
+    color: var(--color-1);
+    background: rgba(255,255,255,1);
+    border: 2px solid var(--color-1);
+}
+
+    .filter-wrap.filter-active .btn-filter::after {
+        border-top-color:  var(--color-3);
+    }
 
 button.btn-secondary {
     font-family: var(--font-1-bold);
@@ -494,6 +504,7 @@ input[type="checkbox"] {
         background-color:  var(--color-3);
         border-color: var(--color-3);
     }
+
 
 
 /**
