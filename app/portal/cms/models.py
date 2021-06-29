@@ -59,12 +59,16 @@ class HomePage(PortalPage):
         verbose_name='Welcome Text'
     )
     filter_prompt = models.CharField(max_length=255, help_text='Language directing users to use filters', default='Search By Filtering')
+    browse_all_button = models.CharField(max_length=255, help_text='Text on "get results" button when NO filters are selected.', default='Show Results')
+    browse_filtered_button = models.CharField(max_length=255, help_text='Text on "get results" button when filters are selected.', default='Show Filtered Results')
     categories_header = models.CharField(max_length=255, help_text='Header above categories', default='Search By Product Types')
 
     content_panels = Page.content_panels + [
         FieldPanel('welcome', classname="full"),
         FieldPanel('welcome_text', classname="full"),
         FieldPanel('filter_prompt', classname="full"),
+        FieldPanel('browse_all_button', classname="full"),
+        FieldPanel('browse_filtered_button', classname="full"),
         FieldPanel('categories_header', classname="full"),
     ]
 
