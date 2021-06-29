@@ -84,14 +84,26 @@ class ResultsPage(PortalPage):
     results_count_message_before = models.CharField(max_length=255, blank=True, default='We found', help_text="Text before result count")
     results_count_message_after = models.CharField(max_length=255, blank=True, default='producers that meet your criteria', help_text="Text after result count")
     filter_advice = RichTextField(
-    blank=True,
-    features=[
-    'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
-    'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
-    'embed'
-    ],
-    default='<p>Try removing filters to see more results</p>',
-    help_text='Helpful advice for users confused by their results'
+        blank=True,
+        null=True,
+        features=[
+            'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
+            'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
+            'embed'
+        ],
+        default='<p>Try removing filters to see more results.</p>',
+        help_text='Helpful advice for users confused by their results'
+    )
+    no_filter_advice = RichTextField(
+        blank=True,
+        null=True,
+        features=[
+            'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
+            'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
+            'embed'
+        ],
+        default='<p>Try adding filters to narrow your results.</p>',
+        help_text='Advice for users with no filters applied'
     )
     filter_prompt = models.CharField(max_length=255, help_text='Language directing users to use filters', default='Add Filters')
 
@@ -99,6 +111,7 @@ class ResultsPage(PortalPage):
         FieldPanel('results_count_message_before', classname="full"),
         FieldPanel('results_count_message_after', classname="full"),
         FieldPanel('filter_advice', classname="full"),
+        FieldPanel('no_filter_advice', classname="full"),
         FieldPanel('filter_prompt', classname="full"),
     ]
 
