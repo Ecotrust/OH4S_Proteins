@@ -641,94 +641,101 @@ def results(request):
 
     return render(request, "category.html", context)
 
+
+def run_filters(request, providers):
+    try:
+        body = json.loads(request.body)
+        for key in body.keys():
+            if len(body[key]) > 0 and type(body[key][0]) == str:
+                str_values = body[key]
+                body[key] = [int(x) for x in str_values]
+    except Exception as e:
+        print(e)
+        body = {}
+    if 'product_categories' in body.keys():
+        # Many-to-many (OR)
+        product_ids = []
+        for filter_category in ProductCategory.objects.filter(pk__in=body['product_categories']):
+            product_ids += [x.pk for x in filter_category.get_provider_products()]
+        provider_products = ProviderProduct.objects.filter(pk__in=product_ids)
+        provider_ids = [x.provider.pk for x in provider_products]
+        providers = providers.filter(pk__in=provider_ids)
+    if 'identities' in body.keys():
+        # Many-to-many (OR)
+        identities = Identity.objects.filter(pk__in=body['identities'])
+        provider_ids = []
+        for identity in identities:
+            new_provider_ids = [x.pk for x in identity.provider_set.all()]
+            provider_ids = list(set(provider_ids + new_provider_ids))
+        providers = providers.filter(pk__in=provider_ids)
+    if 'availability' in body.keys():
+        # Many-to-many (OR)
+        regions = PoliticalSubregion.objects.filter(pk__in=body['availability'])
+        provider_ids = []
+        for region in regions:
+            new_provider_ids = [x.pk for x in region.provider_set.all()]
+            provider_ids = list(set(provider_ids + new_provider_ids))
+        providers = providers.filter(pk__in=provider_ids)
+    if 'physical_counties' in body.keys():
+        # Many-to-many (OR)
+        regions = PoliticalSubregion.objects.filter(pk__in=body['physical_counties'])
+        provider_ids = []
+        for region in regions:
+            new_provider_ids = [x.pk for x in providers.filter(physicalCounty=region)]
+            provider_ids = list(set(provider_ids + new_provider_ids))
+        providers = providers.filter(pk__in=provider_ids)
+
+    if 'component_categories' in body.keys():
+        # Many-to-many (OR)
+        components = ComponentCategory.objects.filter(pk__in=body['component_categories'])
+        provider_ids = []
+        for component in components:
+            for provider in providers:
+                if component in provider.components_offered and not provider.id in provider_ids:
+                    provider_ids.append(provider.id)
+        providers = providers.filter(pk__in=provider_ids)
+    if 'delivery_methods' in body.keys():
+        # Many-to-many (OR)
+        delivery_methods = DeliveryMethod.objects.filter(pk__in=body['delivery_methods'])
+        provider_ids = []
+        for method in delivery_methods:
+            new_provider_ids = [x.pk for x in method.provider_set.all()]
+            provider_ids = list(set(provider_ids + new_provider_ids))
+        providers = providers.filter(pk__in=provider_ids)
+    if 'distributors' in body.keys():
+        # Many-to-many (OR)
+        distributors = Distributor.objects.filter(pk__in=body['distributors'])
+        provider_ids = []
+        for distributor in distributors:
+            new_provider_ids = [x.pk for x in distributor.provider_set.all()]
+            provider_ids = list(set(provider_ids + new_provider_ids))
+        providers = providers.filter(pk__in=provider_ids)
+    if 'practices' in body.keys():
+        # Many-to-many (OR)
+        practices = ProductionPractice.objects.filter(pk__in=body['practices'])
+        provider_ids = []
+        for practice in practices:
+            new_provider_ids = [x.pk for x in practice.provider_set.all()]
+            provider_ids = list(set(provider_ids + new_provider_ids))
+        providers = providers.filter(pk__in=provider_ids)
+    if 'product_forms' in body.keys():
+        product_forms = ProductCategory.objects.filter(pk__in=body['product_forms'])
+        provider_ids = []
+        for form in product_forms:
+            new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
+            provider_ids = list(set(provider_ids + new_provider_ids))
+        providers = providers.filter(pk__in=provider_ids)
+
+    return providers
+
 #   requests should have a 'filters' object that gets parsed, run against the
 # providers records, then an alphabetical list of results should be put into
 # the JsonResponse and sent back to the client to render.
 def filter(request):
     providers = Provider.objects.all()
     if request.method == "POST":
-        try:
-            body = json.loads(request.body)
-            for key in body.keys():
-                if len(body[key]) > 0 and type(body[key][0]) == str:
-                    str_values = body[key]
-                    body[key] = [int(x) for x in str_values]
-        except Exception as e:
-            print(e)
-            body = {}
-        if 'product_categories' in body.keys():
-            # Many-to-many (OR)
-            product_ids = []
-            for filter_category in ProductCategory.objects.filter(pk__in=body['product_categories']):
-                product_ids += [x.pk for x in filter_category.get_provider_products()]
-            provider_products = ProviderProduct.objects.filter(pk__in=product_ids)
-            provider_ids = [x.provider.pk for x in provider_products]
-            providers = providers.filter(pk__in=provider_ids)
-        if 'identities' in body.keys():
-            # Many-to-many (OR)
-            identities = Identity.objects.filter(pk__in=body['identities'])
-            provider_ids = []
-            for identity in identities:
-                new_provider_ids = [x.pk for x in identity.provider_set.all()]
-                provider_ids = list(set(provider_ids + new_provider_ids))
-            providers = providers.filter(pk__in=provider_ids)
-        if 'availability' in body.keys():
-            # Many-to-many (OR)
-            regions = PoliticalSubregion.objects.filter(pk__in=body['availability'])
-            provider_ids = []
-            for region in regions:
-                new_provider_ids = [x.pk for x in region.provider_set.all()]
-                provider_ids = list(set(provider_ids + new_provider_ids))
-            providers = providers.filter(pk__in=provider_ids)
-        if 'physical_counties' in body.keys():
-            # Many-to-many (OR)
-            regions = PoliticalSubregion.objects.filter(pk__in=body['physical_counties'])
-            provider_ids = []
-            for region in regions:
-                new_provider_ids = [x.pk for x in providers.filter(physicalCounty=region)]
-                provider_ids = list(set(provider_ids + new_provider_ids))
-            providers = providers.filter(pk__in=provider_ids)
+        providers = run_filters(request, providers)
 
-        if 'component_categories' in body.keys():
-            # Many-to-many (OR)
-            components = ComponentCategory.objects.filter(pk__in=body['component_categories'])
-            provider_ids = []
-            for component in components:
-                for provider in providers:
-                    if component in provider.components_offered and not provider.id in provider_ids:
-                        provider_ids.append(provider.id)
-            providers = providers.filter(pk__in=provider_ids)
-        if 'delivery_methods' in body.keys():
-            # Many-to-many (OR)
-            delivery_methods = DeliveryMethod.objects.filter(pk__in=body['delivery_methods'])
-            provider_ids = []
-            for method in delivery_methods:
-                new_provider_ids = [x.pk for x in method.provider_set.all()]
-                provider_ids = list(set(provider_ids + new_provider_ids))
-            providers = providers.filter(pk__in=provider_ids)
-        if 'distributors' in body.keys():
-            # Many-to-many (OR)
-            distributors = Distributor.objects.filter(pk__in=body['distributors'])
-            provider_ids = []
-            for distributor in distributors:
-                new_provider_ids = [x.pk for x in distributor.provider_set.all()]
-                provider_ids = list(set(provider_ids + new_provider_ids))
-            providers = providers.filter(pk__in=provider_ids)
-        if 'practices' in body.keys():
-            # Many-to-many (OR)
-            practices = ProductionPractice.objects.filter(pk__in=body['practices'])
-            provider_ids = []
-            for practice in practices:
-                new_provider_ids = [x.pk for x in practice.provider_set.all()]
-                provider_ids = list(set(provider_ids + new_provider_ids))
-            providers = providers.filter(pk__in=provider_ids)
-        if 'product_forms' in body.keys():
-            product_forms = ProductCategory.objects.filter(pk__in=body['product_forms'])
-            provider_ids = []
-            for form in product_forms:
-                new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
-                provider_ids = list(set(provider_ids + new_provider_ids))
-            providers = providers.filter(pk__in=provider_ids)
 
     providers_response = {'providers': []}
     for p in providers:
@@ -746,3 +753,32 @@ def filter(request):
 
     data = [providers_response, filters_response]
     return JsonResponse(data, safe=False)
+
+def printer_friendly_results(request):
+    providers = Provider.objects.all()
+    if request.method == "POST":
+        providers = run_filters(request, providers)
+
+    providers_response = {'providers': []}
+    for p in providers:
+      providers_response['providers'].append({
+          'id': p.id,
+          'name': p.name,
+          'businessAddressCity': p.businessAddressCity,
+          'businessAddressState': {
+              'initialism': p.businessAddressState.initialism
+          },
+          'product_categories': [{'image':x['object'].image_string} for x in p.product_categories]
+        })
+
+    if len(request.POST.keys()) > 0:
+      filters_response = [x for x in request.POST.keys()][0]
+    else:
+      filters_response = []
+
+    context = {
+        'providers': providers,
+        'filters': filters_response
+    }
+
+    return render(request, "printable_results.html", context)

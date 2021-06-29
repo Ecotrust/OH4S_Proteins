@@ -14,4 +14,5 @@ urlpatterns = [
     path('provider/<int:provider_id>/', views.provider),
     # re_path('results/?', views.results),
     re_path('filter/?', csrf_exempt(views.filter)),
+    path('results/printable/', csrf_exempt(views.printer_friendly_results)),
 ]
