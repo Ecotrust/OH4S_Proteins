@@ -20,4 +20,17 @@ $(document).ready(function() {
 	var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
 	  return new bootstrap.Tooltip(tooltipTriggerEl)
 	});
+
+	document.querySelectorAll('.expandable-wrap').forEach((el, i) => {
+		el.addEventListener('click', function(event) {
+			el.classList.toggle('show');
+			el.querySelector('.expandable').classList.toggle('show');
+		});
+	});
+
+	document.querySelectorAll('.expandable').forEach((el, i) => {
+		if (el.offsetHeight > 71) {
+			el.closest('.expandable-wrap').classList.add('has-expand');
+		}
+	});
 });

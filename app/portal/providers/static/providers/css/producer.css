@@ -76,6 +76,7 @@
 
 #provider-left-left,
 #provider-right-right {
+  color: #000;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -83,6 +84,7 @@
 #provider-left-column:after {
   background: var(--color-2);
   bottom:  3rem;
+  color: #000;
   content: "";
   position: absolute;
   right: -1px;

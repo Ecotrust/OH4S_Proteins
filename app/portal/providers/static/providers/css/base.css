@@ -77,7 +77,7 @@
     --font-size-large: 16px;
     --font-size-p: 1.125em;
     --font-size-h1: 2.875em;
-    --font-size-h2: 1em;
+    --font-size-h2: 1rem;
     --font-size-h3: 2.25em;
     --font-size-h4: 1em;
 
@@ -272,6 +272,11 @@ button:not(.btn-close) {
 }
 
 
+hr {
+  border-top: 0.1rem solid #0098a8;
+}
+
+
 
 /**
  * Global Classes
@@ -281,6 +286,7 @@ button:not(.btn-close) {
 .subtitle {
     background: #fff;
     display: inline-block;
+    font-size: 1em;
     padding: 10px 20px 9px;
     text-transform: uppercase;
 }
@@ -415,9 +421,9 @@ button.btn-back {
     font-family: var(--font-1-medium);
     font-size: .875em;
     letter-spacing: 0.025em;
-    line-height: 1;
+    line-height: 1.25rem;
     position: relative;
-    padding-left:  48px;
+    padding-left: 48px;
     text-align: right;
 }
     
@@ -434,7 +440,8 @@ button.btn-back {
         width: 18px;
     }
 
-    button.btn-back:hover {
+    button.btn-back:hover,
+    button.btn-back:active {
         color:  var(--color-1);
         background:  rgba(255,255,255,0.55);
     }
@@ -615,6 +622,55 @@ input[type="checkbox"] {
     width: auto;
     max-width: 20px;
 }
+
+.expandable {
+    max-height: 100px;
+    overflow: hidden;
+    position: relative;
+    display: block;
+}
+
+.expandable:not(.show) {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;  
+}
+
+.expandable.show {
+    max-height: none;
+    overflow: visible;
+}
+
+.expandable-wrap {
+    position: relative;
+}
+
+    .expandable-wrap.has-expand:not(.show)::after {
+        bottom: -1ex;
+        color:  var(--color-3);
+        content: "Show More +";
+        font-family: var(--font-2-black);
+        font-size: 13px;
+        position: absolute;
+        left: 12px;
+    }
+
+    .expandable-wrap.has-expand.show::after {
+        bottom: -1ex;
+        color:  var(--color-3);
+        content:  "Show Less -";
+        font-family: var(--font-2-black);
+        font-size: 13px;
+        position: absolute;
+        left: 12px;
+    }
+
+/* .expandable:not(.show)::before {
+    bottom: 0;
+    content: "+";
+    font-size: 1rem;
+    right:  0;
+} */
 
 
 
