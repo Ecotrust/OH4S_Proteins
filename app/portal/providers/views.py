@@ -652,81 +652,112 @@ def run_filters(request, providers):
     except Exception as e:
         print(e)
         body = {}
+
+    filters = {}
     if 'product_categories' in body.keys():
         # Many-to-many (OR)
+        filters['Product Types'] = []
         product_ids = []
         for filter_category in ProductCategory.objects.filter(pk__in=body['product_categories']):
+            filters['Product Types'].append({'id': filter_category.pk, 'name': str(filter_category)})
             product_ids += [x.pk for x in filter_category.get_provider_products()]
         provider_products = ProviderProduct.objects.filter(pk__in=product_ids)
         provider_ids = [x.provider.pk for x in provider_products]
         providers = providers.filter(pk__in=provider_ids)
+        filters['Product Types'].sort(key=lambda x: x['name'])
     if 'identities' in body.keys():
         # Many-to-many (OR)
         identities = Identity.objects.filter(pk__in=body['identities'])
+        filters['Producer Identities'] = []
         provider_ids = []
         for identity in identities:
+            filters['Producer Identities'].append({'id': identity.pk, 'name': str(identity)})
             new_provider_ids = [x.pk for x in identity.provider_set.all()]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
+        filters['Producer Identities'].sort(key=lambda x: x['name'])
     if 'availability' in body.keys():
         # Many-to-many (OR)
         regions = PoliticalSubregion.objects.filter(pk__in=body['availability'])
+        filters['County Availability'] = []
         provider_ids = []
         for region in regions:
+            filters['County Availability'].append({'id': region.pk, 'name': str(region)})
             new_provider_ids = [x.pk for x in region.provider_set.all()]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
+        filters['County Availability'].sort(key=lambda x: x['name'])
     if 'physical_counties' in body.keys():
         # Many-to-many (OR)
         regions = PoliticalSubregion.objects.filter(pk__in=body['physical_counties'])
+        filters['Producer Counties'] = []
         provider_ids = []
         for region in regions:
+            filters['Producer Counties'].append({'id': region.pk, 'name': str(region)})
             new_provider_ids = [x.pk for x in providers.filter(physicalCounty=region)]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
-
+        filters['Producer Counties'].sort(key=lambda x: x['name'])
     if 'component_categories' in body.keys():
         # Many-to-many (OR)
         components = ComponentCategory.objects.filter(pk__in=body['component_categories'])
+        filters['Meal Components'] = []
         provider_ids = []
         for component in components:
+            filters['Meal Components'].append({'id': component.pk, 'name': str(component)})
             for provider in providers:
                 if component in provider.components_offered and not provider.id in provider_ids:
                     provider_ids.append(provider.id)
         providers = providers.filter(pk__in=provider_ids)
+        filters['Meal Components'].sort(key=lambda x: x['name'])
     if 'delivery_methods' in body.keys():
         # Many-to-many (OR)
         delivery_methods = DeliveryMethod.objects.filter(pk__in=body['delivery_methods'])
+        filters['Delivery Methods'] = []
         provider_ids = []
         for method in delivery_methods:
+            filters['Delivery Methods'].append({'id': method.pk, 'name': str(method)})
             new_provider_ids = [x.pk for x in method.provider_set.all()]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
+        filters['Delivery Methods'].sort(key=lambda x: x['name'])
     if 'distributors' in body.keys():
         # Many-to-many (OR)
         distributors = Distributor.objects.filter(pk__in=body['distributors'])
+        filters['Distributors'] = []
         provider_ids = []
         for distributor in distributors:
+            filters['Distributors'].append({'id': distributor.pk, 'name': str(distributor)})
             new_provider_ids = [x.pk for x in distributor.provider_set.all()]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
+        filters['Distributors'].sort(key=lambda x: x['name'])
     if 'practices' in body.keys():
         # Many-to-many (OR)
         practices = ProductionPractice.objects.filter(pk__in=body['practices'])
+        filters['Practices'] = []
         provider_ids = []
         for practice in practices:
+            filters['Practices'].append({'id': practice.pk, 'name': str(practice)})
             new_provider_ids = [x.pk for x in practice.provider_set.all()]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
+        filters['Practices'].sort(key=lambda x: x['name'])
     if 'product_forms' in body.keys():
         product_forms = ProductCategory.objects.filter(pk__in=body['product_forms'])
+        filters['Product Forms'] = []
         provider_ids = []
         for form in product_forms:
+            filters['Product Forms'].append({'id': form.pk, 'name': str(form)})
             new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
+        filters['Product Forms'].sort(key=lambda x: x['name'])
 
-    return providers
+    return {
+        'providers': providers,
+        'filters': filters
+    }
 
 #   requests should have a 'filters' object that gets parsed, run against the
 # providers records, then an alphabetical list of results should be put into
@@ -734,8 +765,9 @@ def run_filters(request, providers):
 def filter(request):
     providers = Provider.objects.all()
     if request.method == "POST":
-        providers = run_filters(request, providers)
-
+        filter_results = run_filters(request, providers)
+        providers = filter_results['providers']
+        filters = filter_results['filters']
 
     providers_response = {'providers': []}
     for p in providers:
@@ -751,22 +783,28 @@ def filter(request):
 
     filters_response = [x for x in request.POST.keys()][0]
 
-    data = [providers_response, filters_response]
+    data = [providers_response, filters_response, filters]
     return JsonResponse(data, safe=False)
 
 def printer_friendly_results(request):
-    providers = Provider.objects.all()
+    providers = [{'name':'Loading...'}]
+    filter_list = []
     if request.method == "POST":
-        providers = run_filters(request, providers)
-
-    if len(request.POST.keys()) > 0:
-        filters_response = [x for x in request.POST.keys()][0]
-    else:
-        filters_response = []
+        providers = Provider.objects.all()
+        filter_response = run_filters(request, providers)
+        providers =  filter_response['providers']
+        filters = filter_response['filters']
+        filter_keys = [x for x in filter_response['filters'].keys()]
+        filter_keys.sort()
+        for key in filter_keys:
+            filter_list.append({
+                'name': key,
+                'list': ', '.join([x['name'] for x in filters[key]])
+            })
 
     context = {
         'providers': providers,
-        'filters': filters_response
+        'filter_list': filter_list
     }
 
     return render(request, "printable_results.html", context)

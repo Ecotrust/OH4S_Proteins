@@ -5,6 +5,18 @@
   </head>
   <body>
     <H1>Oregon Farm To School Providers</H1>
+
+    {% if filter_list|length > 0 %}
+      <h3>Filters:</h3>
+      {% for filter in filter_list %}
+      <div class='printable-filter'>
+          <b>{{ filter.name }}</b>:<br>
+          &emsp;{{ filter.list }}<br>
+      </div>
+      {% endfor %}
+      <h3>Provider Contacts:</h3>
+    {% endif %}
+
     {% for provider in providers %}
       <div class="printable-provider">
 
