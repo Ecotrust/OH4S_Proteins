@@ -61,7 +61,7 @@ footer .navbar>div.footer-container {
   flex-direction: column-reverse;
 }
 
-[class*="block"] {
+footer [class*="block"] {
   margin: 0 0 1rem;
 }
 

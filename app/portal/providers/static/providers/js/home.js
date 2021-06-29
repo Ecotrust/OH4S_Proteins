@@ -26,9 +26,9 @@ var reset_filter_button = function() {
     }
   }
   if (filter_all) {
-    $('#home-filter-button').html('Browse All Providers');
+    $('#home-filter-button').html('Browse Providers');
   } else {
-    $('#home-filter-button').html('See Filtered Providers');
+    $('#home-filter-button').html('See Results');
   }
 }
 

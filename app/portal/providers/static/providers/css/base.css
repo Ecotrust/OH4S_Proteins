@@ -461,6 +461,7 @@ button.btn-close:hover {
 }
 
 
+
 /**
  * Richtext fields
  *
@@ -474,6 +475,21 @@ button.btn-close:hover {
 [data-block-key] b {
     font-family: var(--font-1-bold);
     font-weight: normal;
+}
+
+.right {
+    float: right;
+}
+
+.left {
+    float:  left;
+}
+
+[class*="block"] {
+    display: block;
+    margin: 0 0 1rem;
+    position: relative;
+    overflow: hidden;
 }
 
 
