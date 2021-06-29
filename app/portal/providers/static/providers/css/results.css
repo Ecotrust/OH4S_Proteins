@@ -54,3 +54,7 @@
 .template-results #categories-header {
 	border-right: none;
 }
+
+button#printer-friendly {
+	float: right;
+}
