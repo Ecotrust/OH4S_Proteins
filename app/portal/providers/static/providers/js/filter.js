@@ -140,13 +140,7 @@ function removeActiveFilterClass(form) {
   form.closest('.filter-wrap').classList.remove('filter-active');
 }
 
-
-function filterQuery() {
-  // Disable addition query
-  toggleEnableFilterBtns();
-  // Add results spinner
-  showResultsSpinner();
-
+function getFilterRequest() {
   var filterReq = {};
   var allFormsObj = document.forms;
   var allFormsArr = document.querySelectorAll('form');
@@ -170,6 +164,16 @@ function filterQuery() {
       removeActiveFilterClass(form);
     }
   });
+  return filterReq;
+}
+
+function filterQuery() {
+  // Disable addition query
+  toggleEnableFilterBtns();
+  // Add results spinner
+  showResultsSpinner();
+
+  var filterReq = getFilterRequest();
 
   if (Object.keys(filterReq).length == 0) {
     $("#results-advice-div").html(no_filter_advice);
@@ -190,6 +194,26 @@ function filterQuery() {
       updateFilterForms(response[1]);
       populateFilterResults(response[0].providers);
     }
+  });
+}
+
+function getPrintableResults() {
+  var filterReq = getFilterRequest();
+  var url = '/providers/results/printable/';
+  $.ajax({
+      url: url,
+      type: "POST",
+      data: JSON.stringify(filterReq),
+      success: function(data) {
+        var w = window.open('/providers/results/printable/');
+        setTimeout(function() {
+          $(w.document.body).html(data);
+          w.focus();
+        }, 100);
+      },
+      error: function () {
+        alert('Problem getting data');
+      },
   });
 }
 

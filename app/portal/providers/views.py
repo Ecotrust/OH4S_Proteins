@@ -759,22 +759,10 @@ def printer_friendly_results(request):
     if request.method == "POST":
         providers = run_filters(request, providers)
 
-    providers_response = {'providers': []}
-    for p in providers:
-      providers_response['providers'].append({
-          'id': p.id,
-          'name': p.name,
-          'businessAddressCity': p.businessAddressCity,
-          'businessAddressState': {
-              'initialism': p.businessAddressState.initialism
-          },
-          'product_categories': [{'image':x['object'].image_string} for x in p.product_categories]
-        })
-
     if len(request.POST.keys()) > 0:
-      filters_response = [x for x in request.POST.keys()][0]
+        filters_response = [x for x in request.POST.keys()][0]
     else:
-      filters_response = []
+        filters_response = []
 
     context = {
         'providers': providers,
