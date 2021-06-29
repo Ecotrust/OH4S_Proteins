@@ -22,8 +22,7 @@
             <span id="results-count"></span>
             {{ page.results_count_message_after }}
           </h3>
-          <div class="results-advice">
-            {{ page.filter_advice|richtext }}
+          <div id="results-advice-div" class="results-advice">
           </div>
         </div>
 
@@ -145,6 +144,8 @@
     {% if filters_json %}
       filters = {{ filters_json|safe }};
     {% endif %}
+    var filter_advice = '{{ page.filter_advice|richtext }}';
+    var no_filter_advice = '{{ page.no_filter_advice|richtext }}';
 
     populateFilterForms(filters);
     filterQuery(filters);

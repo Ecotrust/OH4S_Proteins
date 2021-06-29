@@ -146,7 +146,7 @@ function filterQuery() {
   toggleEnableFilterBtns();
   // Add results spinner
   showResultsSpinner();
-  
+
   var filterReq = {};
   var allFormsObj = document.forms;
   var allFormsArr = document.querySelectorAll('form');
@@ -170,6 +170,12 @@ function filterQuery() {
       removeActiveFilterClass(form);
     }
   });
+
+  if (Object.keys(filterReq).length == 0) {
+    $("#results-advice-div").html(no_filter_advice);
+  } else {
+    $("#results-advice-div").html(filter_advice);
+  }
 
   $.ajax('/providers/filter/', {
     type: 'POST',

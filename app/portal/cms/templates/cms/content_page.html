@@ -9,6 +9,29 @@
 {% block body_class %}template-content{% endblock %}
 
 {% block content %}
+  <div class="container-fluid filtering">
+    <div class="well">
+      <div class="container">
+        <div class="row">
+          <div class="col-12 col-md-12" id="content-header">
+            <div class="row">
+              {% if page.back_button %}
+                <div class="col-auto">
+                  <button onclick="window.history.back();" class="btn-back">{{ page.back_button_text }}</button>
+                </div>
+              {% endif %}
+              {% if page.back_button %}
+                <div class="col">
+                  <h2 class="subtitle">{{ page.subtitle }}</h2>
+                </div>
+              {% endif %}
+            </div>
+            <div class="welcome-text">{{ page.header_blurb|richtext }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="container">
     <div class="row">
       <div class="content-page-title">
