@@ -90,7 +90,7 @@
     --color-2-55:  rgba(230,212,16,0.55);
 
     /* Utils */
-    --border-radius: 2em;
+    --border-radius: 2rem;
 
     /* Animations */
     --trans-hover: 0.2s all ease-in-out;
@@ -648,10 +648,12 @@ input[type="checkbox"] {
     .expandable-wrap.has-expand:not(.show)::after {
         bottom: -1ex;
         color:  var(--color-3);
+        cursor: pointer;
         content: "Show More +";
         font-family: var(--font-2-black);
-        font-size: 13px;
+        font-size: 10px;
         position: absolute;
+        text-transform: uppercase;
         left: 12px;
     }
 
@@ -659,9 +661,11 @@ input[type="checkbox"] {
         bottom: -1ex;
         color:  var(--color-3);
         content:  "Show Less -";
+        cursor: pointer;
         font-family: var(--font-2-black);
-        font-size: 13px;
+        font-size: 10px;
         position: absolute;
+        text-transform: uppercase;
         left: 12px;
     }
 

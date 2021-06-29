@@ -29,7 +29,7 @@ $(document).ready(function() {
 	});
 
 	document.querySelectorAll('.expandable').forEach((el, i) => {
-		if (el.offsetHeight > 71) {
+		if (el.offsetHeight > 72) {
 			el.closest('.expandable-wrap').classList.add('has-expand');
 		}
 	});

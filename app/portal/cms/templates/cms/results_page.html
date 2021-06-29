@@ -46,7 +46,7 @@
                   <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
 
                   <div class="modal fade modal-filter" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-xl">
+                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                       <div class="modal-content">
                         <div class="modal-header">
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -68,7 +68,7 @@
                           <form name="{{ filter.facet }}" class="filter-form">
                             {% if filter.widget == 'multiselect' or filter.widget == 'multiselect-spatial' or filter.widget == 'compound-multiselect' %}
                               <div class="list-group">
-                                <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 align-items-center">
+                                <div class="row row-cols-1 align-items-center">
                                 {% if filter.widget == 'compound-multiselect' %}
                                   {% for category_tuple in filter.option_categories %}
                                     {% if filter.options|get_item:category_tuple.0|length > 0 %}
