@@ -92,7 +92,7 @@
               </div>
             {% endfor %}
             <div class="col-12 col-xl-6 py-1">
-              <button type="button" class="btn btn-secondary w-100" id="home-filter-button" onclick='go_to_results()'>Browse Providers</button>
+              <button type="button" class="btn btn-secondary w-100" id='home-filter-button' onclick='go_to_results()'>{{ page.browse_all_button }}</button>
             </div>
           </div>
         </div>
@@ -145,5 +145,9 @@
 
 {% block additional_js %}
   {{ block.super }}
+  <script>
+    var browse_all_default = "{{ page.browse_all_button }}";
+    var browse_filtered_default = "{{ page.browse_filtered_button }}";
+  </script>
   <script src="{% static "providers/js/home.js" %}"></script>
 {% endblock %}
