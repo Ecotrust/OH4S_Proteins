@@ -272,6 +272,8 @@ class Filter(models.Model):
         ('delivery_methods', 'Delivery Methods'),
         ('product_categories', 'Product Categories'),
         ('product_forms', 'Product details'),
+        ('distributors', 'Distributors'),
+        ('practices', 'Practices'),
     )
     name = models.CharField(max_length=255)
     title = models.CharField(max_length=255, null=True, default=None)
