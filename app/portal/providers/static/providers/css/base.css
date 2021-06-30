@@ -680,7 +680,7 @@ input[type="checkbox"] {
 }
 
     .expandable-wrap.has-expand:not(.show)::after {
-        bottom: -1ex;
+        bottom: -1.25ex;
         color:  var(--color-3);
         cursor: pointer;
         content: "Show More +";
@@ -692,7 +692,7 @@ input[type="checkbox"] {
     }
 
     .expandable-wrap.has-expand.show::after {
-        bottom: -1ex;
+        bottom: -1.25ex;
         color:  var(--color-3);
         content:  "Show Less -";
         cursor: pointer;
