@@ -341,68 +341,72 @@
             </div>
             {% if category.pack_size_present %}
               <!-- Use 5 cols if pack size coloumn -->
-              <div class="row row-cols-sm-1 row-cols-lg-5">
+              <!-- <div class="row row-cols-sm-1 row-cols-lg-5"> -->
             {% else %}
               <!-- Use 4 cols if no pack size coloumn -->
-              <div class="row row-cols-sm-1 row-cols-lg-4">
+              <!-- <div class="row row-cols-sm-1 row-cols-lg-4"> -->
             {% endif %}
-                <div class="col category-column-header">
+            <table class='producer-product-table'>
+              <tr>
+                <th class="col category-column-header">
                   <h4>Variety</h4>
-                </div>
-                <div class="col category-column-header">
+                </th>
+                <th class="col category-column-header">
                   <h4>Form</h4>
-                </div>
-                <div class="col category-column-header">
+                </th>
+                <th class="col category-column-header">
                   <h4>Components</h4>
-                </div>
+                </th>
                 {% if category.pack_size_present %}
-                  <div class="col category-column-header">
+                  <th class="col category-column-header">
                     <h4>Packaging</h4>
-                  </div>
+                  </th>
                 {% endif %}
                 {% if category.notes_present %}
-                  <div class="col category-column-header">
+                  <th class="col category-column-header">
                     <h4>Notes</h4>
-                  </div>
+                  </th>
                 {% endif %}
-            </div>
+              </tr>
             {% for product in category.products %}
+              <tr>
               {% if category.pack_size_present %}
                  <!-- Use 5 cols if pack size coloumn -->
-                <div class="row row-cols-sm-1 row-cols-lg-5">
+                <!-- <div class="row row-cols-sm-1 row-cols-lg-5"> -->
               {% else %}
                 <!-- Use 4 cols if no pack size coloumn -->
-                <div class="row row-cols-sm-1 row-cols-lg-4">
+                <!-- <div class="row row-cols-sm-1 row-cols-lg-4"> -->
               {% endif %}
-                <div class="col">
+                <td class="col">
                   {{ product.variety }}
                   {% if product.description %}
                     <span class='info-icon' data-bs-toggle="tooltip" data-bs-placement="top" title="{{ product.description }}">&#9432;</span>
                   {% endif %}
-                </div>
-                <div class="col">
+                </td>
+                <td class="col">
                   {{ product.form }}
-                </div>
-                <div class="col">
+                </td>
+                <td class="col">
                   {{ product.usda_meal_components }}
-                </div>
+                </td>
                 {% if category.pack_size_present %}
-                  <div class="col">
+                  <td class="col">
                     {% if product.pack_size %}
                       {{ product.pack_size }}
                     {% endif %}
-                  </div>
+                  </td>
                 {% endif %}
                 {% if category.notes_present %}
-                  <div class="col img-container">
+                  <td class="col img-container">
                     {% if product.notes %}
                       <img src="{% static 'providers/img/icons/i_note.svg' %}" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ product.notes }}" />
                     {% endif %}
-                  </div>
+                  </td>
                 {% endif %}
 
-              </div>
+              </tr>
             {% endfor %}
+            </table>
           </div>
         </div>
       </div>
