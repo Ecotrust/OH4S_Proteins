@@ -13,7 +13,8 @@
 
 .template-producer h4 {
   color:  var(--color-3);
-  margin: 2rem 0 .5rem;
+  line-height: 1.75;
+  margin: 2rem 0 .25rem;
   text-transform: uppercase;
   text-decoration: underline;
   text-decoration-color: var(--color-2);

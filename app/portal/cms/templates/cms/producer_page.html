@@ -30,7 +30,7 @@
           </div>
         </div>
         <div class="col-12 col-md-6 py-1 ps-4">
-          <div class="row ps-md-3 pt-1 pb-2 align-items-center">
+          <div class="row ps-md-3 pt-1 pb-3 align-items-center">
             <div class="col-auto">
               <span id="name-icon" class="icon-circle"><img src="{% static '/providers/img/icons/i_person.svg' %}" alt="icon person" /></span>
             </div>
@@ -326,19 +326,25 @@
                 <span><img src="{% static '/providers/img/icons/i_note.svg' %}" alt="icon notes" /></span>
                 Additional Notes
               </h4>
-                <div>
-                  {{ provider.notes }}
+              <div class="row expandable-wrap">
+                <div class="col">
+                  <div class="expandable show">
+                    <div>
+                      {{ provider.notes }}
+                    </div>
+                  </div>
                 </div>
+              </div>
             {% endif %}
           </div>
         </div>
         <div class="row">
-          <div class="col-12 update-tag">
+          <div class="col-12 my-3 update-tag">
             Information last updated: {{ provider.dateUpdated }}
           </div>
         </div>
         <div class="row">
-          <div class="col-12 producer-blurb">
+          <div class="col-12 my-3 producer-blurb">
             {{ page.bottom_blurb }}
           </div>
         </div>

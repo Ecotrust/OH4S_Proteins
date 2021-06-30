@@ -521,6 +521,19 @@ button.btn-close:hover {
     overflow: hidden;
 }
 
+[class*="block"] img.right,
+[class*="block"] img.left {
+    margin-bottom: 2rem;
+    margin-top:  2rem;
+}
+
+[class*="block"] img.right {
+    margin-left: 2rem;
+}
+
+[class*="block"] img.left {
+    margin-right: 2rem;
+}
 
 
 /**
@@ -607,7 +620,6 @@ input[type="checkbox"] {
     display: inline-block;
     height: 15px;
     margin: 0 8px 2px;
-    position: absolute;
     right: -32px;
     vertical-align: middle;
     width: 15px;
@@ -658,6 +670,7 @@ input[type="checkbox"] {
 }
 
 .expandable {
+    margin-bottom: 1rem;
     max-height: 100px;
     overflow: hidden;
     position: relative;
