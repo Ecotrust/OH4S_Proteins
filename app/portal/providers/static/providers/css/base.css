@@ -50,6 +50,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "KiwiMaru";
+    src: url("../fonts/KiwiMaru/KiwiMaru-Medium.woff") format("woff"),
+         url("../fonts/KiwiMaru/KiwiMaru-Medium.ttf") format("truetype");
+    font-style: normal;
+}
+
 
 
 /**
@@ -70,6 +77,8 @@
     --font-2: "Nunito Bold", sans-serif;
     --font-2-bold: var(--font-2);
     --font-2-black: "Nunito Black", sans-serif;
+
+    --font-3: "KiwiMaru", Georgia, serif;
 
     --font-size: 1em;
     --font-size-small:  12px;
@@ -591,12 +600,24 @@ input[type="checkbox"] {
     width: 15px;
 }
 
+    .link-internal:hover::after,
+    .link-external:hover::after {
+        opacity: .55;
+    }
+
 .link-internal::after {
     background-image: url("/static/providers/img/icons/i_play-right.svg");
 }
 
 .link-external::after {
     background-image: url("/static/providers/img/icons/i_external-link.svg");
+}
+
+.link-internal a,
+.link-external a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
 }
 
 .screen-min-medium {
