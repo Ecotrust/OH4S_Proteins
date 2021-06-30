@@ -12,17 +12,18 @@
 }
 
 .template-producer h4 {
-  border-bottom: 2px solid var(--color-2);
   color:  var(--color-3);
-  display: inline-block;
-  margin: 2rem auto 1rem;
-  padding-bottom:  .375rem;
+  margin: 2rem 0 .5rem;
   text-transform: uppercase;
+  text-decoration: underline;
+  text-decoration-color: var(--color-2);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 
 .template-producer h4 img {
   display: inline-block;
-  margin: 0 3px;
+  margin-right: 4px;
   vertical-align: baseline;
 }
 

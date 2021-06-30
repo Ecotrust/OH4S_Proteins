@@ -87,10 +87,12 @@
         <div class="row">
           <div class="col-12 col-xl-6" id="provider-left-left">
             {% if provider.websiteAddress %}
+            
               <h4>
                 <span id="name-website"><img src="{% static '/providers/img/icons/i_browser.svg' %}" alt="icon website" /></span>
                 Website
               </h4>
+
               <a href="{{ provider.websiteAddress }}" target="_blank">
                 {{ provider.websiteAddress }}
               </a>
@@ -144,13 +146,13 @@
               </h4>
               <div class="row expandable-wrap">
                 <div class="col">
-                  <p class="expandable show">
+                  <div class="expandable show">
                     {% for county in provider.regionalAvailability.all %}
                       <div>
                         {{ county.name }}
                       </div>
                     {% endfor %}
-                  </p>
+                  </div>
                 </div>
               </div>
             {% endif %}
