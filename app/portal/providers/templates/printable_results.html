@@ -81,6 +81,19 @@
             {% endif %}
             <br>
         {% endif %}
+        {% if provider.preferredLanguage.all|length > 0 %}
+          {% if provider.preferredLanguage.all|length > 1 %}
+            Preferred Languages:
+            <ul>
+              {% for language in provider.preferredLanguage.all %}
+                <li>{{ language }}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            Preferred Language: {{ provider.preferredLanguage.all.0 }}
+          {% endif %}
+        {% endif %}
+
 
       </div>
     {% endfor %}
