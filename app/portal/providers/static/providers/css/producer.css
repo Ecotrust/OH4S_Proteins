@@ -72,7 +72,7 @@
 
 #provider-left-column,
 #provider-right-column {
-  padding-top: 4rem;
+  margin: 4rem 0;
   position: relative;
 }
 
