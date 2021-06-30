@@ -33,10 +33,10 @@
           </div>
           <div class="row justify-content-center align-items-center ps-1 ps-md-3 pt-3 pb-2 screen-min-medium">
             <div class="col-12 py-1 col-md-6 text-center">
-              <img src="{% static '/providers/img/icons/i_hand.svg' %}" alt="icon-hand" />
+              <img src="{% static '/providers/img/icons/i_identity_alt.svg' %}" alt="icon-hand" class="filter-icon" />
             </div>
             <div class="col-12 py-1 col-md-6 text-center">
-              <img src="{% static '/providers/img/icons/i_availability.svg' %}" alt="icon available" />
+              <img src="{% static '/providers/img/icons/i_availability_alt.svg' %}" alt="icon available" class="filter-icon" />
             </div>
           </div>
           <div class="row row-cols-1 row-cols-xl-2 align-items-center ps-md-3 pt-2 pb-2">
@@ -45,7 +45,7 @@
                 <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
 
                 <div class="modal fade modal-filter" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+                  <div class="modal-dialog modal-lg modal-dialog-centered">
                     <div class="modal-content">
                       <div class="modal-header">
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

@@ -493,6 +493,10 @@ button.btn-close:hover {
     margin: 3rem 0;
 }
 
+.filter-icon {
+    max-height: 60px;
+    width: auto;
+}
 
 
 /**
