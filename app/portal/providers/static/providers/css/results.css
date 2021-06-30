@@ -58,3 +58,9 @@
 button#printer-friendly {
 	float: right;
 }
+
+p.provider-card-location {
+	font-family: var(--font-2-bold);
+	font-size: 10px;
+	letter-spacing: 1px;
+}

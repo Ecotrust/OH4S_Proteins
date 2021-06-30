@@ -225,8 +225,8 @@ const providerToCard = (provider, providerUrl) => {
   const cardElement = `<div class="col" id="results-card-${provider.id}">` +
       `<a class="card h-100" href="${providerUrl}">` +
         `<div class="card-body">` +
-          `<h5 class="card=title">${provider.name}</h5>` +
-          `<p>${provider.businessAddressCity}, ${provider.businessAddressState.initialism}</p>` +
+          `<h5 class="card-title">${provider.name}</h5>` +
+          `<p class="provider-card-location">${provider.businessAddressCity}, ${provider.businessAddressState.initialism}</p>` +
           `<div class='producer-products'></div>` +
         `</div>` +
       `</a>` +
