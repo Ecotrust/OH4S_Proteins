@@ -28,6 +28,7 @@ header .navbar {
 
 .navbar-text {
   display: inline-block;
+  font-family: var(--font-3);
   font-size: 2em;
   line-height: 1;
   margin: 0 1rem;

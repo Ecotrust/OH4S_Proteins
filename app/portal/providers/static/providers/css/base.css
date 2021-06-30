@@ -50,6 +50,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: "KiwiMaru";
+    src: url("../fonts/KiwiMaru/KiwiMaru-Medium.woff") format("woff"),
+         url("../fonts/KiwiMaru/KiwiMaru-Medium.ttf") format("truetype");
+    font-style: normal;
+}
+
 
 
 /**
@@ -71,6 +78,8 @@
     --font-2-bold: var(--font-2);
     --font-2-black: "Nunito Black", sans-serif;
 
+    --font-3: "KiwiMaru", Georgia, serif;
+
     --font-size: 1em;
     --font-size-small:  12px;
     --font-size-medium: 14px;
@@ -90,7 +99,7 @@
     --color-2-55:  rgba(230,212,16,0.55);
 
     /* Utils */
-    --border-radius: 2em;
+    --border-radius: 2rem;
 
     /* Animations */
     --trans-hover: 0.2s all ease-in-out;
@@ -417,6 +426,19 @@ button.btn-secondary {
     }
 
 
+#home-filter-button {
+    background-color: #fff;
+}
+
+    #home-filter-button::after {
+        background-image:  url("/static/providers/img/icons/i_arrow-right@2x.png");
+        opacity: 1;
+    }
+
+    #home-filter-button:hover::after {
+        opacity: .55;
+    }
+
 button.btn-back {
     font-family: var(--font-1-medium);
     font-size: .875em;
@@ -591,12 +613,24 @@ input[type="checkbox"] {
     width: 15px;
 }
 
+    .link-internal:hover::after,
+    .link-external:hover::after {
+        opacity: .55;
+    }
+
 .link-internal::after {
     background-image: url("/static/providers/img/icons/i_play-right.svg");
 }
 
 .link-external::after {
     background-image: url("/static/providers/img/icons/i_external-link.svg");
+}
+
+.link-internal a,
+.link-external a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    text-decoration-thickness: 1px;
 }
 
 .screen-min-medium {
@@ -648,10 +682,12 @@ input[type="checkbox"] {
     .expandable-wrap.has-expand:not(.show)::after {
         bottom: -1ex;
         color:  var(--color-3);
+        cursor: pointer;
         content: "Show More +";
         font-family: var(--font-2-black);
-        font-size: 13px;
+        font-size: 10px;
         position: absolute;
+        text-transform: uppercase;
         left: 12px;
     }
 
@@ -659,9 +695,11 @@ input[type="checkbox"] {
         bottom: -1ex;
         color:  var(--color-3);
         content:  "Show Less -";
+        cursor: pointer;
         font-family: var(--font-2-black);
-        font-size: 13px;
+        font-size: 10px;
         position: absolute;
+        text-transform: uppercase;
         left: 12px;
     }
 

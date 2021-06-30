@@ -72,6 +72,7 @@
 #provider-left-column,
 #provider-right-column {
   padding-top: 4rem;
+  position: relative;
 }
 
 #provider-left-left,
@@ -87,7 +88,7 @@
   color: #000;
   content: "";
   position: absolute;
-  right: -1px;
+  right: 0px;
   top: 3rem;
   width: 2px;
 }
