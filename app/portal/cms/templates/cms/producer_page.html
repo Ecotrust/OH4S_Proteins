@@ -81,7 +81,7 @@
         <h4>About</h4>
         <div class="row expandable-wrap">
           <div class="col">
-            <p class='expandable'>{{ provider.description }}</p>
+            <p class='expandable show'>{{ provider.description }}</p>
           </div>
         </div>
         <div class="row">
@@ -142,12 +142,16 @@
                 <span><img src="{% static '/providers/img/icons/i_trifold-map.svg' %}" alt="icon county" /></span>
                 Availability By County
               </h4>
-              <div class='expandable'>
-                {% for county in provider.regionalAvailability.all %}
-                  <div>
-                    {{ county.name }}
-                  </div>
-                {% endfor %}
+              <div class="row expandable-wrap">
+                <div class="col">
+                  <p class="expandable show">
+                    {% for county in provider.regionalAvailability.all %}
+                      <div>
+                        {{ county.name }}
+                      </div>
+                    {% endfor %}
+                  </p>
+                </div>
               </div>
             {% endif %}
             {% if provider.productLiabilityInsurance == 'Yes' %}

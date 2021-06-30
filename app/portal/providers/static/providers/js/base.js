@@ -30,6 +30,7 @@ $(document).ready(function() {
 
 	document.querySelectorAll('.expandable').forEach((el, i) => {
 		if (el.offsetHeight > 72) {
+			el.classList.remove('show');
 			el.closest('.expandable-wrap').classList.add('has-expand');
 		}
 	});
