@@ -18,6 +18,7 @@ footer {
 footer div.footer-modal-launcher,
 footer a.link-external,
 footer a.link-internal {
+  border-bottom: 0;
   color: var(--color-3);
   cursor: pointer;
   display: inline-block;
@@ -26,6 +27,9 @@ footer a.link-internal {
   letter-spacing: 1px;
   margin: 0;
   text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
   transition: var(--trans-hover);
   vertical-align: middle;
 }
@@ -34,8 +38,8 @@ footer a.link-internal {
   footer a.link-external:hover,
   footer a.link-internal:hover {
     color:  inherit;
-    border-bottom: 1px solid #fff;
-    text-decoration: none;
+    border-bottom: 0;
+    text-decoration-color: #fff;
   }
 
 div.footer-col {
