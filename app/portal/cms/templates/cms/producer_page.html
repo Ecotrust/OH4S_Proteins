@@ -32,7 +32,7 @@
         <div class="col-12 col-md-6 py-1 ps-4">
           <div class="row ps-md-3 pt-1 pb-2 align-items-center">
             <div class="col-auto">
-              <span id="name-icon"><img src="{% static '/providers/img/icons/i_person.svg' %}" alt="icon person" /></span>
+              <span id="name-icon" class="icon-circle"><img src="{% static '/providers/img/icons/i_person.svg' %}" alt="icon person" /></span>
             </div>
             <div class="col">
               <p>{{ provider.primaryContactFirstName }} {{ provider.primaryContactLastName }}</p>
@@ -65,7 +65,9 @@
                 <span id="email-icon" class="icon-circle"><img src="{% static '/providers/img/icons/i_envelope.svg' %}" alt="icon email" /></span>
               </div>
               <div class="col">
-                <a href="mailto:{{ provider.email }}?subject=OH4S%20Inquiry">{{ provider.email }}</a>
+                <p>
+                  <a href="mailto:{{ provider.email }}?subject=OH4S%20Inquiry">{{ provider.email }}</a>
+                </p>
               </div>
             </div>
           {% endif %}
@@ -189,7 +191,7 @@
             {% endif %}
             {% if provider.productionPractices.all.count > 0 %}
               <h4>
-                <span class="icon-circle"><img src="{% static '/providers/img/icons/i_leaf.svg' %}" alt="icon production practices" /></span>
+                <span><img src="{% static '/providers/img/icons/i_leaf.svg' %}" alt="icon production practices" /></span>
                 Production Practices
               </h4>
               <div class="row expandable-wrap">
