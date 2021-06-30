@@ -489,6 +489,10 @@ button.btn-close:hover {
     opacity: .55;
 }
 
+.page-content {
+    margin: 3rem 0;
+}
+
 
 
 /**
