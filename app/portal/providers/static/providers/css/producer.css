@@ -134,6 +134,15 @@ img.provider-product-image {
   max-width: 120px;
 }
 
+table.producer-product-table th h4 {
+    margin: 0;
+}
+
+table.producer-product-table th,
+table.producer-product-table td {
+  padding: 0.25rem 0.5rem;
+}
+
 /* Responsive layout - from one column layout (100%) to two-column layout (50%) */
 @media (min-width: 48em) {
   .flex-item {
