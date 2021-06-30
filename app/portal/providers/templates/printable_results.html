@@ -4,7 +4,7 @@
     <link rel="stylesheet" href='{% static "providers/css/printable.css" %}'>
   </head>
   <body>
-    <H1>Oregon Farm To School Providers</H1>
+    <H1>Oregon Farm To School Producers</H1>
 
     {% if filter_list|length > 0 %}
       <h3>Filters:</h3>
@@ -14,7 +14,7 @@
           &emsp;{{ filter.list }}<br>
       </div>
       {% endfor %}
-      <h3>Provider Contacts:</h3>
+      <h3>Producer Contacts:</h3>
     {% endif %}
 
     {% for provider in providers %}
