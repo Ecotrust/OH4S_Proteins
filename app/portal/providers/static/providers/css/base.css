@@ -426,6 +426,19 @@ button.btn-secondary {
     }
 
 
+#home-filter-button {
+    background-color: #fff;
+}
+
+    #home-filter-button::after {
+        background-image:  url("/static/providers/img/icons/i_arrow-right@2x.png");
+        opacity: 1;
+    }
+
+    #home-filter-button:hover::after {
+        opacity: .55;
+    }
+
 button.btn-back {
     font-family: var(--font-1-medium);
     font-size: .875em;
