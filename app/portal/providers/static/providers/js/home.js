@@ -64,6 +64,7 @@ var go_to_product_results = function(product_id, product_name) {
   var label = `<label class="list-group-item">
     <input class="form-check-input me-1" name="product_categories" type="checkbox" value="${product_id}" checked>" ${product_name}"</label>`;
   form.append(label);
+  $(form).hide();
   form.appendTo('body').submit();
 }
 
