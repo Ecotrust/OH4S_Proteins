@@ -68,6 +68,8 @@
 }
 
 .container-fluid > .well p {
+  font-family: var(--font-2-black);
+  font-size: 1.125em;
   margin-bottom: 0;
 }
 
@@ -97,6 +99,9 @@
 
 #provider-right-column .btn-filter {
   height: 100%;
+  font-size: .75rem;
+  padding: .125rem .375rem;
+  text-transform: capitalize;
 }
 
   #provider-right-column .btn-filter:after {
@@ -116,9 +121,9 @@
   }
 
 #provider-right-column .btn-filter img {
-  height: 50px;
-  margin-right: 10px;
-  width: 50px;
+  height: 30px;
+  margin-right: 4px;
+  width: 30px;
 }
 
 .category-column-header,
@@ -145,9 +150,38 @@ table.producer-product-table td {
   padding: 0.25rem 0.5rem;
 }
 
+.update-tag {
+  color: #000;
+  font-family: var(--font-1-medium);
+  font-size: .75rem;
+  font-style: italic;
+}
+
+
+
 /* Responsive layout - from one column layout (100%) to two-column layout (50%) */
 @media (min-width: 48em) {
   .flex-item {
     flex: 50%;
+  }
+
+  #provider-right-column .btn-filter {
+    font-size: .875rem;
+    padding:  .375rem 1rem;
+    text-transform: uppercase;
+  }
+
+  #provider-right-column .btn-filter img {
+    height: 40px;
+    margin-right: 6px;
+    width: 40px;
+  }
+}
+
+@media (min-width: 70em) {
+  #provider-right-column .btn-filter img {
+    height: 50px;
+    margin-right: 10px;
+    width: 50px;
   }
 }
