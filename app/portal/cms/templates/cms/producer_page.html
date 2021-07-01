@@ -315,7 +315,10 @@
                   </div>
                 </div>
               {% else %}
-                <h4>Has sold to schools before</h4>
+                <h4>
+                  <span><img src="{% static '/providers/img/icons/i_school.svg' %}" alt="icon school districts" /></span>
+                  Has sold to schools before
+                </h4>
                 <div>
                   {{ provider.soldToSchoolsBefore }}
                 </div>

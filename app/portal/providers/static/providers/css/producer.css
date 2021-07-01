@@ -153,8 +153,14 @@ table.producer-product-table td {
 .update-tag {
   color: #000;
   font-family: var(--font-1-medium);
-  font-size: .75rem;
+  font-size: .875rem;
   font-style: italic;
+}
+
+.producer-blurb {
+  color:  var(--color-3);
+  font-family: var(--font-2-bold);
+  font-size: .875rem;
 }
 
 
