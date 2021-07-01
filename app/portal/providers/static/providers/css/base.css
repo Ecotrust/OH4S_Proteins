@@ -500,7 +500,6 @@ button.btn-close:hover {
 
 .modal-launcher {
     cursor: pointer;
-    font-family: var(--font-1-bold);
     text-decoration: underline;
 }
 
