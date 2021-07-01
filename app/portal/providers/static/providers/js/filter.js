@@ -113,11 +113,36 @@ $(document).ready(function() {
 function showResultsSpinner() {
   // Add spinner to results section
   const resultsWrap = document.getElementById('filter-results-wrap');
-  resultsWrap.innerHTML = `<div class="d-flex justify-content-end">
-    <div class="spinner-border" role="status">
+  resultsWrap.innerHTML = `<div class="d-flex spinner-wrap justify-content-end">
+    <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
       <span class="visually-hidden">Loading...</span>
     </div>
-  </div>`;
+  </div>
+  <style>
+    .spinner-wrap {
+      bottom: 0;
+      content: "";
+      left: 0;
+      padding-top: 50vh;
+      position: fixed;
+      right: 0;
+      top: 0;
+      position: fixed;
+      z-index: 99;
+    }
+    .spinner-wrap::after {
+      background: rgba(255,255,255,.55);
+      bottom: 0;
+      content: "";
+      left: 0;
+      position: fixed;
+      overflow: hidden;
+      right: 0;
+      top: 0;
+      z-index: 98;
+    }
+  </style>
+      `;
 }
 
 // Disable all filter buttons until query finishes
