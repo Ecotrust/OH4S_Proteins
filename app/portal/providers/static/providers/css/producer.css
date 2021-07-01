@@ -157,7 +157,7 @@ table.producer-product-table td {
   font-style: italic;
 }
 
-.producer-blurb {
+.producer-blurb * {
   color:  var(--color-3);
   font-family: var(--font-2-bold);
   font-size: .875rem;
