@@ -41,7 +41,7 @@ pytz==2021.1
 requests==2.25.1
 six==1.12.0
 soupsieve==2.2.1
-sqlparse==0.4.1
+sqlparse==0.4.2
 tablib==3.0.0
 traitlets==4.3.2
 typing-extensions==3.7.4.3
