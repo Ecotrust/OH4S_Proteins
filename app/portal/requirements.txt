@@ -1,6 +1,6 @@
 anyascii==0.1.7
 asgiref==3.3.4
-Babel==2.6.0
+Babel==2.9.1
 backcall==0.1.0
 beautifulsoup4==4.8.2
 certifi==2020.12.5
