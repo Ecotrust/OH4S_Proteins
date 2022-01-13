@@ -6,7 +6,7 @@ beautifulsoup4==4.8.2
 certifi==2020.12.5
 chardet==4.0.0
 decorator==4.3.2
-Django==3.2.5
+Django>=3.2.11,<4.0
 django-filter
 django-model-utils
 django-modelcluster==5.1
@@ -30,7 +30,7 @@ parso==0.3.2
 pexpect==4.6.0
 phonenumbers==8.10.4
 pickleshare==0.7.5
-Pillow==9.0.0
+Pillow>=9.0.0
 # pkg-resources
 prompt-toolkit==2.0.8
 psycopg2-binary==2.8.6
@@ -46,7 +46,7 @@ tablib==3.0.0
 traitlets==4.3.2
 typing-extensions==3.7.4.3
 urllib3==1.26.5
-# wagtail>=2.12.4
+wagtail>=2.15.1
 wcwidth==0.1.7
 webencodings==0.5.1
 Willow==1.4
