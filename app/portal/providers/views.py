@@ -694,7 +694,7 @@ def run_filters(request, providers):
         provider_ids = []
         for region in regions:
             filters['Producer Counties'].append({'id': region.pk, 'name': str(region)})
-            new_provider_ids = [x.pk for x in providers.filter(physicalCounty=region)]
+            new_provider_ids = [x.pk for x in providers if x.locationCounty == region]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
         filters['Producer Counties'].sort(key=lambda x: x['name'])

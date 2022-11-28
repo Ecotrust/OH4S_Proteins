@@ -318,6 +318,14 @@ class Provider(models.Model):
         updateString = '{month} {day}, {year}'.format(month=monthNames[self.dateInfoUpdated.month], day=self.dateInfoUpdated.day, year=self.dateInfoUpdated.year)
         return updateString
 
+    @property
+    def locationCounty(self):
+        if self.physicalCounty:
+            return self.physicalCounty
+        if self.physicalAddressIsSame and self.businessCounty:
+            return self.businessCounty
+        return self.physicalCounty
+
     def get_address_string(self, locationType=None, fullAddress=True):
         if locationType == 'Business':
             fields = [
