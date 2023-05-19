@@ -9,7 +9,7 @@ decorator==4.3.2
 Django>=3.2.11,<4.0
 django-filter
 django-model-utils
-django-modelcluster==5.1
+django-modelcluster>=5.1
 django-money
 django-phonenumber-field
 django-taggit
@@ -20,7 +20,7 @@ et-xmlfile==1.0.1
 geocoder
 html5lib==1.1
 idna==2.10
-ipdb==0.11
+ipdb>=0.11
 ipython==7.16.3
 ipython-genutils==0.2.0
 jedi==0.13.2
