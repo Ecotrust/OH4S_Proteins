@@ -2,7 +2,7 @@
 import re
 from django import template
 from django.utils.text import slugify
-from wagtail.core.rich_text import RichText
+from wagtail.rich_text import RichText
 
 # from django import template
 from django.template.defaulttags import register

@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.fields
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('facet', models.CharField(blank=True, choices=[(None, '----------'), ('identities', 'Self Identity'), ('availability', 'Availability by County'), ('component_categories', 'USDA Meal Component'), ('physical_counties', 'Producer Location: County'), ('delivery_methods', 'Delivery Methods'), ('product_categories', 'Product Categories'), ('product_forms', 'Product details')], default=None, max_length=255)),
-                ('blurb', wagtail.core.fields.RichTextField(blank=True, default='You can select multiple options to include more producers.')),
+                ('blurb', wagtail.fields.RichTextField(blank=True, default='You can select multiple options to include more producers.')),
                 ('order', models.IntegerField(default=10)),
                 ('image', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='wagtailimages.image')),
             ],

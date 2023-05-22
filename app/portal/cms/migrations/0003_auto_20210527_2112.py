@@ -2,7 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
-import wagtail.core.fields
+import wagtail.fields
 
 
 class Migration(migrations.Migration):
@@ -17,8 +17,8 @@ class Migration(migrations.Migration):
             name='ContentPage',
             fields=[
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('content_title', wagtail.core.fields.RichTextField(blank=True, default='Page Title')),
-                ('content', wagtail.core.fields.RichTextField(blank=True, default='Page content...')),
+                ('content_title', wagtail.fields.RichTextField(blank=True, default='Page Title')),
+                ('content', wagtail.fields.RichTextField(blank=True, default='Page content...')),
             ],
             options={
                 'abstract': False,
@@ -29,8 +29,8 @@ class Migration(migrations.Migration):
             name='ResultsPage',
             fields=[
                 ('page_ptr', models.OneToOneField(auto_created=True, on_delete=django.db.models.deletion.CASCADE, parent_link=True, primary_key=True, serialize=False, to='wagtailcore.page')),
-                ('results_count_message', wagtail.core.fields.RichTextField(blank=True, default='Producers found:')),
-                ('filter_prompt', wagtail.core.fields.RichTextField(blank=True, default='You can filter these results further', help_text='Language directing users to use filters')),
+                ('results_count_message', wagtail.fields.RichTextField(blank=True, default='Producers found:')),
+                ('filter_prompt', wagtail.fields.RichTextField(blank=True, default='You can filter these results further', help_text='Language directing users to use filters')),
             ],
             options={
                 'abstract': False,
@@ -40,21 +40,21 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='homepage',
             name='categories_header',
-            field=wagtail.core.fields.RichTextField(blank=True, default='View  all  suppliers  for  specific  product  categories', help_text='Header above categories'),
+            field=wagtail.fields.RichTextField(blank=True, default='View  all  suppliers  for  specific  product  categories', help_text='Header above categories'),
         ),
         migrations.AddField(
             model_name='homepage',
             name='filter_prompt',
-            field=wagtail.core.fields.RichTextField(blank=True, default='Explore our filters', help_text='Language directing users to use filters'),
+            field=wagtail.fields.RichTextField(blank=True, default='Explore our filters', help_text='Language directing users to use filters'),
         ),
         migrations.AddField(
             model_name='homepage',
             name='welcome_text',
-            field=wagtail.core.fields.RichTextField(blank=True, default='<p>We connect school food buyers with Oregon producers who are ready to sell to schools. We have over 75 producers offering a wide variety of products. You can  search by product type, producer identity, location, and much more.</p><p>Need help using the site? <a href="https://vimeo.com/352842407" target="_blank">Watch our short how-to video</a> or <a href="/contact">contact us here</a>. Know a food producer who should be here? Thanks for visiting.</p>'),
+            field=wagtail.fields.RichTextField(blank=True, default='<p>We connect school food buyers with Oregon producers who are ready to sell to schools. We have over 75 producers offering a wide variety of products. You can  search by product type, producer identity, location, and much more.</p><p>Need help using the site? <a href="https://vimeo.com/352842407" target="_blank">Watch our short how-to video</a> or <a href="/contact">contact us here</a>. Know a food producer who should be here? Thanks for visiting.</p>'),
         ),
         migrations.AlterField(
             model_name='homepage',
             name='welcome',
-            field=wagtail.core.fields.RichTextField(blank=True, verbose_name='Welcome Title'),
+            field=wagtail.fields.RichTextField(blank=True, verbose_name='Welcome Title'),
         ),
     ]
