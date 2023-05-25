@@ -49,7 +49,7 @@ ratelim==0.1.6
 requests==2.25.1
 six==1.12.0
 soupsieve==2.2.1
-sqlparse==0.4.2
+sqlparse==0.4.4
 tablib==3.0.0
 telepath==0.3
 traitlets==4.3.2
