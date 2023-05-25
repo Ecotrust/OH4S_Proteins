@@ -79,7 +79,7 @@
                                         <div class="compound-multiselect-category-options collapse" id="{{ category_tuple.0|slugify }}-{{ category_tuple.1 }}">
                                           {% for option in filter.options|get_item:category_tuple.0 %}
                                             <label class="list-group-item">
-                                              <input class="form-check-input me-1 nested-select" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                                              <input class="form-check-input me-1 nested-checkbox" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
                                               {{ option.label }}
                                             </label>
                                           {% endfor %}

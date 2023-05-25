@@ -576,8 +576,8 @@ input[type="checkbox"]:checked {
     border-color: var(--color-3);
 }
 
-/* Product Details Collapsible Categories */
 
+/* Product Details Multiselect Collapsible Categories */
 .compound-multiselect-category {
     margin-bottom: 5px;
 }
@@ -598,6 +598,15 @@ input[type="checkbox"]:checked {
     .compound-multiselect-category a.collapsed:before {
         content: '+';
     }
+
+.compound-multiselect-category-options {
+    margin: 5px auto;
+}
+
+.compound-multiselect-category-options .list-group-item {
+    padding: 0.25rem 2rem;
+    font-size: 1.125em;
+}
 
 
 /**
