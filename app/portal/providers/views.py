@@ -776,6 +776,17 @@ def run_filters(request, providers):
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
         filters['Practices'].sort(key=lambda x: x['name'])
+    if 'languages' in body.keys():
+        # Many-to-many (OR)
+        languages = Language.objects.filter(pk__in=body['languages'])
+        filters['Languages'] = []
+        provider_ids = []
+        for language in languages:
+            filters['Languages'].append({'id': language.pk, 'name': str(language)})
+            new_provider_ids = [x.pk for x in language.provider_set.all()]
+            provider_ids = list(set(provider_ids + new_provider_ids))
+        providers = providers.filter(pk__in=provider_ids)
+        filters['Languages'].sort(key=lambda x: x['name'])
     if 'product_forms' in body.keys():
         product_forms = ProductCategory.objects.filter(pk__in=body['product_forms'])
         filters['Product Forms'] = []
