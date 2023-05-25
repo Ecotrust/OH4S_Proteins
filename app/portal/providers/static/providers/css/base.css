@@ -13,47 +13,47 @@
 @font-face {
     font-family: "Nunito Black";
     src: url("../fonts/Nunito/web/Nunito-Black.woff2") format("woff2"),
-         url("../fonts/Nunito/web/Nunito-Black.woff") format("woff"),
-         url("../fonts/Nunito/web/Nunito-Black.ttf") format("truetype");
+        url("../fonts/Nunito/web/Nunito-Black.woff") format("woff"),
+        url("../fonts/Nunito/web/Nunito-Black.ttf") format("truetype");
     font-style: normal;
 }
 
 @font-face {
     font-family: "Nunito Bold";
     src: url("../fonts/Nunito/web/Nunito-Bold.woff2") format("woff2"),
-         url("../fonts/Nunito/web/Nunito-Bold.woff") format("woff"),
-         url("../fonts/Nunito/web/Nunito-Bold.ttf") format("truetype");
+        url("../fonts/Nunito/web/Nunito-Bold.woff") format("woff"),
+        url("../fonts/Nunito/web/Nunito-Bold.ttf") format("truetype");
     font-style: normal;
 }
 
 @font-face {
     font-family: "ZillaSlab Bold";
     src: url("../fonts/ZillaSlab/web/ZillaSlab-Bold.woff2") format("woff2"),
-         url("../fonts/ZillaSlab/web/ZillaSlab-Bold.woff") format("woff"),
-         url("../fonts/ZillaSlab/web/ZillaSlab-Bold.ttf") format("truetype");
+        url("../fonts/ZillaSlab/web/ZillaSlab-Bold.woff") format("woff"),
+        url("../fonts/ZillaSlab/web/ZillaSlab-Bold.ttf") format("truetype");
     font-style: normal;
 }
 
 @font-face {
     font-family: "ZillaSlab SemiBold";
     src: url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.woff2") format("woff2"),
-         url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.woff") format("woff"),
-         url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.ttf") format("truetype");
+        url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.woff") format("woff"),
+        url("../fonts/ZillaSlab/web/ZillaSlab-SemiBold.ttf") format("truetype");
     font-style: normal;
 }
 
 @font-face {
     font-family: "ZillaSlab Medium";
     src: url("../fonts/ZillaSlab/web/ZillaSlab-Medium.woff2") format("woff2"),
-         url("../fonts/ZillaSlab/web/ZillaSlab-Medium.woff") format("woff"),
-         url("../fonts/ZillaSlab/web/ZillaSlab-Medium.ttf") format("truetype");
+        url("../fonts/ZillaSlab/web/ZillaSlab-Medium.woff") format("woff"),
+        url("../fonts/ZillaSlab/web/ZillaSlab-Medium.ttf") format("truetype");
     font-style: normal;
 }
 
 @font-face {
     font-family: "KiwiMaru";
     src: url("../fonts/KiwiMaru/KiwiMaru-Medium.woff") format("woff"),
-         url("../fonts/KiwiMaru/KiwiMaru-Medium.ttf") format("truetype");
+        url("../fonts/KiwiMaru/KiwiMaru-Medium.ttf") format("truetype");
     font-style: normal;
 }
 
@@ -81,7 +81,7 @@
     --font-3: "KiwiMaru", Georgia, serif;
 
     --font-size: 1em;
-    --font-size-small:  12px;
+    --font-size-small: 12px;
     --font-size-medium: 14px;
     --font-size-large: 16px;
     --font-size-p: 1.125em;
@@ -96,7 +96,7 @@
     --color-3: #4D2908;
     --white: #fff;
 
-    --color-2-55:  rgba(230,212,16,0.55);
+    --color-2-55: rgba(230, 212, 16, 0.55);
 
     /* Utils */
     --border-radius: 2rem;
@@ -214,14 +214,13 @@ main a {
     transition: var(--trans-hover);
 }
 
-    main a:hover {
-        color:  inherit;
-        cursor: pointer;
-        border-bottom: 1px solid #fff;
-        text-decoration: none;
-    }
+main a:hover {
+    color: inherit;
+    cursor: pointer;
+    border-bottom: 1px solid #fff;
+    text-decoration: none;
+}
 
-main a:target {}
 main a:active {
     cursor: pointer;
 }
@@ -233,7 +232,7 @@ img {
 
 label {
     font-family: var(--font-1-semibold);
-    font-size:  1.125rem;
+    font-size: 1.125rem;
     letter-spacing: 0.05em;
 }
 
@@ -253,27 +252,28 @@ button:not(.btn-close) {
     text-align: left;
     transition: var(--trans-hover);
 }
-    button:hover,
-    button:focus,
-    button.btn:hover,
-    button.btn:focus,
-    .btn:hover,
-    .btn:focus,
-    button:not(.btn-close):hover,
-    button:not(.btn-close):focus {
-        color: var(--color-1);
-        background: rgba(255,255,255,0.55);
-        border: 2px solid var(--color-1);
-    }
 
-    button:active,
-    button.btn:active,
-    .btn:active,
-    button:not(.btn-close):active {
-        color: var(--color-1);
-        background: rgba(255,255,255,1);   
-        border: 2px solid var(--color-1);
-    }
+button:hover,
+button:focus,
+button.btn:hover,
+button.btn:focus,
+.btn:hover,
+.btn:focus,
+button:not(.btn-close):hover,
+button:not(.btn-close):focus {
+    color: var(--color-1);
+    background: rgba(255, 255, 255, 0.55);
+    border: 2px solid var(--color-1);
+}
+
+button:active,
+button.btn:active,
+.btn:active,
+button:not(.btn-close):active {
+    color: var(--color-1);
+    background: rgba(255, 255, 255, 1);
+    border: 2px solid var(--color-1);
+}
 
 
 .card {
@@ -282,7 +282,7 @@ button:not(.btn-close) {
 
 
 hr {
-  border-top: 0.1rem solid #0098a8;
+    border-top: 0.1rem solid #0098a8;
 }
 
 
@@ -310,20 +310,20 @@ hr {
     text-transform: uppercase;
 }
 
-    .filter-title:before {
-        background-image: url("/static/providers/img/icons/i_filter.svg");
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        content: '';
-        display: inline-block;
-        height: 22.2px;
-        margin-left: -4px;
-        margin-right: 10px;
-        padding-bottom: 6px;
-        position: relative;
-        vertical-align: middle;
-        width: 18px;
-    }
+.filter-title:before {
+    background-image: url("/static/providers/img/icons/i_filter.svg");
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    content: '';
+    display: inline-block;
+    height: 22.2px;
+    margin-left: -4px;
+    margin-right: 10px;
+    padding-bottom: 6px;
+    position: relative;
+    vertical-align: middle;
+    width: 18px;
+}
 
 /* For any richtext elements inside a filter-title */
 .filter-title * {
@@ -342,25 +342,25 @@ hr {
     transition: var(--trans-hover);
 }
 
-    .filter-clear-all .btn-clear:hover {
-        background: rgba(255,255,255,0.55);
-    }
+.filter-clear-all .btn-clear:hover {
+    background: rgba(255, 255, 255, 0.55);
+}
 
-    .filter-clear-all .btn-clear::after {
-        color: #fff;
-        content: "\2715";
-        font-size: 1.25em;
-        line-height: 1;
-        position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translate(0, -50%);
-        transition: var(--trans-hover);
-    }
+.filter-clear-all .btn-clear::after {
+    color: #fff;
+    content: "\2715";
+    font-size: 1.25em;
+    line-height: 1;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translate(0, -50%);
+    transition: var(--trans-hover);
+}
 
-        .filter-clear-all .btn-clear:hover::after {
-            color: var(--color-3);
-        }
+.filter-clear-all .btn-clear:hover::after {
+    color: var(--color-3);
+}
 
 
 .btn-filter {
@@ -369,75 +369,75 @@ hr {
     position: relative;
 }
 
-    .btn-filter::after {
-        border-top: 7.5px solid #fff;
-        border-right:  7.5px solid transparent;
-        border-left:  7.5px solid transparent;
-        content: '';
-        position: absolute;
-        right:  15px;
-        top:  50%;
-        transform:  translate(0,-50%);
-        transition: var(--trans-hover);
-    }
+.btn-filter::after {
+    border-top: 7.5px solid #fff;
+    border-right: 7.5px solid transparent;
+    border-left: 7.5px solid transparent;
+    content: '';
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translate(0, -50%);
+    transition: var(--trans-hover);
+}
 
-    .btn-filter:hover::after {
-        border-top-color:  var(--color-3);
-    }
+.btn-filter:hover::after {
+    border-top-color: var(--color-3);
+}
 
 /* Active Filter */
 .filter-wrap.filter-active .btn-filter {
     color: var(--color-1);
-    background: rgba(255,255,255,1);
+    background: rgba(255, 255, 255, 1);
     border: 2px solid var(--color-1);
 }
 
-    .filter-wrap.filter-active .btn-filter::after {
-        border-top-color:  var(--color-3);
-    }
+.filter-wrap.filter-active .btn-filter::after {
+    border-top-color: var(--color-3);
+}
 
 button.btn-secondary {
     font-family: var(--font-1-bold);
     letter-spacing: 0.01em;
     position: relative;
-    padding-right:  40px;
+    padding-right: 40px;
 }
-    
-    .btn-secondary:after {
-        background-image:  url("/static/providers/img/icons/i_arrow-right_white@2x.png");
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        content: '';
-        height: 15px;
-        position: absolute;
-        right: 15px;
-        top:  50%;
-        transform:  translate(0,-50%);
-        width: 15px;
-    }
 
-    .btn-secondary:hover {
-        background:  rgba(255,255,255,0.55);
-        color:  var(--color-1);
-    }
+.btn-secondary:after {
+    background-image: url("/static/providers/img/icons/i_arrow-right_white@2x.png");
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    content: '';
+    height: 15px;
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 15px;
+}
 
-    .btn-secondary:hover::after {
-        background-image:  url("/static/providers/img/icons/i_arrow-right@2x.png");
-    }
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.55);
+    color: var(--color-1);
+}
+
+.btn-secondary:hover::after {
+    background-image: url("/static/providers/img/icons/i_arrow-right@2x.png");
+}
 
 
 #home-filter-button {
     background-color: #fff;
 }
 
-    #home-filter-button::after {
-        background-image:  url("/static/providers/img/icons/i_arrow-right@2x.png");
-        opacity: 1;
-    }
+#home-filter-button::after {
+    background-image: url("/static/providers/img/icons/i_arrow-right@2x.png");
+    opacity: 1;
+}
 
-    #home-filter-button:hover::after {
-        opacity: .55;
-    }
+#home-filter-button:hover::after {
+    opacity: .55;
+}
 
 button.btn-back {
     font-family: var(--font-1-medium);
@@ -448,25 +448,25 @@ button.btn-back {
     padding-left: 48px;
     text-align: right;
 }
-    
-    button.btn-back::after {
-        background-image:  url("/static/providers/img/icons/i_arrow-left_white@2x.png");
-        background-size: 100% auto;
-        background-repeat: no-repeat;
-        content: '';
-        height: 18px;
-        position: absolute;
-        left: 12px;
-        top:  50%;
-        transform:  translate(0,-50%);
-        width: 18px;
-    }
 
-    button.btn-back:hover,
-    button.btn-back:active {
-        color:  var(--color-1);
-        background:  rgba(255,255,255,0.55);
-    }
+button.btn-back::after {
+    background-image: url("/static/providers/img/icons/i_arrow-left_white@2x.png");
+    background-size: 100% auto;
+    background-repeat: no-repeat;
+    content: '';
+    height: 18px;
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translate(0, -50%);
+    width: 18px;
+}
+
+button.btn-back:hover,
+button.btn-back:active {
+    color: var(--color-1);
+    background: rgba(255, 255, 255, 0.55);
+}
 
 
 button.btn-clear,
@@ -478,14 +478,14 @@ button.btn-clear,
 
 button.btn-close,
 button.btn-close:hover {
-    background:  url("/static/providers/img/icons/i_exit.svg");
+    background: url("/static/providers/img/icons/i_exit.svg");
     background-repeat: no-repeat;
     opacity: 1;
 }
 
 button.btn-close:hover {
     border: none;
-    outline:  0;
+    outline: 0;
     opacity: .55;
 }
 
@@ -524,7 +524,7 @@ button.btn-close:hover {
 }
 
 .left {
-    float:  left;
+    float: left;
 }
 
 [class*="block"] {
@@ -537,7 +537,7 @@ button.btn-close:hover {
 [class*="block"] img.right,
 [class*="block"] img.left {
     margin-bottom: 2rem;
-    margin-top:  2rem;
+    margin-top: 2rem;
 }
 
 [class*="block"] img.right {
@@ -555,27 +555,49 @@ button.btn-close:hover {
  */
 
 .list-group-item {
-    border:  none;
-    color:  var(--color-3);
+    border: none;
+    color: var(--color-3);
     cursor: pointer;
     padding: .5rem 1rem;
 }
 
 input[type="checkbox"] {
-    border:  2px solid var(--color-3);
+    border: 2px solid var(--color-3);
     cursor: pointer;
     transition: var(--trans-hover);
 }
 
-    input[type="checkbox"]:hover {
-        background: var(--color-2-55);
+input[type="checkbox"]:hover {
+    background: var(--color-2-55);
+}
+
+input[type="checkbox"]:checked {
+    background-color: var(--color-3);
+    border-color: var(--color-3);
+}
+
+/* Product Details Collapsible Categories */
+
+.compound-multiselect-category {
+    margin-bottom: 5px;
+}
+
+.compound-multiselect-category a {
+    font-size: 1.125rem;
+    margin-left: 20px;
+}
+
+    .compound-multiselect-category a:before {
+        content: '–';
+        left: 20px;
+        font-size: 1.5rem;
+        line-height: 1.5rem;
+        position: absolute;
     }
 
-    input[type="checkbox"]:checked {
-        background-color:  var(--color-3);
-        border-color: var(--color-3);
+    .compound-multiselect-category a.collapsed:before {
+        content: '+';
     }
-
 
 
 /**
@@ -585,7 +607,7 @@ input[type="checkbox"] {
 
 .modal-filter button.btn-clear,
 .modal-filter button.btn-secondary {
-    padding:  .25rem 1rem;
+    padding: .25rem 1rem;
 }
 
 .modal-filter button.btn-secondary {
@@ -593,20 +615,20 @@ input[type="checkbox"] {
     padding-right: 80px;
 }
 
-    .modal-filter .btn-secondary:hover {
-        background: var(--color-2-55);
-    }   
+.modal-filter .btn-secondary:hover {
+    background: var(--color-2-55);
+}
 
 .modal-filter .modal-content {
     border: none;
 }
 
 .modal-filter .modal-header {
-    border:  none;
+    border: none;
 }
 
 .modal-filter .modal-body {
-    color:  var(--color-3);
+    color: var(--color-3);
 }
 
 .modal-filter .modal-footer {
@@ -638,10 +660,10 @@ input[type="checkbox"] {
     width: 15px;
 }
 
-    .link-internal:hover::after,
-    .link-external:hover::after {
-        opacity: .55;
-    }
+.link-internal:hover::after,
+.link-external:hover::after {
+    opacity: .55;
+}
 
 .link-internal::after {
     background-image: url("/static/providers/img/icons/i_play-right.svg");
@@ -663,7 +685,7 @@ input[type="checkbox"] {
 }
 
 .seperator-right {
-    border-right:  2px solid #fff;
+    border-right: 2px solid #fff;
 }
 
 .icon-circle {
@@ -693,7 +715,7 @@ input[type="checkbox"] {
 .expandable:not(.show) {
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;  
+    -webkit-box-orient: vertical;
 }
 
 .expandable.show {
@@ -705,29 +727,29 @@ input[type="checkbox"] {
     position: relative;
 }
 
-    .expandable-wrap.has-expand:not(.show)::after {
-        bottom: -1.25ex;
-        color:  var(--color-3);
-        cursor: pointer;
-        content: "Show More +";
-        font-family: var(--font-2-black);
-        font-size: 10px;
-        position: absolute;
-        text-transform: uppercase;
-        left: 12px;
-    }
+.expandable-wrap.has-expand:not(.show)::after {
+    bottom: -1.25ex;
+    color: var(--color-3);
+    cursor: pointer;
+    content: "Show More +";
+    font-family: var(--font-2-black);
+    font-size: 10px;
+    position: absolute;
+    text-transform: uppercase;
+    left: 12px;
+}
 
-    .expandable-wrap.has-expand.show::after {
-        bottom: -1.25ex;
-        color:  var(--color-3);
-        content:  "Show Less -";
-        cursor: pointer;
-        font-family: var(--font-2-black);
-        font-size: 10px;
-        position: absolute;
-        text-transform: uppercase;
-        left: 12px;
-    }
+.expandable-wrap.has-expand.show::after {
+    bottom: -1.25ex;
+    color: var(--color-3);
+    content: "Show Less -";
+    cursor: pointer;
+    font-family: var(--font-2-black);
+    font-size: 10px;
+    position: absolute;
+    text-transform: uppercase;
+    left: 12px;
+}
 
 /* .expandable:not(.show)::before {
     bottom: 0;
@@ -750,7 +772,7 @@ input[type="checkbox"] {
 }
 
 /* Medium Screen */
-@media screen and (min-width:  48em) {
+@media screen and (min-width: 48em) {
     body {
         font-size: var(--font-size-medium);
     }
@@ -760,7 +782,7 @@ input[type="checkbox"] {
     }
 }
 
-@media screen and (min-width:  70em) {
+@media screen and (min-width: 70em) {
     body {
         font-size: var(--font-size-large);
     }
