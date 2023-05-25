@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
-from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity, PoliticalSubregion, ComponentCategory, DeliveryMethod, Distributor, ProductionPractice
+from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity, PoliticalSubregion, ComponentCategory, DeliveryMethod, Distributor, ProductionPractice, Language
 from providers.forms import FilterForm
 
 import json
@@ -487,6 +487,39 @@ def get_results_filter_context(request, context={}):
             'state': 'practices' in current_state.keys() and practice.pk in [int(x) for x in current_state['practices']]
         })
     filters.append(practice_filter)
+
+    try:
+        filter_obj = cms_filters.get(facet='languages')
+        language_filter = {
+            'name': filter_obj.title if filter_obj.title else filter_obj.name,
+            'facet': filter_obj.facet,
+            'image': filter_obj.image.file.url if filter_obj.image else None,
+            'blurb': filter_obj.blurb,
+            'order': filter_obj.order,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+    except Exception as e:
+        language_filter = {
+            'name': 'Language Spoken',
+            'title': 'Language Spoken',
+            'facet': 'languages',
+            'image': '/static/providers/img/defaults/filter_header.png',
+            'blurb': 'You can select multiple options to get more inclusive results.',
+            'order': 9,
+            'visible': True,
+            'widget': 'multiselect',
+            'options': []
+        }
+    for language in Language.objects.all().order_by('name'):
+        language_filter['options'].append({
+            'value': language.pk,
+            'label': language.name,
+            'state': 'languages' in current_state.keys() and language.pk in [int(x) for x in current_state['languages']]
+        })
+
+    filters.append(language_filter)
 
     # Re-Order filters by 'order'
     filters.sort(key=lambda x: x['order'])

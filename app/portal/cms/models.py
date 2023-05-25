@@ -275,6 +275,7 @@ class Filter(models.Model):
         ('product_forms', 'Product details'),
         ('distributors', 'Distributors'),
         ('practices', 'Practices'),
+        ('languages', 'Languages'),
     )
     name = models.CharField(max_length=255)
     title = models.CharField(max_length=255, null=True, default=None)
