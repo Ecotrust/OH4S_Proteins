@@ -558,7 +558,7 @@ button.btn-close:hover {
     border: none;
     color: var(--color-3);
     cursor: pointer;
-    padding: .5rem 1rem;
+    padding: .3125rem 1.25rem;
 }
 
 input[type="checkbox"] {
