@@ -254,8 +254,9 @@ class Provider(models.Model):
     @property
     def components_offered(self):
         component_ids = []
+
         for product in self.providerproduct_set.all():
-            for component in product.category.usdaComponentCategories.all():
+            for component in product.category.componentCategories:
                 if component.id not in component_ids:
                     component_ids.append(component.id)
         return ComponentCategory.objects.filter(id__in=component_ids)
