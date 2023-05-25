@@ -1,13 +1,14 @@
 from django.db import models
 from django.conf import settings
 
-from wagtail.core.models import Page
-from wagtail.core.fields import RichTextField, StreamField
-from wagtail.core.blocks import RichTextBlock, URLBlock, RawHTMLBlock, StructBlock, CharBlock, PageChooserBlock
+from wagtail.models import Page
+from wagtail.fields import RichTextField, StreamField
+from wagtail.blocks import RichTextBlock, URLBlock, RawHTMLBlock, StructBlock, CharBlock, PageChooserBlock
 from wagtail.embeds.blocks import EmbedBlock
-from wagtail.admin.edit_handlers import FieldPanel, StreamFieldPanel
+# from wagtail.admin.panels import FieldPanel, StreamFieldPanel
+# from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.admin.panels import FieldPanel
 from wagtail.images.models import Image, AbstractImage, AbstractRendition
-from wagtail.images.edit_handlers import ImageChooserPanel
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 from wagtail.snippets.models import register_snippet
@@ -132,7 +133,7 @@ class ProducerPage(RoutablePageMixin, PortalPage):
         ('google_form', LinkBlock(label="Google Form Link", template="cms/google_form.html", help_text="The URL for the Google form. This will be loaded into a popup when clicked.")),
         ('HTML', RawHTMLBlock(label="Custom HTML", help_text="For fine-tuning very specific/custom blocks.")),
         ('Embedded_Media', EmbedBlock(label="Embedded Media"))
-    ], min_num=0, blank=True)
+    ], use_json_field=True, min_num=0, blank=True)
 
     content_panels = Page.content_panels + [
         FieldPanel('subtitle', classname="full"),
@@ -180,7 +181,7 @@ class ContentPage(PortalPage):
         ('google_form', LinkBlock(label="Google Form Link", template="cms/google_form.html", help_text="The URL for the Google form. This will be loaded into a popup when clicked.")),
         ('HTML', RawHTMLBlock(label="Custom HTML", help_text="For fine-tuning very specific/custom blocks.")),
         ('Embedded_Media', EmbedBlock(label="Embedded Media"))
-    ])
+    ],  use_json_field=True,)
 
     content_panels = Page.content_panels + [
         FieldPanel('back_button'),
@@ -212,7 +213,7 @@ class FooterPage(Page):
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
             'embed'
         ])),
-    ])
+    ], use_json_field=True,)
     column_2 = StreamField([
         ('image', ImageChooserBlock()),
         ('externalLink', LinkBlock(label="External Link", template="cms/external_link.html")),
@@ -223,7 +224,7 @@ class FooterPage(Page):
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
             'embed'
         ])),
-    ])
+    ], use_json_field=True,)
     column_3 = StreamField([
         ('image', ImageChooserBlock()),
         ('externalLink', LinkBlock(label="External Link", template="cms/external_link.html")),
@@ -234,13 +235,13 @@ class FooterPage(Page):
             'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
             'embed'
         ])),
-    ])
+    ], use_json_field=True,)
 
     content_panels = Page.content_panels + [
-        ImageChooserPanel('footer_image'),
-        StreamFieldPanel('column_1'),
-        StreamFieldPanel('column_2'),
-        StreamFieldPanel('column_3'),
+        FieldPanel('footer_image'),
+        FieldPanel('column_1'),
+        FieldPanel('column_2'),
+        FieldPanel('column_3'),
     ]
 
 @register_snippet
