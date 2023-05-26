@@ -857,8 +857,6 @@ def run_filters(request, providers):
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
         filters['Product Forms'].sort(key=lambda x: x['name'])
-    # TODO: Remove this test code
-    body={'keywords':'Aichele'}
     if 'keywords' in body.keys():
         # TODO: Need to recreate the trigram keyword search from ITKDB
         # https://github.com/Ecotrust/TEKDB/blob/main/TEKDB/TEKDB/models.py#L23
@@ -887,9 +885,9 @@ def run_filters(request, providers):
             # ('preferredLanguage', 'name'),
             # ('identities',  'name'),
             # ('deliveryMethods', 'name'),
-            ('regionalAvailability', 'name'),
-            ('distributors', 'name'),
-            ('productionPractices', 'name'),
+            # ('regionalAvailability', 'name'),
+            # ('distributors', 'name'),
+            # ('productionPractices', 'name'),
         ]
         weight_lookup = {
             'name': 'A',
@@ -917,10 +915,10 @@ def run_filters(request, providers):
             'notes',
         ]
         fk_fields=[
-            ('deliveryMethods', 'name'),
-            ('regionalAvailability', 'name'),
-            ('distributors', 'name'),
-            ('productionPractices', 'name'),
+            # ('deliveryMethods', 'name'),
+            # ('regionalAvailability', 'name'),
+            # ('distributors', 'name'),
+            # ('productionPractices', 'name'),
         ]
         weight_lookup = {
             'name': 'A',
