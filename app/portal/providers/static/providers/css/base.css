@@ -85,7 +85,7 @@
     --font-size-medium: 14px;
     --font-size-large: 16px;
     --font-size-p: 1.125em;
-    --font-size-h1: 2.875em;
+    --font-size-h1: 2.5em;
     --font-size-h2: 1rem;
     --font-size-h3: 2.25em;
     --font-size-h4: 1em;
@@ -575,6 +575,60 @@ input[type="checkbox"]:checked {
     background-color: var(--color-3);
     border-color: var(--color-3);
 }
+
+.search-form {
+    background: transparent;
+    border-radius: var(--border-radius);
+    color: var(--color-3);
+    border: 2px solid var(--color-3);
+    font-size: .875rem;
+    font-weight: normal;
+    height: 2.75rem;
+    line-height: 2;
+    padding: .375rem 1rem;
+    position: relative;
+    margin: .5rem 0;
+    text-transform: uppercase;
+    text-align: left;
+    transition: var(--trans-hover);
+    min-width: 15vw
+}
+
+input[type="search"]  {
+    background: transparent;
+    border: none;
+    color: var(--color-3);
+    font-size: .875rem;
+    height: 100%;
+    left: 0;
+    padding-left: 1rem;
+    position: absolute;
+    text-transform: uppercase;
+    top: 0;
+    width: 80%;
+}
+
+    input[type="search"]:focus {
+        outline: none;
+    }
+
+button.btn-submit {
+    background: rgba(255,255,255,0.55);
+    border: none;
+    border-radius: 0 2rem 2rem 0;
+    height: 100%;
+    line-height: 1;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+    width: 20%;
+}
+
+    button.btn-submit:hover {
+        background: #fff;
+        border: none;
+    }
 
 
 /* Product Details Multiselect Collapsible Categories */
