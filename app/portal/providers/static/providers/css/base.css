@@ -588,7 +588,7 @@ input[type="checkbox"]:checked {
 }
 
     .compound-multiselect-category a:before {
-        content: '–';
+        content: '-';
         left: 20px;
         font-size: 1.5rem;
         line-height: 1.5rem;
