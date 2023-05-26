@@ -491,7 +491,8 @@ def get_results_filter_context(request, context={}):
     try:
         filter_obj = cms_filters.get(facet='languages')
         language_filter = {
-            'name': filter_obj.title if filter_obj.title else filter_obj.name,
+            'name': filter_obj.name,
+            'title': filter_obj.title if filter_obj.title else filter_obj.name,
             'facet': filter_obj.facet,
             'image': filter_obj.image.file.url if filter_obj.image else None,
             'blurb': filter_obj.blurb,
