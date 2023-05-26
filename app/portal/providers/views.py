@@ -858,13 +858,12 @@ def run_filters(request, providers):
         providers = providers.filter(pk__in=provider_ids)
         filters['Product Forms'].sort(key=lambda x: x['name'])
     if 'keywords' in body.keys():
-        # TODO: Need to recreate the trigram keyword search from ITKDB
+        # recreate the trigram keyword search from ITKDB
         # https://github.com/Ecotrust/TEKDB/blob/main/TEKDB/TEKDB/models.py#L23
-        # This will need to be run on both "Provider" and "ProviderProduct"
+        # This is run on both "Provider" and "ProviderProduct"
 
         # This will be different, as we want to apply the above filters to 
-        # constrain the search space. Perhaps passing a list of vialble producers
-        # to search, rather than searching all object models...
+        # constrain the search space.
 
         # enable Trigram Similarity extension on PG if not done already
         from django.db import connection
@@ -881,26 +880,28 @@ def run_filters(request, providers):
             'primaryContactLastName', 
             'notes',
         ]
+        # We do not search all FK fields - these searches are expensive/slow, and should be managed
+        # via the existing filters.
         fk_fields=[
             # ('preferredLanguage', 'name'),
             # ('identities',  'name'),
             # ('deliveryMethods', 'name'),
-            # ('regionalAvailability', 'name'),
+            ('regionalAvailability', 'name'),
             # ('distributors', 'name'),
             # ('productionPractices', 'name'),
         ]
         weight_lookup = {
             'name': 'A',
-            'description': 'A',
-            'primaryContactFirstName': 'A',
-            'primaryContactLastName': 'A',
-            'notes': 'A',
-            'preferredLanguage': 'A',
-            'identities': 'A',
-            'deliveryMethods': 'A',
-            'regionalAvailability': 'A',
-            'distributors': 'A',
-            'productionPractices': 'A',
+            'description': 'C',
+            'primaryContactFirstName': 'C',
+            'primaryContactLastName': 'C',
+            'notes': 'C',
+            'preferredLanguage': 'B',
+            'identities': 'B',
+            'deliveryMethods': 'B',
+            'regionalAvailability': 'B',
+            'distributors': 'B',
+            'productionPractices': 'B',
         }
 
         sort_field = 'name'
@@ -910,35 +911,35 @@ def run_filters(request, providers):
         # model = ProviderProduct
         fields = [
             'name', 
-            'category', 
             'description',
             'notes',
         ]
         fk_fields=[
+            ('category', 'full_name'),
             # ('deliveryMethods', 'name'),
-            # ('regionalAvailability', 'name'),
+            ('regionalAvailability', 'name'),
             # ('distributors', 'name'),
             # ('productionPractices', 'name'),
         ]
         weight_lookup = {
             'name': 'A',
             'category': 'A',
-            'description': 'A',
-            'notes': 'A',
-            'deliveryMethods': 'A',
-            'regionalAvailability': 'A',
-            'distributors': 'A',
-            'productionPractices': 'A',
+            'description': 'C',
+            'notes': 'C',
+            'deliveryMethods': 'B',
+            'regionalAvailability': 'B',
+            'distributors': 'B',
+            'productionPractices': 'B',
         }
         products = ProviderProduct.objects.filter(provider__in=providers)
-        # keyword_provider_products = run_keyword_search(products, ProviderProduct, keywords, fields, fk_fields, weight_lookup, sort_field)
+        keyword_provider_products = run_keyword_search(products, ProviderProduct, keywords, fields, fk_fields, weight_lookup, sort_field)
         provider_ids = []
         for provider in keyword_providers:
             if not provider.pk in provider_ids:
                 provider_ids.append(provider.pk)
-        # for product in keyword_provider_products:
-        #     if product.provider.pk not in provider_ids:
-        #         provider_ids.append(product.provider.pk)
+        for product in keyword_provider_products:
+            if product.provider.pk not in provider_ids:
+                provider_ids.append(product.provider.pk)
 
         providers = providers.filter(pk__in=provider_ids)
 
