@@ -87,6 +87,11 @@ $(document).ready(function() {
     event.preventDefault();
   });
 
+  $('#search-form').submit(function(event) {
+    event.preventDefault();
+    filterQuery();
+  });
+
   $('#filter-form').on(
     'change',
     function() {
