@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Case, When
 from django.db.models.functions import Greatest
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
@@ -725,8 +725,8 @@ def run_keyword_search(queryset, model, keyword, fields, fk_fields, weight_looku
     ).filter(
         # Q(search__icontains=keyword) | # for some reason 'search=' in Q lose icontains abilities
         # Q(search=keyword) | # for some reason __icontains paired w/ Q misses perfect matches
-        Q(rank__gte=settings.MIN_SEARCH_RANK) |
-        Q(similarity__gte=settings.MIN_SEARCH_SIMILARITY)
+        Q(rank__gt=settings.MIN_SEARCH_RANK) |
+        Q(similarity__gt=settings.MIN_SEARCH_SIMILARITY)
     ).order_by(
         '-rank',
         '-similarity',
@@ -857,6 +857,7 @@ def run_filters(request, providers):
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
         filters['Product Forms'].sort(key=lambda x: x['name'])
+    # body['keywords'] = 'Chicken Breast'
     if 'keywords' in body.keys():
         # recreate the trigram keyword search from ITKDB
         # https://github.com/Ecotrust/TEKDB/blob/main/TEKDB/TEKDB/models.py#L23
@@ -933,15 +934,48 @@ def run_filters(request, providers):
         }
         products = ProviderProduct.objects.filter(provider__in=providers)
         keyword_provider_products = run_keyword_search(products, ProviderProduct, keywords, fields, fk_fields, weight_lookup, sort_field)
+
+        provider_results = []
         provider_ids = []
         for provider in keyword_providers:
-            if not provider.pk in provider_ids:
-                provider_ids.append(provider.pk)
+            provider_results.append({
+                'id': provider.pk,
+                'name': provider.name,
+                'rank': provider.rank,
+                'similarity': provider.similarity
+            })
         for product in keyword_provider_products:
-            if product.provider.pk not in provider_ids:
-                provider_ids.append(product.provider.pk)
+            provider_results.append({
+                'id': product.provider.pk,
+                'name': product.provider.name,
+                'rank': product.rank,
+                'similarity': product.similarity
+            })
+        
+        # If searching by keyword, results should be sorted by rank. Similarity if there is a tie in rank. 
+        # Name if there is a tie between both.
+        provider_results.sort(key=lambda x: x['name'])
+        provider_results.sort(key=lambda x: x['similarity'], reverse=True)
+        provider_results.sort(key=lambda x: x['rank'], reverse=True)
 
-        providers = providers.filter(pk__in=provider_ids)
+
+        # print("\n")
+        # print("============================================")
+        # print("----------Providers---------------")
+        # print("============================================")
+        # print("ID \t NAME \t RANK \t SIMILARITY")
+        # for result in [(x['id'], x['name'], x['rank'], x['similarity']) for x in provider_results]:
+        #     print(result)
+        # print("============================================")
+        # print("\n")
+
+
+        for provider in provider_results:
+            if not provider['id'] in provider_ids:
+                provider_ids.append(provider['id'])
+
+        preserved_order = Case(*[When(pk=id, then=index) for index, id in enumerate(provider_ids)])
+        providers = providers.filter(pk__in=provider_ids).order_by(preserved_order)
 
     return {
         'providers': providers,
