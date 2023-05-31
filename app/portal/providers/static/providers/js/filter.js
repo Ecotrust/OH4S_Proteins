@@ -167,7 +167,7 @@ function removeActiveFilterClass(form) {
 
 function getFilterRequest() {
   var filterReq = {};
-  var allFormsObj = document.forms;
+  // var allFormsObj = document.forms;
   var allFormsArr = document.querySelectorAll('.filter-form');
   allFormsArr.forEach((form, i) => {
     var noneChecked = true;
@@ -189,6 +189,10 @@ function getFilterRequest() {
       removeActiveFilterClass(form);
     }
   });
+  const searchInput = document.querySelector('input[name="search-input"]');
+  if (searchInput.value) {
+    filterReq['keywords'] = searchInput.value;
+  }
   return filterReq;
 }
 
