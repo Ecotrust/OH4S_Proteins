@@ -863,7 +863,6 @@ def run_filters(request, providers):
         providers = providers.filter(pk__in=provider_ids)
         filters['Product Forms'].sort(key=lambda x: x['name'])
     if 'keywords' in body.keys():
-        from ipdb import set_trace; set_trace()
         # recreate the trigram keyword search from ITKDB
         # https://github.com/Ecotrust/TEKDB/blob/main/TEKDB/TEKDB/models.py#L23
         # This is run on both "Provider" and "ProviderProduct"
