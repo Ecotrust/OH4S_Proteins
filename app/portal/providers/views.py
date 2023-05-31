@@ -1,4 +1,4 @@
-from django.db.models import Q
+from django.db.models import Q, Case, When
 from django.db.models.functions import Greatest
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
@@ -725,8 +725,8 @@ def run_keyword_search(queryset, model, keyword, fields, fk_fields, weight_looku
     ).filter(
         # Q(search__icontains=keyword) | # for some reason 'search=' in Q lose icontains abilities
         # Q(search=keyword) | # for some reason __icontains paired w/ Q misses perfect matches
-        Q(rank__gte=settings.MIN_SEARCH_RANK) |
-        Q(similarity__gte=settings.MIN_SEARCH_SIMILARITY)
+        Q(rank__gt=settings.MIN_SEARCH_RANK) |
+        Q(similarity__gt=settings.MIN_SEARCH_SIMILARITY)
     ).order_by(
         '-rank',
         '-similarity',
@@ -853,7 +853,11 @@ def run_filters(request, providers):
         provider_ids = []
         for form in product_forms:
             filters['Product Forms'].append({'id': form.pk, 'name': str(form)})
-            new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
+            # TODO: How strict are the 'product details' filters? Should "Poultry > Chicken" get
+            # any/all forms of chicken, or only those that specifically set this 'type'.
+            # Current solution: take 'Poultry > Chicken' to be inclusive of all decendants.
+            # new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
+            new_provider_ids = [x.provider.pk for x in form.get_provider_products()]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
         filters['Product Forms'].sort(key=lambda x: x['name'])
@@ -933,15 +937,48 @@ def run_filters(request, providers):
         }
         products = ProviderProduct.objects.filter(provider__in=providers)
         keyword_provider_products = run_keyword_search(products, ProviderProduct, keywords, fields, fk_fields, weight_lookup, sort_field)
+
+        provider_results = []
         provider_ids = []
         for provider in keyword_providers:
-            if not provider.pk in provider_ids:
-                provider_ids.append(provider.pk)
+            provider_results.append({
+                'id': provider.pk,
+                'name': provider.name,
+                'rank': provider.rank,
+                'similarity': provider.similarity
+            })
         for product in keyword_provider_products:
-            if product.provider.pk not in provider_ids:
-                provider_ids.append(product.provider.pk)
+            provider_results.append({
+                'id': product.provider.pk,
+                'name': product.provider.name,
+                'rank': product.rank,
+                'similarity': product.similarity
+            })
+        
+        # If searching by keyword, results should be sorted by rank. Similarity if there is a tie in rank. 
+        # Name if there is a tie between both.
+        provider_results.sort(key=lambda x: x['name'])
+        provider_results.sort(key=lambda x: x['similarity'], reverse=True)
+        provider_results.sort(key=lambda x: x['rank'], reverse=True)
 
-        providers = providers.filter(pk__in=provider_ids)
+
+        # print("\n")
+        # print("============================================")
+        # print("----------Providers---------------")
+        # print("============================================")
+        # print("ID \t NAME \t RANK \t SIMILARITY")
+        # for result in [(x['id'], x['name'], x['rank'], x['similarity']) for x in provider_results]:
+        #     print(result)
+        # print("============================================")
+        # print("\n")
+
+
+        for provider in provider_results:
+            if not provider['id'] in provider_ids:
+                provider_ids.append(provider['id'])
+
+        preserved_order = Case(*[When(pk=id, then=index) for index, id in enumerate(provider_ids)])
+        providers = providers.filter(pk__in=provider_ids).order_by(preserved_order)
 
     return {
         'providers': providers,
