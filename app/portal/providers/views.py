@@ -853,11 +853,14 @@ def run_filters(request, providers):
         provider_ids = []
         for form in product_forms:
             filters['Product Forms'].append({'id': form.pk, 'name': str(form)})
-            new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
+            # TODO: How strict are the 'product details' filters? Should "Poultry > Chicken" get
+            # any/all forms of chicken, or only those that specifically set this 'type'.
+            # Current solution: take 'Poultry > Chicken' to be inclusive of all decendants.
+            # new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
+            new_provider_ids = [x.provider.pk for x in form.get_provider_products()]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
         filters['Product Forms'].sort(key=lambda x: x['name'])
-    # body['keywords'] = 'Chicken Breast'
     if 'keywords' in body.keys():
         # recreate the trigram keyword search from ITKDB
         # https://github.com/Ecotrust/TEKDB/blob/main/TEKDB/TEKDB/models.py#L23
