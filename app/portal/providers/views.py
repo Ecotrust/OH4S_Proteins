@@ -528,6 +528,12 @@ def get_results_filter_context(request, context={}):
     # Re-Order filters by 'order'
     filters.sort(key=lambda x: x['order'])
 
+    # Add search keywords if any
+    try:
+        filters.append({'keywords': current_state['keywords'][0]})
+    except Exception as e:
+        filters.append({'keywords': ''})
+
     context['filters'] = filters
     context['filters_json'] = json.dumps(filters)
     return context
