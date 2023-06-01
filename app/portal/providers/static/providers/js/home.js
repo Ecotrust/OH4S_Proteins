@@ -2,6 +2,14 @@ $(document).ready(function(){
   $("form.home-filter-form").change(function(){
     toggle_home_filter($(this));
   });
+
+  $("#search-form").submit(function(event) {
+    event.preventDefault();
+    const searchInput = $('input[name="keywords"]');
+    filterProxy['keywords'] = searchInput.val();
+    go_to_results();
+  });
+
 });
 
 var filters = {};
@@ -54,8 +62,14 @@ var get_filter_form = function() {
       label = labels[i];
       form.append(label);
     }
-
   });
+  
+  // Also using this function and its form for search 
+  const searchInput = $('input[name="keywords"]');
+  if (searchInput.val()) {
+    form.append(searchInput);
+  }
+
   return form;
 }
 
@@ -71,5 +85,4 @@ var go_to_product_results = function(product_id, product_name) {
 var go_to_results = function() {
   var form = get_filter_form();
   form.appendTo('body').submit();
-
 }

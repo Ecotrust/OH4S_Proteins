@@ -194,7 +194,7 @@ function getFilterRequest() {
       removeActiveFilterClass(form);
     }
   });
-  const searchInput = document.querySelector('input[name="search-input"]');
+  const searchInput = document.querySelector('input[name="keywords"]');
   if (searchInput.value) {
     filterReq['keywords'] = searchInput.value;
   }
