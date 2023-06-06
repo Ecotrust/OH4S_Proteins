@@ -327,3 +327,16 @@ const insertProductIcons = (provider) => {
 //       }, false)
 //     })
 // })()
+
+
+$('.nested-checkbox').on('click', function(el) {
+  let categoryWrapper = el.target.closest('.compound-multiselect-category');
+  if (el.target.checked == true) {
+    categoryWrapper.style.backgroundColor = '#E6D410';
+  } else {
+    let checkedChildren = categoryWrapper.querySelector('.nested-checkbox:checked');
+    if (checkedChildren == null) {
+      categoryWrapper.style.backgroundColor = 'transparent';
+    }
+  }
+});

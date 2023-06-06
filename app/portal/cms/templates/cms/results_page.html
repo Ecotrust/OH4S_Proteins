@@ -46,7 +46,7 @@
                   <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
 
                   <div class="modal fade modal-filter" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
                       <div class="modal-content">
                         <div class="modal-header">
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -73,11 +73,13 @@
                                   {% for category_tuple in filter.option_categories %}
                                     {% if filter.options|get_item:category_tuple.0|length > 0 %}
                                       <div class="compound-multiselect-category" id="compound-multiselect-category-{{ filter.facet }}-{{ category_tuple.1 }}">
-                                        <h4 data-bs-toggle="collapse" data-bs-target="#{{ category_tuple.0|slugify }}-{{ category_tuple.1 }}"=>{{ category_tuple.0 }}</h4>
+                                        <a data-bs-toggle="collapse" data-bs-toggle="button" href="#{{ category_tuple.0|slugify }}-{{ category_tuple.1 }}" aria-expanded="false" aria-controls=="#{{ category_tuple.0|slugify }}-{{ category_tuple.1 }}" role="button" class="collapsed">
+                                          {{ category_tuple.0 }}
+                                        </a>
                                         <div class="compound-multiselect-category-options collapse" id="{{ category_tuple.0|slugify }}-{{ category_tuple.1 }}">
                                           {% for option in filter.options|get_item:category_tuple.0 %}
                                             <label class="list-group-item">
-                                              <input class="form-check-input me-1" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
+                                              <input class="form-check-input me-1 nested-checkbox" type="checkbox" name="{{ filter.facet }}" value="{{ option.value }}" {% if option.state %}checked="checked"{% endif %} />
                                               {{ option.label }}
                                             </label>
                                           {% endfor %}
@@ -93,7 +95,7 @@
                                     </label>
                                   {% endfor %}
                                 {% endif %}
-                              </div>
+                                </div>
                               </div>
                             {# {% elif filter.widget == 'multiselect-spatial' %} #}
                             {% else %}

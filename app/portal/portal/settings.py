@@ -169,6 +169,7 @@ DEFAULT_CAPACITY_UNIT = "acres"
 DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 WAGTAIL_SITE_NAME = "Oregon Harvest For Schools Portal CMS"
+WAGTAILADMIN_BASE_URL = '/cms/'
 
 APPEND_SLASH=False
 
