@@ -40,6 +40,15 @@ header .navbar {
   width: 48px;
 }
 
+#search-form {
+  display: none;
+}
+
+.template-homepage #search-form,
+.template-results #search-form {
+  display: block;
+}
+
 @media screen and (min-width: 23.5em) {
   header {
     background: var(--color-2);
