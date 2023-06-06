@@ -84,5 +84,6 @@ var go_to_product_results = function(product_id, product_name) {
 
 var go_to_results = function() {
   var form = get_filter_form();
+  $(form).hide();
   form.appendTo('body').submit();
 }
