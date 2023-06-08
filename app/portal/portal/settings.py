@@ -173,4 +173,7 @@ WAGTAILADMIN_BASE_URL = '/cms/'
 
 APPEND_SLASH=False
 
+MIN_SEARCH_RANK=0.1
+MIN_SEARCH_SIMILARITY=0.25
+
 from .local_settings import *

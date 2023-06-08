@@ -22,8 +22,25 @@
             <span id="results-count"></span>
             {{ page.results_count_message_after }}
           </h3>
-          <div id="results-advice-div" class="results-advice">
-          </div>
+          <div id="results-advice-div" class="results-advice"></div>
+          {% block search %}
+            <!-- Search for results page -->
+            {% if user.is_staff %}
+              <div class="col-auto">
+                <form role="search" name="keywords-form" id="search-form" class="search-form">
+                  <label for="search-input">
+                    <input type="search" name="keywords" class="search-field" placeholder="Search" />
+                  </label>
+                  <button class="btn-submit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                      <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                  </button>
+                </form>
+              </div>
+            {% endif %}
+            <!-- End search for results page -->
+          {% endblock search %}
         </div>
 
         <!-- Filters -->
@@ -46,7 +63,7 @@
                   <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
 
                   <div class="modal fade modal-filter" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
                       <div class="modal-content">
                         <div class="modal-header">
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

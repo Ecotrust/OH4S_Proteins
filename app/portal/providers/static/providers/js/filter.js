@@ -18,8 +18,9 @@
  */
 
 function populateFilterForms(filterArr) {
-  var allFormsObj = document.forms;
-  filterArr.forEach((filter, i) => {
+  // var allFormsObj = document.forms;
+  var allFormsObj = document.querySelectorAll('.filter-form');
+  allFormsObj.forEach((filter, i) => {
     var facet = filter.facet;
     if (filter.visible) {
       if (filter.widget == 'compound-multiselect') {
@@ -38,6 +39,14 @@ function populateFilterForms(filterArr) {
       });
     }
   });
+
+  // populate keywords
+  const searchInput = document.querySelector('input[name="keywords"]');
+  if (searchInput) {
+    // assumes that keywords is the last object in filterArr
+    let getKeywords = filterArr.pop();
+    searchInput.value = getKeywords['keywords'];
+  }
 }
 
 function updateFilterForms(filterDef) {
@@ -85,6 +94,11 @@ $(document).ready(function() {
 
   $('#filter-form').submit(function(event) {
     event.preventDefault();
+  });
+
+  $('#search-form').submit(function(event) {
+    event.preventDefault();
+    filterQuery();
   });
 
   $('#filter-form').on(
@@ -155,20 +169,24 @@ function toggleEnableFilterBtns() {
 
 function addActiveFilterClass(form) {
   // add class back for filter wraps with checked filters
-  form.closest('.filter-wrap').classList.add('filter-active');
+  if (form.closest('.filter-wrap')) {
+    form.closest('.filter-wrap').classList.add('filter-active');
+  }
 }
 
 
 function removeActiveFilterClass(form) {
   // remove active filter class from form
   // add class back for filter wraps with checked filters
-  form.closest('.filter-wrap').classList.remove('filter-active');
+  if (form.closest('.filter-wrap')) {
+    form.closest('.filter-wrap').classList.remove('filter-active');
+  }
 }
 
 function getFilterRequest() {
   var filterReq = {};
-  var allFormsObj = document.forms;
-  var allFormsArr = document.querySelectorAll('form');
+  // var allFormsObj = document.forms;
+  var allFormsArr = document.querySelectorAll('.filter-form');
   allFormsArr.forEach((form, i) => {
     var noneChecked = true;
     // Loop through add form elements
@@ -189,6 +207,10 @@ function getFilterRequest() {
       removeActiveFilterClass(form);
     }
   });
+  const searchInput = document.querySelector('input[name="keywords"]');
+  if (searchInput.value) {
+    filterReq['keywords'] = searchInput.value;
+  }
   return filterReq;
 }
 

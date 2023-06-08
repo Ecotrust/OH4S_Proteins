@@ -1,6 +1,9 @@
+from django.db.models import Q, Case, When
+from django.db.models.functions import Greatest
 from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.conf import settings
+from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector, TrigramSimilarity
 from django.views.decorators.csrf import csrf_exempt
 from providers.models import ProductCategory, Project, Provider, ProviderProduct, Identity, PoliticalSubregion, ComponentCategory, DeliveryMethod, Distributor, ProductionPractice, Language
 from providers.forms import FilterForm
@@ -525,6 +528,12 @@ def get_results_filter_context(request, context={}):
     # Re-Order filters by 'order'
     filters.sort(key=lambda x: x['order'])
 
+    # Add search keywords if any
+    try:
+        filters.append({'keywords': current_state['keywords'][0]})
+    except Exception as e:
+        filters.append({'keywords': ''})
+
     context['filters'] = filters
     context['filters_json'] = json.dumps(filters)
     return context
@@ -675,14 +684,71 @@ def results(request):
 
     return render(request, "category.html", context)
 
+def run_keyword_search(queryset, model, keyword, fields, fk_fields, weight_lookup, sort_field):
+    # queryset -> a pre-filtered list of objects to select from
+    # model -> the model calling this function
+    # keyword -> [str] your search string -- can be multiple words
+    # fields -> [list of str] char or text fields on your model
+    # fk_fields -> [list of tuples] Foreign Key field names coupled with field on foreign model to search
+    #   fk_fields can search any models with a fk for current model as well!
+    # weight_lookup -> [dict] lookup to get relative ['A','B','C','D'] weights for scoring search results.
+
+    if keyword == '':
+        return queryset
+        
+    similarities = []
+    vector = False
+    similarity = False
+    for idx, val in enumerate(fields):
+        similarities.append(TrigramSimilarity(val, keyword, weight=weight_lookup[val]))
+        if idx == 0:
+            vector = SearchVector(val, weight=weight_lookup[val])
+        else:
+            vector += SearchVector(val, weight=weight_lookup[val])
+
+    for val in fk_fields:
+        relationship_name = '__'.join(val)
+        similarities.append(TrigramSimilarity(relationship_name, keyword, weight=weight_lookup[val[0]]))
+        if not vector:
+            vector = SearchVector(relationship_name, weight=weight_lookup[val[0]])
+        else:
+            vector += SearchVector(relationship_name, weight=weight_lookup[val[0]])
+
+    query = SearchQuery(keyword)
+
+    if len(similarities) > 1:
+        similarity = Greatest(*similarities)
+    elif len(similarities) == 1:
+        similarity = similarities[0]
+    else:
+        return model.objects.none()
+
+    # results =  model.objects.annotate(
+    results =  queryset.annotate(
+        # search=vector,
+        rank=SearchRank(vector,query),
+        similarity=similarity
+    ).filter(
+        # Q(search__icontains=keyword) | # for some reason 'search=' in Q lose icontains abilities
+        # Q(search=keyword) | # for some reason __icontains paired w/ Q misses perfect matches
+        Q(rank__gt=settings.MIN_SEARCH_RANK) |
+        Q(similarity__gt=settings.MIN_SEARCH_SIMILARITY)
+    ).order_by(
+        '-rank',
+        '-similarity',
+        sort_field
+    )
+
+    return results
 
 def run_filters(request, providers):
     try:
         body = json.loads(request.body)
         for key in body.keys():
-            if len(body[key]) > 0 and type(body[key][0]) == str:
-                str_values = body[key]
-                body[key] = [int(x) for x in str_values]
+            if 'keywords' not in key:
+                if len(body[key]) > 0 and type(body[key][0]) == str:
+                    str_values = body[key]
+                    body[key] = [int(x) for x in str_values]
     except Exception as e:
         print(e)
         body = {}
@@ -794,10 +860,132 @@ def run_filters(request, providers):
         provider_ids = []
         for form in product_forms:
             filters['Product Forms'].append({'id': form.pk, 'name': str(form)})
-            new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
+            # TODO: How strict are the 'product details' filters? Should "Poultry > Chicken" get
+            # any/all forms of chicken, or only those that specifically set this 'type'.
+            # Current solution: take 'Poultry > Chicken' to be inclusive of all decendants.
+            # new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
+            new_provider_ids = [x.provider.pk for x in form.get_provider_products()]
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
         filters['Product Forms'].sort(key=lambda x: x['name'])
+    if 'keywords' in body.keys():
+        # recreate the trigram keyword search from ITKDB
+        # https://github.com/Ecotrust/TEKDB/blob/main/TEKDB/TEKDB/models.py#L23
+        # This is run on both "Provider" and "ProviderProduct"
+
+        # This will be different, as we want to apply the above filters to 
+        # constrain the search space.
+
+        # enable Trigram Similarity extension on PG if not done already
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute('CREATE EXTENSION IF NOT EXISTS pg_trgm')
+
+        keywords = body['keywords']
+
+        # model = Provider
+        fields = [
+            'name', 
+            'description', 
+            'primaryContactFirstName', 
+            'primaryContactLastName', 
+            'notes',
+        ]
+        # We do not search all FK fields - these searches are expensive/slow, and should be managed
+        # via the existing filters.
+        fk_fields=[
+            # ('preferredLanguage', 'name'),
+            # ('identities',  'name'),
+            # ('deliveryMethods', 'name'),
+            ('regionalAvailability', 'name'),
+            # ('distributors', 'name'),
+            # ('productionPractices', 'name'),
+        ]
+        weight_lookup = {
+            'name': 'A',
+            'description': 'C',
+            'primaryContactFirstName': 'C',
+            'primaryContactLastName': 'C',
+            'notes': 'C',
+            'preferredLanguage': 'B',
+            'identities': 'B',
+            'deliveryMethods': 'B',
+            'regionalAvailability': 'B',
+            'distributors': 'B',
+            'productionPractices': 'B',
+        }
+
+        sort_field = 'name'
+
+        keyword_providers = run_keyword_search(providers, Provider, keywords, fields, fk_fields, weight_lookup, sort_field)
+
+        # model = ProviderProduct
+        fields = [
+            'name', 
+            'description',
+            'notes',
+        ]
+        fk_fields=[
+            ('category', 'full_name'),
+            # ('deliveryMethods', 'name'),
+            ('regionalAvailability', 'name'),
+            # ('distributors', 'name'),
+            # ('productionPractices', 'name'),
+        ]
+        weight_lookup = {
+            'name': 'A',
+            'category': 'A',
+            'description': 'C',
+            'notes': 'C',
+            'deliveryMethods': 'B',
+            'regionalAvailability': 'B',
+            'distributors': 'B',
+            'productionPractices': 'B',
+        }
+        products = ProviderProduct.objects.filter(provider__in=providers)
+        keyword_provider_products = run_keyword_search(products, ProviderProduct, keywords, fields, fk_fields, weight_lookup, sort_field)
+
+        provider_results = []
+        provider_ids = []
+        for provider in keyword_providers:
+            provider_results.append({
+                'id': provider.pk,
+                'name': provider.name,
+                'rank': provider.rank,
+                'similarity': provider.similarity
+            })
+        for product in keyword_provider_products:
+            provider_results.append({
+                'id': product.provider.pk,
+                'name': product.provider.name,
+                'rank': product.rank,
+                'similarity': product.similarity
+            })
+        
+        # If searching by keyword, results should be sorted by rank. Similarity if there is a tie in rank. 
+        # Name if there is a tie between both.
+        provider_results.sort(key=lambda x: x['name'])
+        provider_results.sort(key=lambda x: x['similarity'], reverse=True)
+        provider_results.sort(key=lambda x: x['rank'], reverse=True)
+
+
+        # print("\n")
+        # print("============================================")
+        # print("----------Providers---------------")
+        # print("============================================")
+        # print("ID \t NAME \t RANK \t SIMILARITY")
+        # for result in [(x['id'], x['name'], x['rank'], x['similarity']) for x in provider_results]:
+        #     print(result)
+        # print("============================================")
+        # print("\n")
+
+
+        for provider in provider_results:
+            if not provider['id'] in provider_ids:
+                provider_ids.append(provider['id'])
+
+        preserved_order = Case(*[When(pk=id, then=index) for index, id in enumerate(provider_ids)])
+        providers = providers.filter(pk__in=provider_ids).order_by(preserved_order)
 
     return {
         'providers': providers,
