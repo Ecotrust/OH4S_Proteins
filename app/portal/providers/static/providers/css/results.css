@@ -64,3 +64,13 @@ p.provider-card-location {
 	font-size: 10px;
 	letter-spacing: 1px;
 }
+
+/* Serach overrides */
+
+.search-form {
+	margin: 2rem 0 0;
+}
+
+.search-form::after {
+	background: transparent;
+}

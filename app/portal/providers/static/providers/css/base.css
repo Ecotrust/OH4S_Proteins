@@ -666,12 +666,12 @@ button.btn-submit {
 
 .compound-multiselect-category a {
     font-size: 1.125rem;
-    margin-left: 20px;
+    margin-left: 2rem;
 }
 
     .compound-multiselect-category a:before {
         content: '-';
-        left: 20px;
+        left: 2rem;
         font-size: 1.5rem;
         line-height: 1.5rem;
         position: absolute;
@@ -720,7 +720,7 @@ button.btn-submit {
 
 .modal-filter .modal-body {
     color: var(--color-3);
-    padding: 1rem 1rem 2rem;
+    padding: 1rem 2rem 2rem;
 }
 
 .modal-filter .modal-footer {

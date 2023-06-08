@@ -22,6 +22,7 @@
             <span id="results-count"></span>
             {{ page.results_count_message_after }}
           </h3>
+          <div id="results-advice-div" class="results-advice"></div>
           {% block search %}
             <!-- Search for results page -->
             {% if user.is_staff %}
@@ -40,8 +41,6 @@
             {% endif %}
             <!-- End search for results page -->
           {% endblock search %}
-          <div id="results-advice-div" class="results-advice">
-          </div>
         </div>
 
         <!-- Filters -->
@@ -64,7 +63,7 @@
                   <button type="button" class="btn w-100 btn-filter" data-bs-toggle="modal" data-bs-target="#{{filter.facet}}-modal">{{ filter.name }}</button>
 
                   <div class="modal fade modal-filter" id="{{filter.facet}}-modal" tabindex="-1" aria-labelledby="{{filter.facet}}-modal" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                    <div class="modal-dialog modal-dialog-scrollable modal-lg modal-dialog-centered">
                       <div class="modal-content">
                         <div class="modal-header">
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
