@@ -577,7 +577,7 @@ input[type="checkbox"]:checked {
 }
 
 .search-form {
-    background: transparent;
+    background: #fff;
     border-radius: var(--border-radius);
     color: var(--color-3);
     border: 2px solid var(--color-3);
@@ -610,6 +610,10 @@ input[type="search"]  {
 
     input[type="search"]:focus {
         outline: none;
+    }
+
+    input[type="search"]::placeholder {
+        color: var(--color-3);
     }
 
 button.btn-submit {
