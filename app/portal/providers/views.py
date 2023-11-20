@@ -1020,7 +1020,7 @@ def filter(request):
     return JsonResponse(data, safe=False)
 
 def printer_friendly_results(request):
-    providers = [{'name':'Loading...'}]
+    providers = [{'name':''}]
     filter_list = []
     if request.method == "POST":
         providers = Provider.objects.all()
