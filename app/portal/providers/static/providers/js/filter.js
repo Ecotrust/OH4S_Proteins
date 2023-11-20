@@ -256,7 +256,7 @@ function getPrintableResults() {
         setTimeout(function() {
           $(w.document.body).html(data);
           w.focus();
-        }, 200);
+        }, 700);
       },
       error: function () {
         alert('Problem getting data');
