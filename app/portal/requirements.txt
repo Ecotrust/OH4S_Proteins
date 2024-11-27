@@ -43,7 +43,7 @@ prompt-toolkit>=3.0.30
 psycopg2-binary==2.8.6
 ptyprocess==0.6.0
 py-moneyed==0.8.0
-Pygments==2.7.4
+Pygments==2.15.0
 pytz==2021.1
 ratelim==0.1.6
 requests==2.31.0
