@@ -5,19 +5,12 @@
 # Used for setting the `smb_host` in config.vm.synced_folder
 def get_host_ip
   # This example uses `ifconfig` and `grep` to find inet interface and host IP address
-  host_ip = `ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'`.strip
+  host_ips = `ifconfig | grep "inet " | grep -v 127.0.0.1 | awk '{print $2}'`.strip.split("\n")
+  host_ip = host_ips.find { |ip| ip.start_with?("192.168.") } || host_ips.first
   return host_ip
 end
 
-
-# All Vagrant configuration is done below. The "2" in Vagrant.configure
-# configures the configuration version (we support older styles for
-# backwards compatibility). Please don't change it unless you know what
-# you're doing.
 Vagrant.configure("2") do |config|
-  # The most common configuration options are documented and commented below.
-  # For a complete reference, please see the online documentation at
-  # https://docs.vagrantup.com.
   
   module OS
     def OS.windows?
@@ -41,28 +34,23 @@ Vagrant.configure("2") do |config|
     
     config.vm.box = "perk/ubuntu-2204-arm64"
     
-    config.vm.provider "qemu" do |qe|
-      qe.memory = "4096" # 4GB
-    end
-    
-    config.vm.network "forwarded_port", guest: 80, host: 8080
+    config.vm.network "forwarded_port", guest: 80, host: 8080 
     config.vm.network "forwarded_port", guest: 8000, host: 8000
-    
+    config.vm.network "forwarded_port", id: "ssh", guest: 22, host: 1243
+
     config.ssh.insert_key = true
     config.ssh.forward_agent = true
-    
+
     # Automatically detect the SMB host IP
     smb_host_ip = get_host_ip
     
-    config.vm.synced_folder "./deploy", "/usr/local/apps/OH4S_Proteins/deploy",
+    config.vm.synced_folder "./", "/usr/local/apps/OH4S_Proteins",
     type: "smb",
-    smb_host: smb_host_ip,
-    mount_options: ["sec=ntlmssp", "nounix", "noperm", "vers=3.0"]
+    smb_host: smb_host_ip
     
-    config.vm.synced_folder "./app", "/usr/local/apps/OH4S_Proteins/app",
-    type: "smb",
-    smb_host: smb_host_ip,
-    mount_options: ["sec=ntlmssp", "nounix", "noperm", "vers=3.0"]
+    config.vm.provider "qemu" do |qe|
+      qe.memory = "4096" # 4GB
+    end
     
   elsif OS.linux?
     
