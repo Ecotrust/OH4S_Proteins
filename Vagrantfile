@@ -32,8 +32,8 @@ Vagrant.configure("2") do |config|
     puts "- Mac OS detected"
     puts "  -- Provider: QEMU"
     
-    config.vm.box = "perk/ubuntu-2204-arm64"
-    
+    config.vm.box = "injae-lab/ubuntu-24.04"
+
     config.vm.network "forwarded_port", guest: 80, host: 8080 
     config.vm.network "forwarded_port", guest: 8000, host: 8000
     config.vm.network "forwarded_port", id: "ssh", guest: 22, host: 1243
