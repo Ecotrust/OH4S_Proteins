@@ -1,53 +1,56 @@
 {% load static %}
-<HTML>
-  <head>
-    <link rel="stylesheet" href="{% static "providers/css/vendor/normalize.css" %}">
-    <link rel="stylesheet" href="{% static "providers/libraries/bootstrap-5.0.1/css/bootstrap.min.css" %}">
-    <link rel="stylesheet" href="{% static "providers/css/base.css" %}">
-    <link rel="stylesheet" href="{% static "providers/css/header.css" %}">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Oregon Harvest for Schools{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'providers/css/vendor/normalize.css' %}">
+    <link rel="stylesheet" href="{% static 'providers/libraries/bootstrap-5.0.1/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'providers/css/base.css' %}">
+    <link rel="stylesheet" href="{% static 'providers/css/header.css' %}">
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-141387987-1"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-141387987-1', { 'allow_ad_personalization_signals': false });
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'UA-141387987-1', { 'allow_ad_personalization_signals': false });
     </script>
 
     {% block additional_header %}
     {% endblock %}
-  </head>
-  <body>
+</head>
+<body>
     {% block header-content %}
-      {% include "header.html" %}
+        {% include 'header.html' %}
     {% endblock %}
     {% block content %}
     {% endblock %}
 
-    <script src="{% static "providers/libraries/jquery-3.3.1.min.js" %}"></script>
-    <script src="{% static "providers/libraries/popper.min.js" %}"></script>
-    <script src="{% static "providers/libraries/bootstrap-5.0.1/js/bootstrap.bundle.min.js" %}"></script>
+    <script src="{% static 'providers/libraries/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'providers/libraries/popper.min.js' %}"></script>
+    <script src="{% static 'providers/libraries/bootstrap-5.0.1/js/bootstrap.bundle.min.js' %}"></script>
     {% block additional_js %}
     {% endblock %}
     {% block feedback_form %}
-      <button type="button" class="btn btn-info fixed-bottom" style="right: 1em;left: auto; font-size: .8375em;" data-toggle="modal" data-target="#feedbackModal">Provide Feedback</button>
-      <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="feedbackModalLabel">Please Use Form To Submit Feedback</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+        <button type="button" class="btn btn-info fixed-bottom" style="right: 1em; left: auto; font-size: .8375em;" data-toggle="modal" data-target="#feedbackModal">Provide Feedback</button>
+        <div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="feedbackModalLabel">Please Use Form To Submit Feedback</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSenJyO-SuJ6dhqTwJxOV5EwYGcoAQ3oHobybu18cup2Bxu2cw/viewform?embedded=true" width="766" height="700" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSenJyO-SuJ6dhqTwJxOV5EwYGcoAQ3oHobybu18cup2Bxu2cw/viewform?embedded=true" width="766" height="700" frameborder="0" marginheight="0" marginwidth="0">Loading…</iframe>
-            </div>
-          </div>
         </div>
-      </div>
     {% endblock %}
-  </body>
-</HTML>
+</body>
+</html>
