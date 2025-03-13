@@ -2,34 +2,47 @@
 Oregon Harvest For Schools Portal
 
 # Installation
-## Notes
-This guide uses vim as the primary text editor. If you have a different
-preference, nano for example, knock yourself out.
 
-## Requirements
-* Ubuntu 20.04 LTS
-* sudo privileges
+## Get Source Code
+```
+git clone https://github.com/Ecotrust/OH4S_Proteins.git
+cd OH4S_Proteins
+```
+
+## Vagrant
+```
+vagrant up
+```
+
+## SSH into VM
+```
+vagrant ssh
+```
 
 ## Dependencies
+
 ### Update Package Manager
 ```
 sudo apt update
 sudo apt upgrade -y
 ```
 
-## Get Python 3.8
-This is installed by default on Ubuntu 20.04. Ideally we'd install 3.9, but it
-seems to introduce extra complexity at this time.
+### Install Dependencies
 ```
-sudo apt install vim python3.8 python3.8-dev python3.8-venv -y
+sudo apt install git python3 python3-dev python3-virtualenv python3-pip postgresql postgresql-contrib postgresql-server-dev-16 build-essential libssl-dev libffi-dev -y
 ```
 
-### Install Additional Dependencies
+## Create VM on VM
 ```
-sudo apt install git postgresql postgresql-contrib postgresql-server-dev-12 build-essential libssl-dev libffi-dev -y
+cd /usr/local/apps
+python3 -m venv env
+source env/bin/activate
+pip install --upgrade pip setuptools wheel
+pip install -r app/portal/requirements.txt
 ```
 
-### Create and Configure PostgreSQL user, database, and permissions
+## Create Database
+### Create and Configure PostgreSQL user
 ```
 sudo -u postgres createuser --interactive --pwprompt
 ```
@@ -42,17 +55,28 @@ the ability to create new DBs, nor roles.
 
 Once done, decide on a name for your database (also needed later for local_settings).
 Plug both the username you created and the database name into the section below.
+
+### Create the database
 ```
 sudo -u postgres createdb -O <username> <databasename>
-sudo vim /etc/postgresql/12/main/pg_hba.conf
+```
+
+### Configure the database
+```
+sudo vim /etc/postgresql/16/main/pg_hba.conf
 ```
 Near the bottom of the file, under "Database administrative login by Unix domain
 socket", you'll see the line `local   all             postgres                  
               peer`. Add a new line underneath using your own dbname and dbuser
 values that reads:
-```
-local   <dbname>            <dbuser>                             md5
-```
+  * **LOCAL** Environment Configuration
+  ```
+  local   <dbname>            <dbuser>                             trust
+  ```
+  * All Other Environments
+  ```
+  local   <dbname>            <dbuser>                             md5
+  ```
 
 Save, then restart the postgreSQL server:
 ```
@@ -71,40 +95,24 @@ ALTER USER <username> CREATEDB;
 \q
 
 exit
-sudo vim /etc/postgresql/12/main/pg_hba.conf
+sudo vim /etc/postgresql/16/main/pg_hba.conf
 ```
 The test database is named 'test_\<dbname>' by default. To enable creation of
 a test db, duplicate the line you created earlier, once for the test db, and
 once again to grant access to the postgres database (needed for testing):
-```
-local   postgres           <dbuser>                        md5
-local   test_<dbname>      <dbuser>                        md5
-```
+  * **LOCAL** Environment Configuration
+  ```
+  local   <dbname>            <dbuser>                             trust
+  local   test_<dbname>       <dbuser>                             trust
+  ```
+  * All Other Environments
+  ```
+  local   <dbname>            <dbuser>                             md5
+  local   test_<dbname>       <dbuser>                             md5
+  ```
 Save and then restart PostgreSQL to enable your changes:
 ```
 sudo service postgresql restart
-```
-
-## Install OH4S Portal App
-### Download the source code
-```
-mkdir /usr/local/apps
-cd /usr/local/apps
-git clone https://github.com/Ecotrust/OH4S_Proteins.git
-```
-
-### Create and populate the Python Virtual Environment
-NOTE: At the time of this writing, Wagtail does not officially support
-Django 3.2, but they do work just fine. Wagtail has been commented out, but
-needs to be installed on its own, then Django 3.2 needs to be reinstalled when
-Wagtail invariably downgrades it.
-```
-cd /usr/local/apps/OH4S_Proteins/
-python3.8 -m venv env
-source env/bin/activate
-pip3 install --upgrade pip
-pip3 install "wagtail>=2.12"
-pip3 install -r app/portal/requirements.txt
 ```
 
 ### Configure permissions and settings
@@ -131,12 +139,22 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': '<dbname>',
         'USER': '<username>',
+        # If you created a password for your user, add the following line:
         'PASSWORD': '<dbpassword>'
     }
 }
 ```
 
 NOTE: Do we need to explicitly set permissions for static, media, or log directories?
+
+## Initialize the database, Option 1: Using a database dump of production
+Refer to this [Google Doc](https://docs.google.com/document/d/1pF5kWFGjtw_fLhjQL3ygn_OkwuE3bf3Oy0KynJnPJ8Q/edit?usp=sharing) for instructions on how to dump the production database and loading it into your local database.
+
+Note: If you use this option you can stop here! 🛑
+
+## Initialize the database, Option 2: Using a fixture
+If you have a fixture file, you can load it in now. This is a good time to do
+this, as it will populate your database with the necessary data to run the site.
 
 ### Create tables and load in primary data
 ```
