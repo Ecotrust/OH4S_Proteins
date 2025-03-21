@@ -29,7 +29,7 @@ sudo apt upgrade -y
 
 ### Install Dependencies
 ```
-sudo apt install git python3 python3-dev python3-virtualenv python3-pip postgresql postgresql-contrib postgresql-server-dev-16 build-essential libssl-dev libffi-dev -y
+sudo apt install git python3 python3-dev python3-virtualenv python3-pip postgresql postgresql-contrib postgresql-server-dev-16 build-essential libssl-dev libffi-dev python3-venv -y
 ```
 
 ## Create VM on VM
@@ -201,27 +201,176 @@ homepage in Wagtail's 'Settings -> Sites' area.
 If you are installing for development purposes, you can stop here. For a live
 server, read on.
 
-## Serving the site
+# Deployment
+Once you have an server instance running, you can deploy the site to it.
 
-### NGINX & uWSGI Configuration
+```
+ssh <username>@<server>
+```
+
+### Update Package Manager
+```
+sudo apt update
+sudo apt upgrade -y
+```
+
+## Install Dependencies
+```
+sudo apt install git python3 python3-dev python3-virtualenv python3-pip postgresql postgresql-contrib postgresql-server-dev-16 build-essential libssl-dev libffi-dev nginx uwsgi uwsgi-plugin-python3 libpcre3 libpcre3-dev python3-venv -y
+```
+
+## Munin
+Munin is a monitoring tool that can be used to monitor the health of your server.
+```
+sudo apt-get install munin munin-node -y
+```
+
+## Make Apps Directory
+```
+sudo mkdir /usr/local/apps
+sudo chown <username> /usr/local/apps
+cd apps
+```
+
+## Get Source Code
+```
+git clone https://github.com/Ecotrust/OH4S_Proteins.git
+cd OH4S_Proteins
+```
+
+## Create Virtual Environment
+```
+python3 -m venv env
+source env/bin/activate
+pip install -r app/portal/requirements.txt
+```
+
+## Create Database
+### Create and Configure PostgreSQL user
+```
+sudo -u postgres createuser --interactive --pwprompt
+```
+You will be prompted to provide a username and a password for your new database user.
+Note these down as they will be needed both in this next step and in configuring
+local_settings later in this guide.
+
+NOTE: It is safer if you do *NOT* give your new user superuser privileges, nor
+the ability to create new DBs, nor roles.
+
+Once done, decide on a name for your database (also needed later for local_settings).
+Plug both the username you created and the database name into the section below.
+
+### Create the database
+```
+sudo -u postgres createdb -O <username> <databasename>
+```
+
+### Configure the database
+```
+sudo vim /etc/postgresql/16/main/pg_hba.conf
+```
+Near the bottom of the file, under "Database administrative login by Unix domain
+socket", you'll see the line `local   all             postgres                  
+              peer`. Add a new line underneath using your own dbname and dbuser
+values that reads:
+  * All Other Environments
+  ```
+  local   <dbname>            <dbuser>                             md5
+  ```
+
+Save, then restart the postgreSQL server:
+```
+sudo service postgresql restart
+```
+
+### Configure permissions and settings
+```
+cd /usr/local/apps/OH4S_Proteins/app
+cp portal/portal/local_settings.py.template portal/portal/local_settings.py
+vim portal/portal/local_settings.py
+```
+
+Add your URL to the `ALLOWED_HOSTS` list. Use 'localhost' for local development
+installations, or a url for live instances, for example:
+```
+ALLOWED_HOSTS = [
+  'localhost',
+  'portal.oregonharvestforschools.com',
+]
+```
+
+Edit local_settings.py using the db name, username, and password you created
+during the PostgreSQL configuration steps:
+```
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': '<dbname>',
+        'USER': '<username>',
+        # If you created a password for your user, add the following line:
+        'PASSWORD': '<dbpassword>'
+    }
+}
+```
+
+## Initialize the database, Option 1: Using a database dump of production
+Refer to this [Google Doc](https://docs.google.com/document/d/1pF5kWFGjtw_fLhjQL3ygn_OkwuE3bf3Oy0KynJnPJ8Q/edit?usp=sharing) for instructions on how to dump the production database and loading it into your local database.
+
+## Setup NGINX and uWSGI
+
+Install NGINX and uWSGI:
 ```
 sudo apt install nginx uwsgi uwsgi-plugin-python3 libpcre3 libpcre3-dev -y
 pip install uwsgi
+```
+
+### NGINX Configuration
+```
 sudo cp /usr/local/apps/OH4S_Proteins/deploy/nginx.conf /etc/nginx/sites-available/oh4s
 sudo rm /etc/nginx/sites-enabled/default
 sudo vim /etc/nginx/sites-available/oh4s
 ```
 
-Update the file with the correct `server_name` (the URL to be used to access the site).
+Update the file with the correct `server_name` (the URL to be used to access the site), munin location, and static and media locations.
+
+```
+server {
+        client_max_body_size 50M;
+
+        server_name oh4s-stage.ecotrust.org stage.oregonharvestforschools.com oregonharvestforschools.com portal.oregonharvestforschools.com directory.oregonharvestforschools.com www.oregonharvestforschools.com;
+        access_log /var/log/nginx/oh4s.access.log;
+        error_log /var/log/nginx/oh4s.error.log;
+
+        location /static {
+                alias /usr/local/apps/OH4S_Proteins/app/portal/static;
+        }
+
+        location /media {
+                alias /usr/local/apps/OH4S_Proteins/app/portal/media;
+        }
+
+        location /munin/static/ {
+                alias /etc/munin/static/;
+        }
+
+        location /munin {
+                alias /var/cache/munin/www;
+        }
+
+        location / {
+                uwsgi_pass unix:///tmp/oh4s-socket;
+                include uwsgi_params;
+        }
+} 
+```
 
 ```
 sudo ln -s /etc/nginx/sites-available/oh4s /etc/nginx/sites-enabled/oh4s
 sudo nginx -t
 ```
-See the the output of that last command doesn't reveal any errors.
 
 
-Put uWSGI configuration files in the correct place and enable auto-launch:
+### uWSGI Configuration
 ```
 sudo cp /usr/local/apps/OH4S_Proteins/deploy/emperor.ini /etc/uwsgi/
 sudo cp /usr/local/apps/OH4S_Proteins/deploy/uwsgi.service /etc/systemd/system/
@@ -229,13 +378,13 @@ sudo systemctl enable uwsgi.service
 sudo cp /usr/local/apps/OH4S_Proteins/deploy/oh4s.ini /etc/uwsgi/apps-enabled/oh4s.ini
 ```
 
-Restart the services:
+### Restart Services
 ```
 sudo service nginx restart
 sudo service uwsgi restart
 ```
 
-### Static Files
+## Static Files
 ```
 python /usr/local/apps/OH4S_Proteins/app/portal/manage.py collectstatic
 ```
