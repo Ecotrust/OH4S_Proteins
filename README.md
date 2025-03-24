@@ -430,21 +430,6 @@ configuration file at `/etc/nginx/sites-enabled/oh4s`
 * '2' -- you want to redirect all traffic to HTTPS.
 
 ## Other considerations
-### Munin
-```
-sudo apt-get install munin munin-node -y
-sudo vim /etc/nginx/sites-enabled oh4s
-```
-Add the following lines inside your `server{}` block:
-```
-location /munin/static/ {
-        alias /etc/munin/static/;
-}
-
-location /munin {
-        alias /var/cache/munin/www;
-}
-```
 
 ### Uptime Monitoring
 It is recommended that you use uptimerobot.com
