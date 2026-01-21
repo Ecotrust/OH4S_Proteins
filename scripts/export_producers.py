@@ -1,4 +1,7 @@
 # export_producers.py
+
+# run with: python manage.py shell < ../../scripts/export_producers.py
+
 import csv
 from datetime import date
 from providers.models import Provider
