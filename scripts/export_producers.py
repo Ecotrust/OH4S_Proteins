@@ -21,7 +21,7 @@ from providers.models import Provider
 #No phone or email, order min, liability, sold to schools, production practices, no school districts sold to
 
 today = str(date.today())
-outfile = "/tmp/oh4s_producers_{}".format(today)
+outfile = "/tmp/oh4s_producers_{}.csv".format(today)
 
 
 with open(outfile, 'w', newline='') as file:
