@@ -39,7 +39,6 @@ pexpect==4.6.0
 phonenumbers==8.10.4
 pickleshare==0.7.5
 prompt-toolkit>=3.0.30
-psycopg2==2.9.10
 psycopg2-binary==2.9.10
 ptyprocess==0.6.0
 py-moneyed==0.8.0
