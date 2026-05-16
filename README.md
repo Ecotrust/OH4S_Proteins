@@ -11,6 +11,8 @@ cd OH4S_Proteins
 
 ## Vagrant
 ```
+vagrant plugin install vagrant-vbguest
+vagrant box update
 vagrant up
 ```
 
@@ -32,7 +34,7 @@ sudo apt upgrade -y
 sudo apt install git python3 python3-dev python3-virtualenv python3-pip postgresql postgresql-contrib postgresql-server-dev-16 build-essential libssl-dev libffi-dev python3-venv -y
 ```
 
-## Create VM on VM
+## Create Python Virtual Environment on VM
 ```
 cd /usr/local/apps
 python3 -m venv env
