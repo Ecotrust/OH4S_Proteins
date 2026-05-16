@@ -3,10 +3,6 @@
 DBNAME=dbname
 DBOWNER=dbowner
 DBPASSWORD=password
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-# deliberately overwrites existing file - AWS snapshotting will be used to preserve dumps
-OUTFILE=$DBNAME'_DB_dump.sql' 
-OUTDIR=$DIR
 
 while getopts n:o:p:d:f: flag
 do
@@ -18,5 +14,10 @@ do
     f) OUTFILE=${OPTARG};;          # Output dump (f)ilename
   esac
 done
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+# deliberately overwrites existing file - AWS snapshotting will be used to preserve dumps
+OUTFILE=$DBNAME'_DB_dump.sql' 
+OUTDIR=$DIR
 
 PGPASSWORD=$DBPASSWORD /usr/bin/pg_dump -b -c -n public -O --quote-all-identifiers --no-acl -w -U $DBOWNER -f $OUTDIR/$OUTFILE $DBNAME
