@@ -1,0 +1,2 @@
+# m h  dom mon dow   command
+0 4 * * * /usr/local/apps/OH4S_PROTEINS/backups/db_dump.sh -n <DB_NAME> -o <DB_OWNER> -p <DB_PASSWORD>
