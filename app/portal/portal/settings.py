@@ -182,3 +182,8 @@ APPEND_SLASH=False
 MIN_SEARCH_RANK=0.1
 MIN_SEARCH_SIMILARITY=0.25
 MAPBOX_TOKEN = os.environ.get('MAPBOX_TOKEN', default='')
+
+try:
+    from .local_settings import *
+except ImportError:
+    pass
