@@ -24,8 +24,5 @@ python manage.py collectstatic --noinput
 echo "loading initial data fixtures..."
 python manage.py loaddata fixtures/providers_20210524.json
 
-echo "creating superuser if not exists..."
-python manage.py createsuperuser
-
 echo "Starting python development server on :8000"
 python manage.py runserver 0.0.0.0:8000

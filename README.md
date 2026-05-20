@@ -14,7 +14,7 @@ cd OH4S_Proteins
 
 - In order to run the application with production data, locate a database dump of a production install. Add the dump to the `docker` directory and name it `db_dump.sql`. This is necessary for the `init-db.sh` script to run correctly.
 
-- Create an copy the `.env.template` file to a `.env` file in the `docker` directory. Add your environment variables to that file.
+- Create a copy of the `.env.template` file as `.env` in the `docker` directory. Add your environment variables to that file.
 
 - Move to the docker directory: `cd docker`
 
