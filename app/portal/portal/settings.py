@@ -32,12 +32,15 @@ STATICFILES_DIRS = [
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 't8(b^k=eh4pu6o6to8px!7pmcf)@x#p$&nyp&ksm!oc00s2s-('
+SECRET_KEY = os.environ.get('SECRET_KEY', default='set in .env file')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = []
+ALLOWED_HOSTS_ENV = os.environ.get("ALLOWED_HOSTS")
+if ALLOWED_HOSTS_ENV:
+    ALLOWED_HOSTS.extend(ALLOWED_HOSTS_ENV.split(","))
 
 
 # Application definition
@@ -112,9 +115,12 @@ WSGI_APPLICATION = 'portal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'set_in_local_settings.py',
-        'USER': 'set_in_local_settings.py'
+        'ENGINE': os.environ.get('SQL_ENGINE', default='django.db.backends.postgresql'),
+        'NAME': os.environ.get('SQL_DATABASE', default='postgres'),
+        'USER': os.environ.get('SQL_USER', default='postgres'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD', default=None),
+        'HOST': os.environ.get('SQL_HOST', default='db'),
+        'PORT': os.environ.get('SQL_PORT', default='5432'),
     }
 }
 
@@ -175,5 +181,9 @@ APPEND_SLASH=False
 
 MIN_SEARCH_RANK=0.1
 MIN_SEARCH_SIMILARITY=0.25
+MAPBOX_TOKEN = os.environ.get('MAPBOX_TOKEN', default='')
 
-from .local_settings import *
+try:
+    from .local_settings import *
+except ImportError:
+    pass

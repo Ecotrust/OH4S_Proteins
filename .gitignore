@@ -116,3 +116,7 @@ venv.bak/
 .vagrant/
 
 .DS_Store
+
+.env.dev
+
+db_dump.sql
