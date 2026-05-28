@@ -115,7 +115,7 @@ WSGI_APPLICATION = 'portal.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': os.environ.get('SQL_ENGINE', default='django.db.backends.postgresql'),
         'NAME': os.environ.get('SQL_DATABASE', default='postgres'),
         'USER': os.environ.get('SQL_USER', default='postgres'),
         'PASSWORD': os.environ.get('SQL_PASSWORD', default=None),
