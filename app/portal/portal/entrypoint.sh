@@ -21,8 +21,14 @@ python manage.py migrate --noinput
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
-echo "loading initial data fixtures..."
-python manage.py loaddata fixtures/providers_20210524.json
+echo "Checking for existing providers..."
+if [ "$(python manage.py shell -c 'from providers.models import PoliticalRegion; print(PoliticalRegion.objects.count())' 2>/dev/null | tail -1)" = "0" ]; then
+    echo "No providers found, loading default providers fixture..."
+	python manage.py loaddata fixtures/providers_20210524.json
+else
+	echo "number of political regions: $(python manage.py shell -c 'from providers.models import PoliticalRegion; print(PoliticalRegion.objects.count())' 2>/dev/null | tail -1)"
+	echo "Providers content already exist, skipping fixture load."
+fi
 
 echo "Starting python development server on :8000"
 python manage.py runserver 0.0.0.0:8000
