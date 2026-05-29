@@ -28,6 +28,10 @@ STATICFILES_DIRS = [
     # os.path.join(BASE_DIR, "providers", "static"),
 ]
 
+FIXTURE_DIRS = [
+    os.path.join(BASE_DIR, "fixtures"),
+]
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -53,6 +57,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
     'phonenumber_field',
     'djmoney',
 
