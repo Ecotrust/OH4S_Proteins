@@ -9,3 +9,8 @@ resource "aws_iam_role" "oh4s_ec2" {
     }]
   })
 }
+
+resource "aws_iam_instance_profile" "oh4s" {
+  name = "oh4s-ec2-profile"
+  role = aws_iam_role.oh4s_ec2.name
+}

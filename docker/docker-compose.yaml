@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgis/postgis:16-3.5-alpine
+    image: postgres:16.14-bookworm
     restart: always
     platform: linux/amd64
     environment:

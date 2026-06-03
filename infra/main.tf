@@ -76,3 +76,14 @@ variable "sql_port" {
   type        = number
   default     = 5432
 }
+
+variable "mapbox_token" {
+  description = "Mapbox API token"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_dump_file_path" {
+  description = "S3 path to the SQL dump file to initialize the database with"
+  type        = string
+}
