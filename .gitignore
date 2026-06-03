@@ -118,5 +118,6 @@ venv.bak/
 .DS_Store
 
 .env.dev
+.env.prod
 
 db_dump.sql

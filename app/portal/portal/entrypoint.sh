@@ -30,5 +30,12 @@ else
 	echo "Providers content already exist, skipping fixture load."
 fi
 
-echo "Starting python development server on :8000"
-python manage.py runserver 0.0.0.0:8000
+if [ "$1" = "prod" ]; then
+	echo "Starting Gunicorn server on :8000"
+	exec gunicorn portal.wsgi:application --bind 0.0.0.0:8000
+elif [ "$1" = "dev" ]; then
+	echo "Starting python development server on :8000"
+	python manage.py runserver 0.0.0.0:8000
+else 
+	exec "$@"
+fi
