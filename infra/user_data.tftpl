@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 sudo apt-get update && sudo apt-get upgrade -y
 
 # install aws cli to pull SQL dump from S3
@@ -42,10 +44,10 @@ echo "Installing git..."
 sudo apt install git -y
 
 echo "Making OH4S_Proteins directory..."
-mkdir OH4S_Proteins
+mkdir -p /home/ubuntu/OH4S_Proteins
     
 echo "Changing to OH4S_Proteins directory..."
-cd OH4S_Proteins
+cd /home/ubuntu/OH4S_Proteins
 
 # clone the OH4S_Proteins repo
 echo "Cloning OH4S_Proteins repository..."
@@ -54,12 +56,14 @@ git clone https://github.com/Ecotrust/OH4S_Proteins
 echo "Changing to OH4S_Proteins repository..."
 cd OH4S_Proteins/
 
-echo "Checking out main branch..."
-git checkout main
+APP_ROOT=$(pwd)
+
+echo "Checking out open-tofu-infra branch..."
+git checkout open-tofu-infra
 
 # pull the latest changes from the remote repository
-echo "Pulling latest changes from main branch..."
-git pull origin main
+echo "Pulling latest changes from open-tofu-infra branch..."
+git pull origin open-tofu-infra
 
 echo "move to docker directory..."
 cd docker/
@@ -83,7 +87,12 @@ EOF
 echo "Pulling SQL dump from S3..."
 aws s3 cp ${db_dump_file_path} ./db_dump.sql --region ${aws_region}
 
+if [ ! -s ./db_dump.sql ]; then
+	echo "Error: SQL dump was not downloaded or is empty at $APP_ROOT/docker/db_dump.sql" >&2
+	exit 1
+fi
+
 echo "Starting Docker containers using docker compose..."
-docker compose --env-file .env.prod -f docker-compose.prod.yaml up -d --build
+DB_DUMP_FILE_PATH="$APP_ROOT/docker/db_dump.sql" docker compose --env-file .env.prod -f docker-compose.prod.yaml up -d --build
 
 echo "OH4S_Proteins setup complete!"

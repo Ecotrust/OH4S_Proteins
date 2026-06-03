@@ -5,6 +5,10 @@ set -e
 # It will only run if the database is empty (first time setup)
 
  DB_DUMP_FILE="/tmp/db_dump.sql"
+ if [ -d "$DB_DUMP_FILE" ]; then
+   echo "Error: expected SQL file at $DB_DUMP_FILE but found a directory. This usually means the host bind-mount source path does not exist as a file." >&2
+   exit 1
+ fi
  if [ ! -f "$DB_DUMP_FILE" ]; then
    echo "Error: database dump file not found at $DB_DUMP_FILE. Mount or copy the SQL dump before initializing the database." >&2
    exit 1
