@@ -121,3 +121,9 @@ venv.bak/
 .env.prod
 
 db_dump.sql
+
+# OpenTofu/Terraform
+.terraform/
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
