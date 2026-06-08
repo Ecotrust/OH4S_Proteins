@@ -47,7 +47,7 @@ services:
     restart: unless-stopped
     ports:
       - "80:80"
-      - "443:443"
+      # - "443:443" # Uncomment when enabling HTTPS with certs
     env_file:
       - path: .env.prod
         required: true

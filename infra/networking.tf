@@ -22,13 +22,14 @@ resource "aws_security_group" "oh4s" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # TODO: comment in when enabling HTTPS and setting up certs
   # HTTPS (for when you add SSL via certbot/nginx later)
-  ingress {
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   from_port   = 443
+  #   to_port     = 443
+  #   protocol    = "tcp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
 
   # SSH — restrict to your IP in production!
   ingress {

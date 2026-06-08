@@ -16,7 +16,6 @@ resource "aws_instance" "oh4s" {
   subnet_id                   = tolist(data.aws_subnets.default.ids)[0]
   user_data_replace_on_change = true
 
-  # TODO: add user_data script
   # Install Docker, AWS CLI v2, and git on first boot
   user_data = templatefile("user_data.tftpl", {
     aws_region           = var.aws_region

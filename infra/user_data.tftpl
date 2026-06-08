@@ -58,9 +58,11 @@ cd OH4S_Proteins/
 
 APP_ROOT=$(pwd)
 
+# TODO: change to main when ready
 echo "Checking out open-tofu-infra branch..."
 git checkout open-tofu-infra
 
+# TODO: change to main when ready
 # pull the latest changes from the remote repository
 echo "Pulling latest changes from open-tofu-infra branch..."
 git pull origin open-tofu-infra
@@ -70,8 +72,8 @@ cd docker/
 
 # copy environment variables into the directory
 echo "Creating .env.prod file..."
-cat > .env.prod <<EOF
-DEBUG=True
+cat > .env.prod <<'EOF'
+DEBUG=False
 SECRET_KEY=${django_secret_key}
 ALLOWED_HOSTS=${django_allowed_hosts}
 SQL_ENGINE=django.db.backends.postgresql
