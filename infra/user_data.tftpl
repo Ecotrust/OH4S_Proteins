@@ -1,0 +1,100 @@
+#!/bin/bash
+set -euo pipefail
+
+sudo apt-get update && sudo apt-get upgrade -y
+
+# install aws cli to pull SQL dump from S3
+sudo snap install aws-cli --classic 
+
+# install docker
+# https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository
+sudo apt update -y
+sudo apt install ca-certificates curl -y
+sudo install -m 0755 -d /etc/apt/keyrings
+
+echo "Installing Docker's official GPG key..."
+sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+
+sudo chmod a+r /etc/apt/keyrings/docker.asc
+
+echo "Adding Docker's official repository..."
+# Source OS release file and store the codename in a variable to avoid
+# shell expansion issues inside the heredoc
+. /etc/os-release
+DOCKER_SUITE=$${UBUNTU_CODENAME:-$VERSION_CODENAME}
+
+sudo tee /etc/apt/sources.list.d/docker.sources <<EOF
+Types: deb
+URIs: https://download.docker.com/linux/ubuntu
+Suites: $DOCKER_SUITE
+Components: stable
+Signed-By: /etc/apt/keyrings/docker.asc
+EOF
+
+sudo apt update
+
+echo "Installing Docker packages..."
+sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin -y
+
+echo "Adding user 'ubuntu' to the 'docker' group..."
+sudo usermod -aG docker ubuntu
+
+# install git to pull OH4S_Proteins repo
+echo "Installing git..."
+sudo apt install git -y
+
+echo "Making OH4S_Proteins directory..."
+mkdir -p /home/ubuntu/OH4S_Proteins
+    
+echo "Changing to OH4S_Proteins directory..."
+cd /home/ubuntu/OH4S_Proteins
+
+# clone the OH4S_Proteins repo
+echo "Cloning OH4S_Proteins repository..."
+git clone https://github.com/Ecotrust/OH4S_Proteins
+
+echo "Changing to OH4S_Proteins repository..."
+cd OH4S_Proteins/
+
+APP_ROOT=$(pwd)
+
+# TODO: change to main when ready
+echo "Checking out main branch..."
+git checkout main
+
+# TODO: change to main when ready
+# pull the latest changes from the remote repository
+echo "Pulling latest changes from main branch..."
+git pull origin main
+
+echo "move to docker directory..."
+cd docker/
+
+# copy environment variables into the directory
+echo "Creating .env.prod file..."
+cat > .env.prod <<'EOF'
+DEBUG=False
+SECRET_KEY=${django_secret_key}
+ALLOWED_HOSTS=${django_allowed_hosts}
+SQL_ENGINE=django.db.backends.postgresql
+SQL_DATABASE=${sql_db_name}
+SQL_USER=${sql_db_user}
+SQL_PASSWORD=${sql_db_password}
+SQL_HOST=${sql_host}
+SQL_PORT=${sql_port}
+MAPBOX_TOKEN=${mapbox_token}
+EOF
+
+# Pull the SQL dump from S3 (no credentials needed — uses EC2 IAM role)
+echo "Pulling SQL dump from S3..."
+aws s3 cp ${db_dump_file_path} ./db_dump.sql --region ${aws_region}
+
+if [ ! -s ./db_dump.sql ]; then
+	echo "Error: SQL dump was not downloaded or is empty at $APP_ROOT/docker/db_dump.sql" >&2
+	exit 1
+fi
+
+echo "Starting Docker containers using docker compose..."
+DB_DUMP_FILE_PATH="$APP_ROOT/docker/db_dump.sql" docker compose --env-file .env.prod -f docker-compose.prod.yaml up -d --build
+
+echo "OH4S_Proteins setup complete!"
