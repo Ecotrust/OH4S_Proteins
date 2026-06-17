@@ -14,7 +14,7 @@ Before you can run the OH4S infrastructure code, set up the following on your ma
 
 - **AWS account access** to the Ecotrust account that hosts OH4S, with permission to create IAM users or to be added to the existing `terraform` IAM group. 
 - **GitHub access** to [`Ecotrust/OH4S_Proteins`](https://github.com/Ecotrust/OH4S_Proteins).
-- **VPN access**, if SSH is restricted to the Ecotrust VPN IP range (the security group's allowed SSH CIDR is set to a single VPN address — see [opentofu-walkthrough.md](opentofu-walkthrough.md)).
+- **VPN access**, if SSH is restricted to the Ecotrust VPN IP range (see the `allowed_ssh_cidr` setting in [`infra/networking.tf`](../infra/networking.tf))
 
 ### Tools to install
 
