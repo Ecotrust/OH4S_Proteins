@@ -8,7 +8,7 @@ Oregon Harvest For Schools Portal
 git clone https://github.com/Ecotrust/OH4S_Proteins.git
 cd OH4S_Proteins
 ```
-## Choose your development environment: Vagrant or Docker 
+## Choose your development environment: Vagrant (deprecated) or Docker 
 
 ## Docker
 
@@ -24,30 +24,30 @@ cd OH4S_Proteins
 
 ---  
 
-## Vagrant
+## Vagrant (deprecated)
 ```
 vagrant up
 ```
 
-## SSH into VM
+### SSH into VM
 ```
 vagrant ssh
 ```
 
-## Dependencies
+### Dependencies
 
-### Update Package Manager
+#### Update Package Manager
 ```
 sudo apt update
 sudo apt upgrade -y
 ```
 
-### Install Dependencies
+#### Install Dependencies
 ```
 sudo apt install git python3 python3-dev python3-virtualenv python3-pip postgresql postgresql-contrib postgresql-server-dev-16 build-essential libssl-dev libffi-dev python3-venv -y
 ```
 
-## Create VM on VM
+### Create VM on VM
 ```
 cd /usr/local/apps
 python3 -m venv env
@@ -56,8 +56,8 @@ pip install --upgrade pip setuptools wheel
 pip install -r app/portal/requirements.txt
 ```
 
-## Create Database
-### Create and Configure PostgreSQL user
+### Create Database
+#### Create and Configure PostgreSQL user
 ```
 sudo -u postgres createuser --interactive --pwprompt
 ```
@@ -71,12 +71,12 @@ the ability to create new DBs, nor roles.
 Once done, decide on a name for your database (also needed later for local_settings).
 Plug both the username you created and the database name into the section below.
 
-### Create the database
+#### Create the database
 ```
 sudo -u postgres createdb -O <username> <databasename>
 ```
 
-### Configure the database
+#### Configure the database
 ```
 sudo vim /etc/postgresql/16/main/pg_hba.conf
 ```
@@ -98,7 +98,7 @@ Save, then restart the postgreSQL server:
 sudo service postgresql restart
 ```
 
-### Additional steps to allow running tests
+#### Additional steps to allow running tests
 I know we said granting users 'create db' privileges was bad, but if you're just
 building a dev environment, who cares? Also, Django testing needs permission to
 create test databases, so:
@@ -130,7 +130,7 @@ Save and then restart PostgreSQL to enable your changes:
 sudo service postgresql restart
 ```
 
-### Configure permissions and settings
+#### Configure permissions and settings
 ```
 cd /usr/local/apps/OH4S_Proteins/app
 cp portal/portal/local_settings.py.template portal/portal/local_settings.py
@@ -162,16 +162,16 @@ DATABASES = {
 
 NOTE: Do we need to explicitly set permissions for static, media, or log directories?
 
-## Initialize the database, Option 1: Using a database dump of production
+### Initialize the database, Option 1: Using a database dump of production
 Refer to this [Google Doc](https://docs.google.com/document/d/1pF5kWFGjtw_fLhjQL3ygn_OkwuE3bf3Oy0KynJnPJ8Q/edit?usp=sharing) for instructions on how to dump the production database and loading it into your local database.
 
 Note: If you use this option you can stop here! 🛑
 
-## Initialize the database, Option 2: Using a fixture
+### Initialize the database, Option 2: Using a fixture
 If you have a fixture file, you can load it in now. This is a good time to do
 this, as it will populate your database with the necessary data to run the site.
 
-### Create tables and load in primary data
+#### Create tables and load in primary data
 ```
 python /usr/local/apps/OH4S_Proteins/app/portal/manage.py migrate
 ```
@@ -185,18 +185,7 @@ Now is also a good time to import category images (if you have them already, as
 associated in your fixture). Copy them into
 `/usr/local/apps/OH4S_Proteins/app/portal/media/category_images/`.
 
-### Permissions
-User www-data needs write access to the media directory, so let's just give it ownership:
-```
-sudo chown -R www-data /usr/local/apps/OH4S_Proteins/app/portal/media
-```
-
-Create a Django/Wagtail superuser running the following command and following the prompts:
-```
-python portal/manage.py createsuperuser
-```
-
-### Test
+#### Test
 If you have port 8000 open, you can run a test server like so:
 ```
 python portal/manage.py runserver 0:8000
@@ -204,7 +193,7 @@ python portal/manage.py runserver 0:8000
 
 Check it out here: http://localhost:8000
 
-### Create Homepage
+#### Create Homepage
 If you didn't import a fixture for Wagtail Pages, then likely you were greeted
 with a mostly blank page that said "Welcome to your new Wagtail site!"
 
@@ -212,65 +201,65 @@ To fix this, go here: http://localhost:8000/cms/
 Create a new page (adjacent to the default homepage), and then set it as your
 homepage in Wagtail's 'Settings -> Sites' area.
 
-### NOTE:
+#### NOTE:
 If you are installing for development purposes, you can stop here. For a live
 server, read on.
 
 # Deployment
 
-## You can deploy using infra-as-code or manually.
+## You can deploy using infra-as-code or manually (deprecated).
 
-## [Infra-as-code](docs/INFRA.md)
+### [Infra-as-code](docs/INFRA.md)
 
 ---  
 
-## Manual Deployment
+### Manual Deployment (deprecated)
 
-Once you have an server instance running, you can deploy the site to it.
+Once you have a server instance running, you can deploy the site to it.
 
 ```
 ssh <username>@<server>
 ```
 
-### Update Package Manager
+#### Update Package Manager
 ```
 sudo apt update
 sudo apt upgrade -y
 ```
 
-## Install Dependencies
+### Install Dependencies
 ```
 sudo apt install git python3 python3-dev python3-virtualenv python3-pip postgresql postgresql-contrib postgresql-server-dev-16 build-essential libssl-dev libffi-dev nginx uwsgi uwsgi-plugin-python3 libpcre3 libpcre3-dev python3-venv -y
 ```
 
-## Munin
+### Munin
 Munin is a monitoring tool that can be used to monitor the health of your server.
 ```
 sudo apt-get install munin munin-node -y
 ```
 
-## Make Apps Directory
+### Make Apps Directory
 ```
 sudo mkdir /usr/local/apps
 sudo chown <username> /usr/local/apps
 cd apps
 ```
 
-## Get Source Code
+### Get Source Code
 ```
 git clone https://github.com/Ecotrust/OH4S_Proteins.git
 cd OH4S_Proteins
 ```
 
-## Create Virtual Environment
+### Create Virtual Environment
 ```
 python3 -m venv env
 source env/bin/activate
 pip install -r app/portal/requirements.txt
 ```
 
-## Create Database
-### Create and Configure PostgreSQL user
+### Create Database
+#### Create and Configure PostgreSQL user
 ```
 sudo -u postgres createuser --interactive --pwprompt
 ```
@@ -284,12 +273,12 @@ the ability to create new DBs, nor roles.
 Once done, decide on a name for your database (also needed later for local_settings).
 Plug both the username you created and the database name into the section below.
 
-### Create the database
+#### Create the database
 ```
 sudo -u postgres createdb -O <username> <databasename>
 ```
 
-### Configure the database
+#### Configure the database
 ```
 sudo vim /etc/postgresql/16/main/pg_hba.conf
 ```
@@ -307,7 +296,7 @@ Save, then restart the postgreSQL server:
 sudo service postgresql restart
 ```
 
-### Configure permissions and settings
+#### Configure permissions and settings
 ```
 cd /usr/local/apps/OH4S_Proteins/app
 cp portal/portal/local_settings.py.template portal/portal/local_settings.py
@@ -337,10 +326,10 @@ DATABASES = {
 }
 ```
 
-## Initialize the database, Option 1: Using a database dump of production
+### Initialize the database, Option 1: Using a database dump of production
 Refer to this [Google Doc](https://docs.google.com/document/d/1pF5kWFGjtw_fLhjQL3ygn_OkwuE3bf3Oy0KynJnPJ8Q/edit?usp=sharing) for instructions on how to dump the production database and loading it into your local database.
 
-## Setup NGINX and uWSGI
+### Setup NGINX and uWSGI
 
 Install NGINX and uWSGI:
 ```
@@ -348,7 +337,7 @@ sudo apt install nginx uwsgi uwsgi-plugin-python3 libpcre3 libpcre3-dev -y
 pip install uwsgi
 ```
 
-### NGINX Configuration
+#### NGINX Configuration
 ```
 sudo cp /usr/local/apps/OH4S_Proteins/deploy/nginx.conf /etc/nginx/sites-available/oh4s
 sudo rm /etc/nginx/sites-enabled/default
@@ -394,7 +383,7 @@ sudo nginx -t
 ```
 
 
-### uWSGI Configuration
+#### uWSGI Configuration
 ```
 sudo cp /usr/local/apps/OH4S_Proteins/deploy/emperor.ini /etc/uwsgi/
 sudo cp /usr/local/apps/OH4S_Proteins/deploy/uwsgi.service /etc/systemd/system/
@@ -402,19 +391,19 @@ sudo systemctl enable uwsgi.service
 sudo cp /usr/local/apps/OH4S_Proteins/deploy/oh4s.ini /etc/uwsgi/apps-enabled/oh4s.ini
 ```
 
-### Restart Services
+#### Restart Services
 ```
 sudo service nginx restart
 sudo service uwsgi restart
 ```
 
-## Static Files
+### Static Files
 ```
 python /usr/local/apps/OH4S_Proteins/app/portal/manage.py collectstatic
 ```
 
-## Security and Maintenance
-### Unattended upgrades,
+### Security and Maintenance
+#### Unattended upgrades
 ```
 sudo apt-get install unattended-upgrades update-notifier-common -y
 sudo dpkg-reconfigure --priority=low unattended-upgrades
@@ -431,16 +420,16 @@ To tell the server what time is most safe to reboot (when needed), uncomment the
 `//Unattended-Upgrade::Automatic-Reboot-Time "02:00";`
 And set the time to your desired restart time. Unless you set it otherwise, this is in UTC.
 
-### Antivirus
+#### Antivirus
 Install [ClamAV](https://help.ubuntu.com/community/ClamAV)
 Installing this and configuring it is beyond the scope of this document, but is
 highly recommended.
 
-### backup strategy
+#### Backup strategy
 This is outside of the scope of this document, but I will say that AWS snapshot
 policies make this pretty easy...
 
-### SSL/Certbot
+#### SSL/Certbot
 ```
 sudo apt install certbot python3-certbot-nginx -y
 sudo certbot --nginx -d <YOUR_URL>
@@ -453,7 +442,7 @@ configuration file at `/etc/nginx/sites-enabled/oh4s`
 * 'Y' or 'N' to get on the awesome EFF mailing list
 * '2' -- you want to redirect all traffic to HTTPS.
 
-## Other considerations
+### Other considerations
 
-### Uptime Monitoring
+#### Uptime Monitoring
 It is recommended that you use uptimerobot.com
