@@ -22,6 +22,7 @@ cd OH4S_Proteins
 
 - View the app at `http://localhost:8000`
 
+---  
 
 ## Vagrant
 ```
@@ -216,6 +217,15 @@ If you are installing for development purposes, you can stop here. For a live
 server, read on.
 
 # Deployment
+
+## You can deploy using infra-as-code or manually.
+
+## [Infra-as-code](docs/INFRA.md)
+
+---  
+
+## Manual Deployment
+
 Once you have an server instance running, you can deploy the site to it.
 
 ```
