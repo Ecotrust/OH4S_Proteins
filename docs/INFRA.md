@@ -316,7 +316,6 @@ sudo tail -n 100 /var/log/cloud-init-output.log
 
 Check containers:
 ```bash
-cd ~/OH4S_Proteins/OH4S_Proteins/docker
 docker compose -f docker-compose.prod.yaml ps
 docker compose -f docker-compose.prod.yaml logs web
 docker compose -f docker-compose.prod.yaml logs db
