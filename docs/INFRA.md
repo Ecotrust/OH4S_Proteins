@@ -158,6 +158,7 @@ OpenTofu records what it has created in a **state file**. The state is the diffe
 | [`terraform.tf`](#terraformtf)                     | Provider versions and the S3 remote state backend   |
 | [`terraform.tfvars`](#configuring-terraformtfvars) | Your values for the variables (git-ignored)         |
 | [`networking.tf`](#networkingtf)                   | Default VPC/subnet lookups and the security group   |
+| [`storage.tf`](#storagetf)                         | Managed S3 bucket for versioned Wagtail media       |
 | [`iam.tf`](#iamtf)                                 | EC2 instance role, S3 read policy, instance profile |
 | [`ec2.tf`](#ec2tf)                                 | Key pair, the EC2 instance, and its Elastic IP      |
 | [`user_data.tftpl`](#user_datatftpl)               | Script that runs on boot                            |
@@ -190,12 +191,22 @@ The `production/` key isolates this environment's state. If you ever add a stagi
   - **Egress** all traffic (needed for package installs and pulls).
   - **HTTPS (443)** TLS port
 
+#### `storage.tf`
+
+Creates a private, versioned S3 bucket for Wagtail media archives. The bucket is managed by OpenTofu; the media bytes are stored as a tarball object inside it.
+
+This is the key design point for uploaded media:
+
+- The production DB stores file paths like `original_images/...` and `category_images/...`.
+- The actual files still live under `app/portal/media/` at runtime.
+- OpenTofu now treats the media archive key as an explicit deploy input, so changing the key in `terraform.tfvars` changes the instance bootstrap inputs and causes the EC2 instance to be recreated with the matching media snapshot.
+
 #### `iam.tf`
 
 Creates the instance's identity and permissions (all managed by OpenTofu):
 
 - `aws_iam_role.oh4s_ec2` (`oh4s-ec2-role`) — a role EC2 can assume.
-- `aws_iam_role_policy.oh4s_s3_read` — grants `s3:GetObject` on `oh4s-db-dump/*` and `s3:ListBucket` on the bucket.
+- `aws_iam_role_policy.oh4s_s3_read` — grants the EC2 instance read access to the external DB dump bucket and the OpenTofu-managed Wagtail media bucket.
 - `aws_iam_instance_profile.oh4s` (`oh4s-ec2-profile`) — the wrapper that attaches the role to the EC2 instance.
 
 > The `oh4s-db-dump` S3 bucket holding the SQL dump is referenced by this
@@ -205,12 +216,12 @@ Creates the instance's identity and permissions (all managed by OpenTofu):
 #### `ec2.tf`
 
 - `aws_key_pair.oh4s` — registers your `ssh_public_key` so you can SSH in.
-- `aws_instance.oh4s` — the server itself. Wires together the AMI, instance type, security group, subnet, and instance profile, and passes all the Django/DB variables into [`user_data.tftpl`](#user_datatftpl) via `templatefile(...)`.
+- `aws_instance.oh4s` — the server itself. Wires together the AMI, instance type, security group, subnet, and instance profile, and passes all the Django/DB variables plus the selected Wagtail media archive into [`user_data.tftpl`](#user_datatftpl) via `templatefile(...)`.
 - `aws_eip.oh4s` — an Elastic IP attached to the instance so the public address is stable across stop/start.
 
 #### `outputs.tf`
 
-Prints `ec2_public_ip` (the Elastic IP) after apply.
+Prints `ec2_public_ip` (the Elastic IP) and `wagtail_media_bucket_name` after apply.
 
 ### Configuring `terraform.tfvars`
 
@@ -238,9 +249,21 @@ sql_host             = "db"          # the Postgres service name in docker-compo
 sql_port             = 5432
 mapbox_token         = "<your Mapbox token>"
 db_dump_file_path    = "s3://oh4s-db-dump/<YYYYMMDD>_oh4s_db_dump.sql"
+media_dump_file_path = "s3://<wagtail_media_bucket_name>/<YYYYMMDD>_oh4s_media_dump.tar.gz"
 ```
 
 Note: it is fine to leave a value blank temporarily if it's genuinely unknown and not required for what you're applying, but blanks for required secrets will break the app at boot.
+
+Leave `media_dump_file_path = ""` only if you intentionally want an empty media directory on the instance. In normal operation, use a dated path so each media snapshot is immutable and visible to OpenTofu as an input change.
+
+To keep conventions consistent with `db_dump_file_path`, use this media naming pattern:
+
+- `<YYYYMMDD>_oh4s_media_dump.tar.gz`
+
+Example pair:
+
+- `db_dump_file_path = "s3://oh4s-db-dump/20260617_oh4s_db_dump.sql"`
+- `media_dump_file_path = "s3://<wagtail_media_bucket_name>/20260617_oh4s_media_dump.tar.gz"`
 
 ### Running OpenTofu
 
@@ -270,8 +293,60 @@ Deploy with `tofu apply`. This creates the EC2 instance, the instance bootstraps
 
 When the instance launches, AWS runs the script generated from [`infra/user_data.tftpl`](../infra/user_data.tftpl). OpenTofu fills the template placeholders (`${django_secret_key}`, `${sql_host}`, etc.) with your `terraform.tfvars` values before handing it to the instance.
 
+The bootstrap sequence now restores two deployment inputs before starting Docker:
+
+1. The SQL dump from `db_dump_file_path`
+2. The Wagtail media archive from `media_dump_file_path`
+
 > **Keep `.env` keys and `user_data.tftpl` in sync.** 
 > [`docker/.env.template`](../docker/.env.template) is the canonical list of expected keys.
+
+### Local dev: pull the same Wagtail media as production
+
+If you restore a production DB locally, you also need the uploaded files that its `wagtailimages_image.file`, document fields, and custom image references point at. In this repo those runtime files live under [`app/portal/media/`](../app/portal/media/), and local dev already bind-mounts that directory through [`docker/docker-compose.yaml`](../docker/docker-compose.yaml).
+
+After `tofu apply`, get the managed bucket name:
+
+```bash
+cd infra
+tofu output wagtail_media_bucket_name
+```
+
+Then, from the repo root, pull and extract the exact archive referenced by `infra/terraform.tfvars`:
+
+```bash
+aws s3 cp <media_dump_file_path> ./docker/oh4s_media_dump.tar.gz
+mkdir -p app/portal/media
+find app/portal/media -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+tar -xzf ./docker/oh4s_media_dump.tar.gz -C app/portal/media
+```
+
+At that point `docker compose -f docker/docker-compose.yaml up` will serve the same uploaded Wagtail files that the restored production DB expects.
+
+### Refreshing the production media snapshot
+
+When content editors upload or replace files in Wagtail, the production media directory changes independently of the DB. To make that change part of the OpenTofu deployment contract:
+
+1. Archive the current production media directory.
+2. Upload the archive to the OpenTofu-managed bucket under a new dated key.
+3. Update `media_dump_file_path` in `infra/terraform.tfvars`.
+4. Run `tofu apply`.
+
+Example on the EC2 instance:
+
+```bash
+cd /home/ubuntu/OH4S_Proteins/OH4S_Proteins
+tar -czf /tmp/20260617_oh4s_media_dump.tar.gz -C app/portal/media .
+aws s3 cp /tmp/20260617_oh4s_media_dump.tar.gz s3://<wagtail_media_bucket_name>/20260617_oh4s_media_dump.tar.gz
+```
+
+Then update:
+
+```hcl
+media_dump_file_path = "s3://<wagtail_media_bucket_name>/20260617_oh4s_media_dump.tar.gz"
+```
+
+Using a new key each time matters. If you overwrite an object at the same key, OpenTofu will not see an input change, and the instance will not automatically rebuild itself around the new media snapshot.
 
 ### Verify deployment
 
@@ -307,7 +382,7 @@ tofu apply
 
 **App doesn't respond after apply**:
 
-The instance launches in seconds, but the first-boot script takes several minutes (installing Docker, building the image, restoring the DB). If it's still down after ~10 minutes:
+The instance launches in seconds, but the first-boot script takes several minutes (installing Docker, building the image, restoring the DB, and restoring Wagtail media). If it's still down after ~10 minutes:
 
 SSH in and read the boot log:
 ```bash
