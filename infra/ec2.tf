@@ -27,6 +27,7 @@ resource "aws_instance" "oh4s" {
     sql_port             = var.sql_port
     django_allowed_hosts = var.django_allowed_hosts
     db_dump_file_path    = var.db_dump_file_path
+    media_dump_file_path = var.media_dump_file_path
     mapbox_token         = var.mapbox_token
   })
 
