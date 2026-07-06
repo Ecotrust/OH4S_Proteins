@@ -273,8 +273,8 @@ From the `infra/` directory, with your AWS profile active (`export AWS_PROFILE=o
 cd infra
 
 tofu init 
-tofu plan    
-tofu apply
+tofu plan   # optional, running tofu apply will also show you the plan before applying 
+tofu apply  
 ```
 
 ### Iterating
@@ -300,6 +300,8 @@ The bootstrap sequence now restores two deployment inputs before starting Docker
 
 > **Keep `.env` keys and `user_data.tftpl` in sync.** 
 > [`docker/.env.template`](../docker/.env.template) is the canonical list of expected keys.
+
+> **Note:** Because `user_data_replace_on_change = true` on `aws_instance.oh4s`, any change to the `user_data` template (or any of its input variables) will cause OpenTofu to destroy and recreate the EC2 instance.
 
 ### Local dev: pull the same Wagtail media as production
 
