@@ -88,8 +88,8 @@ variable "db_dump_file_path" {
   type        = string
 }
 
-variable "media_dump_file_path" {
-  description = "S3 path to the Wagtail media tar.gz dump used to restore app/portal/media"
-  type        = string
-  default     = ""
-}
+# variable "media_dump_file_path" {
+#   description = "S3 path to the Wagtail media tar.gz dump used to restore app/portal/media"
+#   type        = string
+#   default     = ""
+# }

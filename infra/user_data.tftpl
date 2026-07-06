@@ -94,22 +94,6 @@ if [ ! -s ./db_dump.sql ]; then
 	exit 1
 fi
 
-if [ -n "${media_dump_file_path}" ]; then
-	echo "Pulling Wagtail media archive from S3..."
-	mkdir -p "$APP_ROOT/app/portal/media"
-	find "$APP_ROOT/app/portal/media" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-	aws s3 cp ${media_dump_file_path} ./wagtail-media.tar.gz --region ${aws_region}
-
-	if [ ! -s ./wagtail-media.tar.gz ]; then
-		echo "Error: Wagtail media archive was not downloaded or is empty at $APP_ROOT/docker/wagtail-media.tar.gz" >&2
-		exit 1
-	fi
-
-	tar -xzf ./wagtail-media.tar.gz -C "$APP_ROOT/app/portal/media"
-else
-	echo "Skipping Wagtail media restore because media_dump_file_path is empty."
-fi
-
 echo "Starting Docker containers using docker compose..."
 DB_DUMP_FILE_PATH="$APP_ROOT/docker/db_dump.sql" docker compose --env-file .env.prod -f docker-compose.prod.yaml up -d --build
 

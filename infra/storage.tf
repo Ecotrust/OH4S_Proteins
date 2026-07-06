@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 resource "aws_s3_bucket" "wagtail_media" {
-  bucket = "${var.project_name}-wagtail-media-${data.aws_caller_identity.current.account_id}"
+  bucket = "${var.project_name}-wagtail-media-dump-opentofu"
 
   tags = {
     Name    = "${var.project_name}-wagtail-media"
