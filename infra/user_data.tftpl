@@ -58,12 +58,9 @@ cd OH4S_Proteins/
 
 APP_ROOT=$(pwd)
 
-# TODO: change to main when ready
 echo "Checking out main branch..."
 git checkout main
 
-# TODO: change to main when ready
-# pull the latest changes from the remote repository
 echo "Pulling latest changes from main branch..."
 git pull origin main
 
@@ -83,6 +80,7 @@ SQL_PASSWORD=${sql_db_password}
 SQL_HOST=${sql_host}
 SQL_PORT=${sql_port}
 MAPBOX_TOKEN=${mapbox_token}
+OH4S_GHCR_PATH=${ghcr_image_uri}
 EOF
 
 # Pull the SQL dump from S3 (no credentials needed — uses EC2 IAM role)
@@ -110,7 +108,10 @@ else
 	echo "Skipping Wagtail media restore because media_dump_file_path is empty."
 fi
 
+echo "Pulling the latest Docker image..."
+docker pull ${ghcr_image_uri}:latest
+
 echo "Starting Docker containers using docker compose..."
-DB_DUMP_FILE_PATH="$APP_ROOT/docker/db_dump.sql" docker compose --env-file .env.prod -f docker-compose.prod.yaml up -d --build
+DB_DUMP_FILE_PATH="$APP_ROOT/docker/db_dump.sql" docker compose --env-file .env.prod -f docker-compose.prod.yaml up -d
 
 echo "OH4S_Proteins setup complete!"

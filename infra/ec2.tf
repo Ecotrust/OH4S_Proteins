@@ -29,6 +29,7 @@ resource "aws_instance" "oh4s" {
     db_dump_file_path    = var.db_dump_file_path
     media_dump_file_path = var.media_dump_file_path
     mapbox_token         = var.mapbox_token
+    ghcr_image_uri       = var.ghcr_image_uri
   })
 
   root_block_device {
