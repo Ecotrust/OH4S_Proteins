@@ -15,7 +15,7 @@ jobs:
               with:
                 role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
                 aws-region: ${{ secrets.AWS_REGION }}
-            - name: get EC2 Instance ID
+            - name: Get EC2 Instance ID
               id: get-instance
               run: |
                 INSTANCE_ID=$(aws ec2 describe-instances \
@@ -35,7 +35,7 @@ jobs:
                     "cd /OH4S_Proteins/OH4S_Proteins && git pull origin main",
                     "docker pull ${{ secrets.GHCR_IMAGE_URI }}:latest",
                     "cd docker",
-                    "docker compose -f docker-compose.prod.yaml down",
+                    "docker compose --env-file .env.prod -f docker-compose.prod.yaml down",
                     "docker compose --env-file .env.prod -f docker-compose.prod.yaml up -d --pull always --force-recreate",
                     "sleep 5",
                     "docker ps --filter name=oh4s_web --format \"{{.Status}}\"",
@@ -47,11 +47,13 @@ jobs:
                     --output text)
                 echo "command_id=$COMMAND_ID" >> $GITHUB_OUTPUT
             - name: Wait for deployment to complete
+              continue-on-error: true
               run: |
                 aws ssm wait command-executed \
                     --command-id ${{ steps.ssm-deploy.outputs.command_id }} \
                     --instance-id ${{ steps.get-instance.outputs.instance_id }}
             - name: Verify deployment result
+              if: always()
               run: |
                 RESULT=$(aws ssm get-command-invocation \
                     --command-id ${{ steps.ssm-deploy.outputs.command_id }} \
