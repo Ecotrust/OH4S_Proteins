@@ -23,6 +23,12 @@ jobs:
                             "Name=instance-state-name,Values=running" \
                     --query "Reservations[0].Instances[0].InstanceId" \
                     --output text)
+                    
+                if [ -z "$INSTANCE_ID" ] || [ "$INSTANCE_ID" = "None" ]; then
+                    echo "::error::No running EC2 instance found for tag Name=${{ secrets.PROD_EC2_INSTANCE_NAME }}"
+                    exit 1
+                fi
+
                 echo "instance_id=$INSTANCE_ID" >> $GITHUB_OUTPUT
             - name: Deploy to EC2 via SSM
               id: ssm-deploy
