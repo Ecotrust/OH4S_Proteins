@@ -24,6 +24,16 @@ resource "aws_iam_role_policy" "oh4s_s3_read" {
         Effect   = "Allow"
         Action   = ["s3:ListBucket"]
         Resource = "arn:aws:s3:::oh4s-db-dump"
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["s3:GetObject"]
+        Resource = "${aws_s3_bucket.wagtail_media.arn}/*"
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["s3:ListBucket"]
+        Resource = aws_s3_bucket.wagtail_media.arn
       }
     ]
   })
