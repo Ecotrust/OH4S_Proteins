@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
     container_name: oh4s_web
     command: ["prod"]
-    # image: ${OH4S_GHCR_PATH}:latest
+    image: ${OH4S_GHCR_PATH}:latest
     env_file:
       - path: .env.prod
         required: true
