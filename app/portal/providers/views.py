@@ -1,7 +1,7 @@
 from django.db.models import Q, Case, When
 from django.db.models.functions import Greatest
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.conf import settings
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector, TrigramSimilarity
 from django.views.decorators.csrf import csrf_exempt
@@ -158,6 +158,29 @@ def get_homepage_filter_context(request, context={}):
     context['filters'] = filters
     return context
 
+def normalize_filter_state(raw_state):
+    """Normalize request filter payload into key -> [value, ...] form to use in current_state.
+    """
+    normalized = {}
+    for key, values in raw_state.items():
+        if values is None:
+            continue
+
+        if not isinstance(values, list):
+            values = [values]
+
+        expanded_values = []
+        for value in values:
+            if value is None:
+                continue
+            if isinstance(value, str):
+                expanded_values.extend([x.strip() for x in value.split(',') if x.strip()])
+            else:
+                expanded_values.append(str(value))
+        if expanded_values:
+            normalized[key] = expanded_values
+    return normalized
+
 @csrf_exempt
 def get_results_filter_context(request, context={}):
     from cms.models import Filter
@@ -169,13 +192,19 @@ def get_results_filter_context(request, context={}):
 
     if request.method == "POST":
         try:
-            current_state = json.loads(request.body)
+            current_state = normalize_filter_state(json.loads(request.body))
         except Exception as e:
             try:
-                current_state = dict(request.POST)
+                current_state = normalize_filter_state(dict(request.POST))
             except Exception as e:
                 print(e)
                 current_state = {}
+    else:
+        get_state = {
+            key: request.GET.getlist(key)
+            for key in request.GET.keys()
+        }
+        current_state = normalize_filter_state(get_state)
 
     try:
         filter_obj = cms_filters.get(facet='identities')

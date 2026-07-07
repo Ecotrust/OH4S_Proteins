@@ -214,6 +214,23 @@ function getFilterRequest() {
   return filterReq;
 }
 
+function syncFilterParamsToUrl(filterReq) {
+  const url = new URL(window.location.href);
+  url.search = '';
+  Object.entries(filterReq).forEach(([key, values]) => {
+    if (Array.isArray(values)) {
+      const joinedValues = values.join(',');
+      url.searchParams.set(key, joinedValues);
+      return;
+    }
+    if (values) {
+      url.searchParams.set(key, values);
+    }
+  });
+
+  window.history.replaceState({}, '', `${url.pathname}${url.search}`);
+}
+
 function filterQuery() {
   // Disable addition query
   toggleEnableFilterBtns();
@@ -221,6 +238,7 @@ function filterQuery() {
   showResultsSpinner();
 
   var filterReq = getFilterRequest();
+  syncFilterParamsToUrl(filterReq);
 
   if (Object.keys(filterReq).length == 0) {
     $("#results-advice-div").html(no_filter_advice);
@@ -243,6 +261,13 @@ function filterQuery() {
     }
   });
 }
+
+// update the url on filter change
+document.addEventListener('change', function(event) {
+  if (event.target.classList.contains('form-check-input')) {
+    syncFilterParamsToUrl(getFilterRequest());
+  }
+});
 
 function getPrintableResults() {
   var filterReq = getFilterRequest();
