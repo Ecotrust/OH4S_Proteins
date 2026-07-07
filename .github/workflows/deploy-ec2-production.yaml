@@ -23,6 +23,12 @@ jobs:
                             "Name=instance-state-name,Values=running" \
                     --query "Reservations[0].Instances[0].InstanceId" \
                     --output text)
+                    
+                if [ -z "$INSTANCE_ID" ] || [ "$INSTANCE_ID" = "None" ]; then
+                    echo "::error::No running EC2 instance found for tag Name=${{ secrets.PROD_EC2_INSTANCE_NAME }}"
+                    exit 1
+                fi
+
                 echo "instance_id=$INSTANCE_ID" >> $GITHUB_OUTPUT
             - name: Deploy to EC2 via SSM
               id: ssm-deploy
@@ -31,12 +37,14 @@ jobs:
                     --instance-ids "${{ steps.get-instance.outputs.instance_id }}" \
                     --document-name "AWS-RunShellScript" \
                     --parameters 'commands=[
-                    "echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io --username ${{ secrets.GHCR_USERNAME }} --password-stdin",
-                    "cd /OH4S_Proteins/OH4S_Proteins && git pull origin main",
-                    "docker pull ${{ secrets.GHCR_IMAGE_URI }}:latest",
-                    "cd docker",
-                    "docker compose --env-file .env.prod -f docker-compose.prod.yaml down",
-                    "docker compose --env-file .env.prod -f docker-compose.prod.yaml up -d --pull always --force-recreate",
+                        "APP_ROOT=/home/ubuntu/OH4S_Proteins/OH4S_Proteins",
+                        "DOCKER_DIR=$APP_ROOT/docker",
+                        "echo ${{ secrets.GHCR_TOKEN }} | docker login ghcr.io --username ${{ secrets.GHCR_USERNAME }} --password-stdin",
+                        "cd $APP_ROOT && git pull origin main",
+                        "cd $DOCKER_DIR",
+                        "docker pull ${{ secrets.GHCR_IMAGE_URI }}:latest",
+                        "docker compose --env-file .env.prod -f docker-compose.prod.yaml down",
+                        "docker compose --env-file .env.prod -f docker-compose.prod.yaml up -d --pull always --force-recreate",
                     "sleep 5",
                     "docker ps --filter name=oh4s_web --format \"{{.Status}}\"",
                     "docker image prune -f"
