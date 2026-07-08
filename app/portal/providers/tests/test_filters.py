@@ -1,13 +1,11 @@
 import json
 from django.test import TestCase, RequestFactory
-from django.http import HttpRequest, QueryDict
+from django.http import HttpRequest
 from providers.views import filter, get_homepage_filter_context, get_results_filter_context
 from providers.models import *
 import json
 
 factory = RequestFactory()
-
-# dict_keys(['{"product_categories":["34"]}'])
 
 class FilterTestCase(TestCase):
     # Import fixture
@@ -64,12 +62,11 @@ class FilterTestCase(TestCase):
                 ]
             }
         ]
-        apples_image = f"/media/{apples_category.image}"
         results = self.filter_request(json_filters)
         for provider in results['providers']:
             self.assertTrue('product_categories' in  provider.keys())
             product_images = [x['image'] for x in provider['product_categories']]
-            self.assertTrue(apples_image in product_images)
+            self.assertTrue(apples_category.image_string in product_images)
 
     def test_homepage_filters_identity(self):
         # Create json filter object
@@ -171,8 +168,8 @@ class FilterTestCase(TestCase):
         for provider in results['providers']:
             self.assertTrue('product_categories' in  provider.keys())
             product_images = [x['image'] for x in provider['product_categories']]
-            self.assertTrue(f"/media/{beets.image}" in product_images)
-            self.assertTrue(f"/media/{broccoli.image}" in product_images)
+            self.assertTrue(beets.image_string in product_images)
+            self.assertTrue(broccoli.image_string in product_images)
 
 
     def test_results_filters(self):
@@ -183,7 +180,6 @@ class FilterTestCase(TestCase):
 
         # PRODUCT TYPE
         asparagus_category = ProductCategory.objects.get(name='Asparagus')
-        asparagus_image = f"/media/{asparagus_category.image}"
         json_filters = [
             {
                 'key': 'product_categories',
@@ -196,7 +192,7 @@ class FilterTestCase(TestCase):
         for provider in results['providers']:
             self.assertTrue('product_categories' in  provider.keys())
             product_images = [x['image'] for x in provider['product_categories']]
-            self.assertTrue(asparagus_image in product_images)
+            self.assertTrue(asparagus_category.image_string in product_images)
 
         # PRODUCER LOCATION
         deschutes = PoliticalSubregion.objects.get(name='Deschutes')
