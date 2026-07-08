@@ -93,3 +93,8 @@ variable "media_dump_file_path" {
   type        = string
   default     = ""
 }
+
+variable "ghcr_image_uri" {
+  description = "URI of the Docker image hosted on GitHub Container Registry"
+  type        = string
+}

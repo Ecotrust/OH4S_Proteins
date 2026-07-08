@@ -28,15 +28,20 @@ resource "aws_iam_role_policy" "oh4s_s3_read" {
       {
         Effect   = "Allow"
         Action   = ["s3:GetObject"]
-        Resource = "${aws_s3_bucket.wagtail_media.arn}/*"
+        Resource = "arn:aws:s3:::oh4s-wagtail-media-dump/*"
       },
       {
         Effect   = "Allow"
         Action   = ["s3:ListBucket"]
-        Resource = aws_s3_bucket.wagtail_media.arn
+        Resource = "arn:aws:s3:::oh4s-wagtail-media-dump"
       }
     ]
   })
+}
+
+resource "aws_iam_role_policy_attachment" "ssm_core" {
+  role       = aws_iam_role.oh4s_ec2.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
 }
 
 resource "aws_iam_instance_profile" "oh4s" {
