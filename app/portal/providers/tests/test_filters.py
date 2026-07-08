@@ -1,21 +1,13 @@
-import json, datetime, statistics
-from django.test import TestCase
-from django.contrib.auth.models import User
-from django.core.management import call_command
+import json
+from django.test import TestCase, RequestFactory
 from django.http import HttpRequest
 from providers.views import filter, get_homepage_filter_context, get_results_filter_context
 from providers.models import *
 import json
 
-class FilterTestCase(TestCase):
-    # def setUp(self):
-    #     print('=====================')
-    #     print('FilterTestCase: setUp')
-    #     print('=====================')
-    #
-    #     user = User.objects.create(username='user')
-    #     user.save()
+factory = RequestFactory()
 
+class FilterTestCase(TestCase):
     # Import fixture
     fixtures = ['providers_20210524']
 
@@ -24,15 +16,22 @@ class FilterTestCase(TestCase):
     # - parse JsonResponse into dict
     # - return dict
     def filter_request(self, filter_json_list):
-        request = HttpRequest()
-        request.method = 'POST'
-        request.META['CONTENT_TYPE'] = 'application/json'
-        data = {}
+        post_data = {}
         for filter_obj in filter_json_list:
-            data[filter_obj['key']] = filter_obj['value']
-        request._body = json.dumps(data)
+            post_data[filter_obj['key']] = [str(value) for value in filter_obj.get('value', [])]
+
+        # Match frontend behavior: send a JSON string without explicitly
+        # setting application/json, which yields a JSON-string key in request.POST.
+        encoded_post_data = json.dumps(post_data)
+        request = factory.generic(
+            'POST',
+            '/providers/filter',
+            data=encoded_post_data,
+            content_type='application/x-www-form-urlencoded'
+        )
         results = filter(request)
-        [providers_response, filters_reponse] = json.loads(results.content)
+        content = json.loads(results.content)
+        providers_response = content[0]
         return providers_response
 
     def test_fixtres(self):
@@ -66,8 +65,8 @@ class FilterTestCase(TestCase):
         results = self.filter_request(json_filters)
         for provider in results['providers']:
             self.assertTrue('product_categories' in  provider.keys())
-            product_ids = [x['id'] for x in provider['product_categories']]
-            self.assertTrue(apples_category.pk in product_ids)
+            product_images = [x['image'] for x in provider['product_categories']]
+            self.assertTrue(apples_category.image_string in product_images)
 
     def test_homepage_filters_identity(self):
         # Create json filter object
@@ -84,10 +83,8 @@ class FilterTestCase(TestCase):
             }
         ]
         results = self.filter_request(json_filters)
-        for provider in results['providers']:
-            self.assertTrue('identities' in  provider.keys())
-            identity_ids = [x['id'] for x in provider['identities']]
-            self.assertTrue(minority_identity.pk in identity_ids)
+        # we don't return any identity information, so just check the number of providers returned for this filter
+        self.assertTrue(len(results['providers']) == 6)
 
     def test_homepage_filters_county(self):
         # Create json filter object
@@ -104,10 +101,8 @@ class FilterTestCase(TestCase):
             }
         ]
         results = self.filter_request(json_filters)
-        for provider in results['providers']:
-            self.assertTrue('regionalAvailability' in  provider.keys())
-            county_ids = [x['id'] for x in provider['regionalAvailability']]
-            self.assertTrue(benton_county.pk in county_ids)
+        # we don't return any county information, so just check the number of providers returned for this filter
+        self.assertTrue(len(results['providers']) == 22)
 
     def test_homepage_filters_component(self):
         # Create json filter object
@@ -124,15 +119,9 @@ class FilterTestCase(TestCase):
             }
         ]
         results = self.filter_request(json_filters)
-        for provider in results['providers']:
-            self.assertTrue('products' in  provider.keys())
-            self.assertTrue(len(provider['products']) > 0)
-            self.assertTrue('category' in  provider['products'][0].keys())
-            self.assertTrue('usdaComponentCategories' in  provider['products'][0]['category'].keys())
-            component_ids = []
-            for product in provider['products']:
-                component_ids = component_ids + [x['id'] for x in product['category']['usdaComponentCategories']]
-            self.assertTrue(meats.pk in component_ids)
+        # we don't return any component category information, so just check the number of providers returned for this filter
+        self.assertTrue(len(results['providers']) == 24)
+
 
     def test_homepage_filters_composite(self):
         # Create json filter object
@@ -177,25 +166,11 @@ class FilterTestCase(TestCase):
         ]
         results = self.filter_request(json_filters)
         for provider in results['providers']:
-            self.assertTrue('regionalAvailability' in  provider.keys())
-            county_ids = [x['id'] for x in provider['regionalAvailability']]
-            self.assertTrue(clatsop.pk in county_ids)
-            self.assertTrue(tillamook.pk in county_ids)
-            self.assertTrue('identities' in  provider.keys())
-            identity_ids = [x['id'] for x in provider['identities']]
-            self.assertTrue(women.pk in identity_ids)
-            self.assertTrue(lgbtq.pk in identity_ids)
             self.assertTrue('product_categories' in  provider.keys())
-            product_ids = [x['id'] for x in provider['product_categories']]
-            self.assertTrue(beets.pk in product_ids)
-            self.assertTrue(broccoli.pk in product_ids)
-            self.assertTrue(len(provider['products']) > 0)
-            self.assertTrue('category' in  provider['products'][0].keys())
-            self.assertTrue('usdaComponentCategories' in  provider['products'][0]['category'].keys())
-            component_ids = []
-            for product in provider['products']:
-                component_ids = component_ids + [x['id'] for x in product['category']['usdaComponentCategories']]
-            self.assertTrue(veggies.pk in component_ids)
+            product_images = [x['image'] for x in provider['product_categories']]
+            self.assertTrue(beets.image_string in product_images)
+            self.assertTrue(broccoli.image_string in product_images)
+
 
     def test_results_filters(self):
         # Create json filter object
@@ -216,8 +191,8 @@ class FilterTestCase(TestCase):
         results = self.filter_request(json_filters)
         for provider in results['providers']:
             self.assertTrue('product_categories' in  provider.keys())
-            product_ids = [x['id'] for x in provider['product_categories']]
-            self.assertTrue(asparagus_category.pk in product_ids)
+            product_images = [x['image'] for x in provider['product_categories']]
+            self.assertTrue(asparagus_category.image_string in product_images)
 
         # PRODUCER LOCATION
         deschutes = PoliticalSubregion.objects.get(name='Deschutes')
@@ -230,11 +205,8 @@ class FilterTestCase(TestCase):
             }
         ]
         results = self.filter_request(json_filters)
-        for provider in results['providers']:
-            self.assertTrue('physicalCounty' in  provider.keys())
-            self.assertTrue(None != provider['physicalCounty'])
-            self.assertTrue('id' in provider['physicalCounty'].keys())
-            self.assertTrue(deschutes.pk == provider['physicalCounty']['id'])
+        # we dont return any county information, so just check the number of providers returned for this filter
+        self.assertTrue(len(results['providers']) == 7)
 
         # DELIVERY METHOD
         supplier_delivers = DeliveryMethod.objects.get(name='Supplier Delivers')
@@ -247,10 +219,8 @@ class FilterTestCase(TestCase):
             }
         ]
         results = self.filter_request(json_filters)
-        for provider in results['providers']:
-            self.assertTrue('deliveryMethods' in  provider.keys())
-            product_ids = [x['id'] for x in provider['deliveryMethods']]
-            self.assertTrue(supplier_delivers.pk in product_ids)
+        # we dont return any delivery method information, so just check the number of providers returned for this filter
+        self.assertTrue(len(results['providers']) == 72)
 
         # PRODUCT DETAILS
         carrots = ProductCategory.objects.get(name='Carrots')
@@ -263,14 +233,12 @@ class FilterTestCase(TestCase):
                 ]
             }
         ]
+        carrots_image = f"/media/{carrots.image}"
         results = self.filter_request(json_filters)
         for provider in results['providers']:
-            self.assertTrue('products' in  provider.keys())
             self.assertTrue('product_categories' in  provider.keys())
-            product_ids = [x['category']['id'] for x in provider['products']]
-            category_ids = [x['id'] for x in provider['product_categories']]
-            self.assertTrue(fresh_carrots.pk in product_ids)
-            self.assertTrue(carrots.pk in category_ids)
+            category_images = [x['image'] for x in provider['product_categories']]
+            self.assertTrue(carrots_image in category_images)
 
         # DISTRIBUTORS
         sysco = Distributor.objects.get(name='Sysco')
@@ -283,10 +251,9 @@ class FilterTestCase(TestCase):
             }
         ]
         results = self.filter_request(json_filters)
-        for provider in results['providers']:
-            self.assertTrue('distributors' in  provider.keys())
-            product_ids = [x['id'] for x in provider['distributors']]
-            self.assertTrue(sysco.pk in product_ids)
+        results_length = len(results['providers'])
+        # we dont return any distributor information, so just check the number of providers returned for this filter
+        self.assertTrue(results_length == 7)
 
         # PRODUCTION PRACTICES
         orTilth = ProductionPractice.objects.get(name='Oregon Tilth')
@@ -299,10 +266,8 @@ class FilterTestCase(TestCase):
             }
         ]
         results = self.filter_request(json_filters)
-        for provider in results['providers']:
-            self.assertTrue('productionPractices' in  provider.keys())
-            product_ids = [x['id'] for x in provider['productionPractices']]
-            self.assertTrue(orTilth.pk in product_ids)
+        # we dont return any production practice information, so just check the number of providers returned for this filter
+        self.assertTrue(len(results['providers']) == 4)
 
     def test_get_home_filter_context(self):
         request = HttpRequest()
@@ -330,13 +295,11 @@ class FilterTestCase(TestCase):
         # County Availability
         county_filter = context['filters'][1]
         self.assertTrue('name' in county_filter.keys())
-        self.assertEqual('Availability By County', county_filter['name'])
+        self.assertEqual('Availability', county_filter['name'])
         self.assertTrue('facet' in county_filter.keys())
         self.assertEqual('availability', county_filter['facet'])
         self.assertTrue('widget' in county_filter.keys())
-        self.assertEqual('multiselect-spatial', county_filter['widget'])
-        self.assertTrue('data-layer' in county_filter.keys())
-        # TODO: Add datalayer (json/svg filename) to be passed to front-end map with selection
+        self.assertEqual('multiselect', county_filter['widget'])
         self.assertTrue('options' in county_filter.keys())
         self.assertEqual(PoliticalSubregion.objects.all().count(), len(county_filter['options']))
         self.assertEqual(type(county_filter['options'][0]['value']), int)
@@ -359,7 +322,7 @@ class FilterTestCase(TestCase):
 
 
     def test_get_results_filter_context(self):
-        EXPECTED_FILTER_COUNT = 9
+        EXPECTED_FILTER_COUNT = 11
         LOCATION_FILTER_INDEX = 3
         DELIVERY_FILTER_INDEX = LOCATION_FILTER_INDEX + 1
         CATEGORY_FILTER_INDEX = LOCATION_FILTER_INDEX + 2
@@ -386,9 +349,7 @@ class FilterTestCase(TestCase):
         self.assertTrue('facet' in location_filters.keys())
         self.assertEqual('physical_counties', location_filters['facet'])
         self.assertTrue('widget' in location_filters.keys())
-        self.assertEqual('multiselect-spatial', location_filters['widget'])
-        self.assertTrue('data-layer' in location_filters.keys())
-        # TODO: Add datalayer (json/svg filename) to be passed to front-end map with selection
+        self.assertEqual('multiselect', location_filters['widget'])
         self.assertTrue('options' in location_filters.keys())
         self.assertEqual(PoliticalSubregion.objects.all().count(), len(location_filters['options']))
         self.assertEqual(type(location_filters['options'][LOCATION_FILTER_INDEX]['value']), int)
@@ -431,12 +392,13 @@ class FilterTestCase(TestCase):
         self.assertEqual('product_forms', details_filters['facet'])
         self.assertTrue('widget' in details_filters.keys())
         # TODO: Determine if A: this always shows, B: this is hierarchical, or C: this is merged with Product Type
-        self.assertEqual('multiselect', details_filters['widget'])
+        self.assertEqual('compound-multiselect', details_filters['widget'])
         self.assertTrue('options' in details_filters.keys())
-        self.assertEqual(ProductCategory.objects.exclude(parent=None).count(), len(details_filters['options']))
-        self.assertEqual(type(details_filters['options'][0]['value']), int)
-        self.assertEqual(type(details_filters['options'][0]['label']), str)
-        self.assertEqual(type(details_filters['options'][0]['state']), bool)
+        for option_list in details_filters['options'].values():
+            for option in option_list:
+                self.assertEqual(type(option['value']), int)
+                self.assertEqual(type(option['label']), str)
+                self.assertEqual(type(option['state']), bool)
 
         # Distributors
         distributor_filters = context['filters'][DISTRIBUTOR_FILTER_INDEX]
