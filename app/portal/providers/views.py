@@ -174,9 +174,16 @@ def normalize_filter_state(raw_state):
             if value is None:
                 continue
             if isinstance(value, str):
-                expanded_values.extend([x.strip() for x in value.split(',') if x.strip()])
+                if key == 'keywords':
+                    v = value.strip()
+                    if v:
+                         expanded_values.append(v)
+                else:
+                    expanded_values.extend([x.strip() for x in value.split(',') if x.strip().isdigit()])
             else:
-                expanded_values.append(str(value))
+                s = str(value)
+                if key == 'keywords' or s.isdigit():
+                    expanded_values.append(s)
         if expanded_values:
             normalized[key] = expanded_values
     return normalized
