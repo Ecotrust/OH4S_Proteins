@@ -262,13 +262,6 @@ function filterQuery() {
   });
 }
 
-// update the url on filter change
-document.addEventListener('change', function(event) {
-  if (event.target.classList.contains('form-check-input')) {
-    syncFilterParamsToUrl(getFilterRequest());
-  }
-});
-
 function getPrintableResults() {
   var filterReq = getFilterRequest();
   var url = '/providers/results/printable/';
