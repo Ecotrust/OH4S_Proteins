@@ -58,12 +58,11 @@ cd OH4S_Proteins/
 
 APP_ROOT=$(pwd)
 
-# TODO: reset to main branch
-echo "Checking out https-setup branch..."
-git checkout https-setup
+echo "Checking out main branch..."
+git checkout main
 
-echo "Pulling latest changes from https-setup branch..."
-git pull origin https-setup
+echo "Pulling latest changes from main branch..."
+git pull origin main
 
 echo "move to docker directory..."
 cd docker/
