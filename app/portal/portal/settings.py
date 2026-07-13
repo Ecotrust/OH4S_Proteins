@@ -188,6 +188,12 @@ MIN_SEARCH_RANK=0.1
 MIN_SEARCH_SIMILARITY=0.25
 MAPBOX_TOKEN = os.environ.get('MAPBOX_TOKEN', default='')
 
+CSRF_TRUSTED_ORIGINS_ENV = os.environ.get("CSRF_TRUSTED_ORIGINS")
+if CSRF_TRUSTED_ORIGINS_ENV:
+    CSRF_TRUSTED_ORIGINS = CSRF_TRUSTED_ORIGINS_ENV.split(",")
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
 try:
     from .local_settings import *
 except ImportError:
