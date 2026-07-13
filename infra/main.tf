@@ -98,3 +98,13 @@ variable "ghcr_image_uri" {
   description = "URI of the Docker image hosted on GitHub Container Registry"
   type        = string
 }
+
+variable "domain_name" {
+  description = "Domain name for the application"
+  type        = string
+}
+
+variable "ssl_admin_email" {
+  description = "Email address for SSL certificate administration"
+  type        = string
+}
