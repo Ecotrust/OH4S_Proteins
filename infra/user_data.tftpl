@@ -81,6 +81,7 @@ SQL_HOST=${sql_host}
 SQL_PORT=${sql_port}
 MAPBOX_TOKEN=${mapbox_token}
 OH4S_GHCR_PATH=${ghcr_image_uri}
+CSRF_TRUSTED_ORIGINS=${csrf_trusted_origins}
 EOF
 
 # Pull the SQL dump from S3 (no credentials needed — uses EC2 IAM role)

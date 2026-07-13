@@ -32,6 +32,7 @@ resource "aws_instance" "oh4s" {
     ghcr_image_uri       = var.ghcr_image_uri
     domain_name          = var.domain_name
     ssl_admin_email      = var.ssl_admin_email
+    csrf_trusted_origins = var.csrf_trusted_origins
   })
 
   root_block_device {
