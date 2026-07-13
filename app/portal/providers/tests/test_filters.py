@@ -1,13 +1,14 @@
 import json
 from django.test import TestCase, RequestFactory
-from django.http import HttpRequest
 from providers.views import filter, get_homepage_filter_context, get_results_filter_context
 from providers.models import *
 import json
 
-factory = RequestFactory()
 
 class FilterTestCase(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+
     # Import fixture
     fixtures = ['providers_20210524']
 
@@ -23,7 +24,7 @@ class FilterTestCase(TestCase):
         # Match frontend behavior: send a JSON string without explicitly
         # setting application/json, which yields a JSON-string key in request.POST.
         encoded_post_data = json.dumps(post_data)
-        request = factory.generic(
+        request = self.factory.generic(
             'POST',
             '/providers/filter',
             data=encoded_post_data,
@@ -270,9 +271,8 @@ class FilterTestCase(TestCase):
         self.assertTrue(len(results['providers']) == 4)
 
     def test_get_home_filter_context(self):
-        request = HttpRequest()
-        request.path = '/'
-        request.method = 'GET'
+        request = self.factory.get('/')
+
         context = get_homepage_filter_context(request, {})
 
         self.assertTrue('filters' in context.keys())
@@ -329,14 +329,11 @@ class FilterTestCase(TestCase):
         FORM_FILTER_INDEX = LOCATION_FILTER_INDEX + 3
         DISTRIBUTOR_FILTER_INDEX = LOCATION_FILTER_INDEX + 4
         PRACTICE_FILTER_INDEX = LOCATION_FILTER_INDEX + 5
-        request = HttpRequest()
-        request.path = '/results'
-        request.method = 'POST'
-        request.META['CONTENT_TYPE'] = 'application/json'
+
         data = {}
-        # for filter_obj in filter_json_list:
-        #     data[filter_obj['key']] = filter_obj['value']
-        request._body = json.dumps(data)
+
+        request = self.factory.post('/results', data=json.dumps(data), content_type='application/json')
+
         context = get_results_filter_context(request)
 
         self.assertTrue('filters' in context.keys())
@@ -427,3 +424,52 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(practice_filters['options'][0]['value']), int)
         self.assertEqual(type(practice_filters['options'][0]['label']), str)
         self.assertEqual(type(practice_filters['options'][0]['state']), bool)
+
+    def test_get_results_filter_context_with_keyword_search(self):
+        IDENTITY_FILTER_INDEX = 0
+
+        veteran_owned = Identity.objects.get(name='Veteran-Owned')
+        request = self.factory.post('/results', data=f'identities={veteran_owned.id}&keywords=chicken'.encode(), content_type='application/x-www-form-urlencoded')
+
+        context = get_results_filter_context(request)
+        
+        self.assertTrue('filters' in context.keys())
+        # identity filter
+        identity_filter = context['filters'][IDENTITY_FILTER_INDEX]
+        identity_options = identity_filter['options']
+        for option in identity_options:
+            if option['value'] == veteran_owned.id:
+                self.assertTrue(option['state'])
+            else:
+                self.assertFalse(option['state'])
+        
+        # Check that the keywords filter is present and has the correct value
+        keywords_filter = context['filters'][-1]  # Assuming keywords filter is the last one
+        self.assertIn('keywords', keywords_filter)
+        self.assertEqual(keywords_filter['keywords'], 'chicken')
+    
+
+    def test_get_results_filter_context_with_multiple_keyword_search(self):
+        IDENTITY_FILTER_INDEX = 0
+
+        veteran_owned = Identity.objects.get(name='Veteran-Owned')
+        request = self.factory.post('/results', data=f'identities={veteran_owned.id}&keywords=chicken%2C+beef'.encode(), content_type='application/x-www-form-urlencoded')
+
+        context = get_results_filter_context(request)
+        
+        self.assertTrue('filters' in context.keys())
+        # identity filter
+        identity_filter = context['filters'][IDENTITY_FILTER_INDEX]
+        identity_options = identity_filter['options']
+        for option in identity_options:
+            if option['value'] == veteran_owned.id:
+                self.assertTrue(option['state'])
+            else:
+                self.assertFalse(option['state'])
+        
+        # Check that the keywords filter is present and has the correct value
+        keywords_filter = context['filters'][-1]  # Assuming keywords filter is the last one
+        self.assertIn('keywords', keywords_filter)
+        self.assertEqual(keywords_filter['keywords'], 'chicken, beef')
+
+
