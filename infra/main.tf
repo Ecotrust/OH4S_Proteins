@@ -99,8 +99,8 @@ variable "ghcr_image_uri" {
   type        = string
 }
 
-variable "domain_name" {
-  description = "Domain name for the application"
+variable "domain_names" {
+  description = "Comma-separated list of domain names for the application"
   type        = string
 }
 
