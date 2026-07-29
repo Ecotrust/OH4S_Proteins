@@ -48,21 +48,20 @@ resource "aws_instance" "oh4s" {
 }
 
 # Elastic IP so the address never changes across stop/start
-# TODO: comment out when we are ready to use a different EIP for production
-resource "aws_eip" "oh4s" {
-  instance = aws_instance.oh4s.id
-  domain   = "vpc"
 
-  tags = {
-    Name    = "${var.project_name}-production-eip"
-    Project = var.project_name
-  }
-}
+# resource "aws_eip" "oh4s" {
+#   instance = aws_instance.oh4s.id
+#   domain   = "vpc"
+
+#   tags = {
+#     Name    = "${var.project_name}-production-eip"
+#     Project = var.project_name
+#   }
+# }
 
 resource "aws_eip" "oh4s_prod" {
   domain   = "vpc"
-  # TODO: comment in when we are ready to associate this EIP with the production instance
-  # instance = aws_instance.oh4s.id
+  instance = aws_instance.oh4s.id
 
   tags = {
     Name    = "directory.oh4s"
