@@ -30,7 +30,7 @@ resource "aws_instance" "oh4s" {
     media_dump_file_path = var.media_dump_file_path
     mapbox_token         = var.mapbox_token
     ghcr_image_uri       = var.ghcr_image_uri
-    domain_name          = var.domain_name
+    domain_names         = [for d in split(",", var.domain_names) : trimspace(d)]
     ssl_admin_email      = var.ssl_admin_email
     csrf_trusted_origins = var.csrf_trusted_origins
   })
