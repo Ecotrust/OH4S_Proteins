@@ -48,7 +48,7 @@ pytz==2026.2
 ratelim==0.1.6
 requests==2.34.2
 six==1.17.0
-soupsieve==2.8.4
+soupsieve==2.9
 sqlparse==0.5.5
 tablib==3.9.0
 telepath==0.3.1
