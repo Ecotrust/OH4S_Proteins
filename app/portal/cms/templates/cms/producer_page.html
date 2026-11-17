@@ -402,7 +402,7 @@
                   <h4>Variety</h4>
                 </th>
                 <th class="col category-column-header">
-                  <h4>Form</h4>
+                  <h4>Product Description</h4>
                 </th>
                 <th class="col category-column-header">
                   <h4>Components</h4>
@@ -429,12 +429,9 @@
               {% endif %}
                 <td class="col">
                   {{ product.variety }}
-                  {% if product.description %}
-                    <span class='info-icon' data-bs-toggle="tooltip" data-bs-placement="top" title="{{ product.description }}">&#9432;</span>
-                  {% endif %}
                 </td>
                 <td class="col">
-                  {{ product.form }}
+                  {{ product.description }}
                 </td>
                 <td class="col">
                   {{ product.usda_meal_components }}
