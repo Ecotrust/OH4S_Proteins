@@ -123,6 +123,17 @@ class ResultsPage(PortalPage):
 
 class ProducerPage(RoutablePageMixin, PortalPage):
     subtitle = models.CharField(max_length=255, default='Producer Profile', help_text="Page header subtitle")
+    products_blurb = RichTextField(
+        blank=True,
+        null=True,
+        features=[
+            'h3', 'h4', 'bold', 'italic', 'link', 'ol', 'ul', 'hr',
+            'superscript', 'subscript', 'strikethrough', 'blockquote', 'image',
+            'embed'
+        ],
+        help_text='Blurb for the products section'
+    )
+
     bottom_blurb = StreamField([
         ('image', ImageChooserBlock()),
         ('text', RichTextBlock(blank=True,features=[
@@ -137,6 +148,7 @@ class ProducerPage(RoutablePageMixin, PortalPage):
 
     content_panels = Page.content_panels + [
         FieldPanel('subtitle', classname="full"),
+        FieldPanel('products_blurb', classname="full"),
         FieldPanel('bottom_blurb', classname="full"),
     ]
 
