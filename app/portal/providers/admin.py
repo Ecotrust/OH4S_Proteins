@@ -50,23 +50,28 @@ class ProviderAdmin(admin.ModelAdmin):
     #     )
 
     fieldsets = (
-        (None, {
+        ('Contact Info', {
             # 'classes': ('producer-name',),
             'fields': (
                 'name',
-                ('outreachConductor', 'dateInfoUpdated',),
+                ('primaryContactFirstName', 'primaryContactLastName',),
+                'email',
+                ('officePhone', 'cellPhone',),
+                'preferredContactMethod',
+                'description',
+                'websiteAddress',
                 'soldToSchoolsBefore',
                 'schoolsSoldTo',
-                'description',
-                ('primaryContactFirstName', 'primaryContactLastName',),
+                
             )
         }),
-        ('Business Address', {
+        ('Physical Business Details', {
             'fields': (
                 'businessAddressLine1',
                 'businessAddressLine2',
                 ('businessAddressCity', 'businessAddressState', 'businessAddressZipCode',),
-                'businessCounty'
+                'businessCounty',
+                'productionPractices',
             )
         }),
         ('Physical Address', {
@@ -78,15 +83,6 @@ class ProviderAdmin(admin.ModelAdmin):
                 'physicalCounty'
             )
         }),
-        ('Contact Info', {
-            'fields': (
-                ('officePhone', 'cellPhone',),
-                'email',
-                'websiteAddress',
-                'preferredLanguage',
-                'preferredContactMethod',
-            )
-        }),
         ('Liability', {
             'fields': (
                 ('productLiabilityInsurance', 'productLiabilityInsuranceAmount',),
@@ -94,25 +90,30 @@ class ProviderAdmin(admin.ModelAdmin):
         }),
         ('Availability', {
             'fields': (
-                'deliveryMethods',
                 'regionalAvailability',
+                'deliveryMethods',
+                'distributors',
                 # ('orderMinimum', 'deliveryMinimum',),
                 'orderMinimum',
-                'distributors',
             )
         }),
-        ('Additional Info', {
+        ('Preferred Language', {
             'fields': (
-                'productionPractices',
+                'preferredLanguage',
+            )
+        }),
+        ('Self-Identification', {
+            'fields': (
                 'identities',
                 'notes',
             )
         }),
-        # ('Products', {
-        #     'fields': (
-        #         'product_inline',
-        #     )
-        # }),
+        ('Outreach', {
+            'fields': (
+                'outreachConductor',
+                'dateInfoUpdated',
+            )
+        })
     )
 
 
