@@ -50,8 +50,8 @@ function populateFilterForms(filterArr) {
 }
 
 function updateFilterForms(filterDef) {
-  // The code below is specific to the 'product_categories' and 'product_forms'
-  // filters of the OH4S portal - we  wouldn't want (or know how) to do
+  // The code below is specific to the 'product_categories' filter
+  // of the OH4S portal - we  wouldn't want (or know how) to do
   // this for every possible 'compound-multiselect' field. In the future, if
   // this is re-used, perhaps the 'filter' variable set in results_page.html
   // could track and define these relationships and be handled in a generic

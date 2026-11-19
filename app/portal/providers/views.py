@@ -414,54 +414,6 @@ def get_results_filter_context(request, context={}):
     filters.append(category_filter)
 
     try:
-        filter_obj = cms_filters.get(facet='product_forms')
-        details_filter = {
-            'name': filter_obj.name,
-            'title': filter_obj.title if filter_obj.title else filter_obj.name,
-            'facet': filter_obj.facet,
-            'image': filter_obj.image.file.url if filter_obj.image else None,
-            'blurb': filter_obj.blurb,
-            'order': filter_obj.order,
-            'visible': True,
-            'widget': 'compound-multiselect',
-            'option_categories': [],
-            'options': {}
-        }
-    except Exception as e:
-        details_filter = {
-            'name': 'Product Details',
-            'title': 'Product Details',
-            'facet': 'product_forms',
-            'image': '/static/providers/img/defaults/filter_header.png',
-            'blurb': 'You can select multiple options to get more inclusive results.',
-            'order': 6,
-            'visible': True,
-            'widget': 'compound-multiselect',
-            'option_categories': [],
-            'options': {}
-        }
-
-    for category in ProductCategory.objects.exclude(parent=None).order_by('name'):
-        prime_category = category.get_prime_ancestor()
-        prime_name = prime_category.name
-        if prime_name not in details_filter['options'].keys():
-            details_filter['options'][prime_name] = []
-            details_filter['option_categories'].append((prime_name, prime_category.id))
-
-        if ' > ' in str(category):
-            label = ' > '.join(str(category).split(' > ')[1:])
-        else:
-            label = str(category)
-        details_filter['options'][prime_name].append({
-            'value': category.pk,
-            'label': label,
-            'state': 'product_forms' in current_state.keys() and category.pk in [int(x) for x in current_state['product_forms']]
-        })
-        details_filter['options'][prime_name] = sorted(details_filter['options'][prime_name], key = lambda i: (i['label'].lower()))
-    details_filter['option_categories'].sort()
-    filters.append(details_filter)
-
-    try:
         filter_obj = cms_filters.get(facet='distributors')
         distributor_filter = {
             'name': filter_obj.name,
@@ -890,20 +842,6 @@ def run_filters(request, providers):
             provider_ids = list(set(provider_ids + new_provider_ids))
         providers = providers.filter(pk__in=provider_ids)
         filters['Languages'].sort(key=lambda x: x['name'])
-    if 'product_forms' in body.keys():
-        product_forms = ProductCategory.objects.filter(pk__in=body['product_forms'])
-        filters['Product Forms'] = []
-        provider_ids = []
-        for form in product_forms:
-            filters['Product Forms'].append({'id': form.pk, 'name': str(form)})
-            # TODO: How strict are the 'product details' filters? Should "Poultry > Chicken" get
-            # any/all forms of chicken, or only those that specifically set this 'type'.
-            # Current solution: take 'Poultry > Chicken' to be inclusive of all decendants.
-            # new_provider_ids = [x.pk for x in providers.filter(providerproduct__category=form)]
-            new_provider_ids = [x.provider.pk for x in form.get_provider_products()]
-            provider_ids = list(set(provider_ids + new_provider_ids))
-        providers = providers.filter(pk__in=provider_ids)
-        filters['Product Forms'].sort(key=lambda x: x['name'])
     if 'keywords' in body.keys():
         # recreate the trigram keyword search from ITKDB
         # https://github.com/Ecotrust/TEKDB/blob/main/TEKDB/TEKDB/models.py#L23
