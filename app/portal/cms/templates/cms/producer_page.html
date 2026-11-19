@@ -355,6 +355,9 @@
 
       <div class="col-6 ps-3 ps-xl-5" id="provider-right-column">
         <h4>Products</h4>
+        <div>
+          {{ page.products_blurb|richtext }}
+        </div>
         <div class="row row-cols-1 row-cols-xl-2 justify-content-stretch my-2 g-3">
           {% for category in provider.product_categories %}
             <div class="col product">
