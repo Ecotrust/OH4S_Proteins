@@ -284,7 +284,6 @@ class Filter(models.Model):
         ('physical_counties', 'Producer Location: County'),
         ('delivery_methods', 'Delivery Methods'),
         ('product_categories', 'Product Categories'),
-        ('product_forms', 'Product details'),
         ('distributors', 'Distributors'),
         ('practices', 'Practices'),
         ('languages', 'Languages'),

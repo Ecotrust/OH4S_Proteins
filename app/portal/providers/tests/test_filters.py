@@ -223,24 +223,6 @@ class FilterTestCase(TestCase):
         # we dont return any delivery method information, so just check the number of providers returned for this filter
         self.assertTrue(len(results['providers']) == 72)
 
-        # PRODUCT DETAILS
-        carrots = ProductCategory.objects.get(name='Carrots')
-        fresh_carrots = ProductCategory.objects.get(name='Fresh, whole', parent=carrots)
-        json_filters = [
-            {
-                'key': 'product_forms',
-                'value': [
-                    fresh_carrots.pk,
-                ]
-            }
-        ]
-        carrots_image = f"/media/{carrots.image}"
-        results = self.filter_request(json_filters)
-        for provider in results['providers']:
-            self.assertTrue('product_categories' in  provider.keys())
-            category_images = [x['image'] for x in provider['product_categories']]
-            self.assertTrue(carrots_image in category_images)
-
         # DISTRIBUTORS
         sysco = Distributor.objects.get(name='Sysco')
         json_filters = [
@@ -322,13 +304,12 @@ class FilterTestCase(TestCase):
 
 
     def test_get_results_filter_context(self):
-        EXPECTED_FILTER_COUNT = 11
+        EXPECTED_FILTER_COUNT = 10
         LOCATION_FILTER_INDEX = 3
         DELIVERY_FILTER_INDEX = LOCATION_FILTER_INDEX + 1
         CATEGORY_FILTER_INDEX = LOCATION_FILTER_INDEX + 2
-        FORM_FILTER_INDEX = LOCATION_FILTER_INDEX + 3
-        DISTRIBUTOR_FILTER_INDEX = LOCATION_FILTER_INDEX + 4
-        PRACTICE_FILTER_INDEX = LOCATION_FILTER_INDEX + 5
+        DISTRIBUTOR_FILTER_INDEX = LOCATION_FILTER_INDEX + 3
+        PRACTICE_FILTER_INDEX = LOCATION_FILTER_INDEX + 4
 
         data = {}
 
@@ -380,22 +361,6 @@ class FilterTestCase(TestCase):
         self.assertEqual(type(category_filters['options'][0]['value']), int)
         self.assertEqual(type(category_filters['options'][0]['label']), str)
         self.assertEqual(type(category_filters['options'][0]['state']), bool)
-
-        # Product Details (Form)
-        details_filters = context['filters'][FORM_FILTER_INDEX]
-        self.assertTrue('name' in details_filters.keys())
-        self.assertEqual('Product Details', details_filters['name'])
-        self.assertTrue('facet' in details_filters.keys())
-        self.assertEqual('product_forms', details_filters['facet'])
-        self.assertTrue('widget' in details_filters.keys())
-        # TODO: Determine if A: this always shows, B: this is hierarchical, or C: this is merged with Product Type
-        self.assertEqual('compound-multiselect', details_filters['widget'])
-        self.assertTrue('options' in details_filters.keys())
-        for option_list in details_filters['options'].values():
-            for option in option_list:
-                self.assertEqual(type(option['value']), int)
-                self.assertEqual(type(option['label']), str)
-                self.assertEqual(type(option['state']), bool)
 
         # Distributors
         distributor_filters = context['filters'][DISTRIBUTOR_FILTER_INDEX]
@@ -471,5 +436,22 @@ class FilterTestCase(TestCase):
         keywords_filter = context['filters'][-1]  # Assuming keywords filter is the last one
         self.assertIn('keywords', keywords_filter)
         self.assertEqual(keywords_filter['keywords'], 'chicken, beef')
+
+    def test_get_results_filter_context_with_invalid_filter(self):
+        # Test that an invalid filter (product_forms) is ignored in the context
+        veteran_owned = Identity.objects.get(name='Veteran-Owned')
+
+        carrots = ProductCategory.objects.get(name='Carrots')
+        fresh_carrots = ProductCategory.objects.get(name='Fresh, whole', parent=carrots)
+        request = self.factory.get('/results', data={'identities': veteran_owned.id, 'product_forms': fresh_carrots.pk})
+        context = get_results_filter_context(request)
+        self.assertNotIn('product_forms', [item.get('facet') for item in context['filters']])
+        valid_filters = [{'key': 'identities', 'value': [veteran_owned.id]}]
+        expected_request = self.filter_request(valid_filters)
+        invalid_filter_request = self.filter_request(valid_filters + [{'key': 'product_forms', 'value': [fresh_carrots.pk]}])
+        self.assertEqual(
+            sorted(provider['id'] for provider in expected_request['providers']),
+            sorted(provider['id'] for provider in invalid_filter_request['providers']),
+        )
 
 
