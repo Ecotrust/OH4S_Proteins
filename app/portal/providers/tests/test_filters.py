@@ -438,20 +438,20 @@ class FilterTestCase(TestCase):
         self.assertEqual(keywords_filter['keywords'], 'chicken, beef')
 
     def test_get_results_filter_context_with_invalid_filter(self):
-        IDENTITY_FILTER_INDEX = 0
+        # Test that an invalid filter (product_forms) is ignored in the context
         veteran_owned = Identity.objects.get(name='Veteran-Owned')
 
-        request = self.factory.post('/results', data=f'identities={veteran_owned.id}&invalid_filter=1'.encode(), content_type='application/x-www-form-urlencoded')
+        carrots = ProductCategory.objects.get(name='Carrots')
+        fresh_carrots = ProductCategory.objects.get(name='Fresh, whole', parent=carrots)
+        request = self.factory.get('/results', data={'identities': veteran_owned.id, 'product_forms': fresh_carrots.pk})
         context = get_results_filter_context(request)
-        self.assertTrue('filters' in context.keys())
-        # Check that none of the filters have the invalid filter state set
-        # but the valid filters should still have their state set correctly
-        identity_filter = context['filters'][IDENTITY_FILTER_INDEX]
-        identity_options = identity_filter['options']
-        for option in identity_options:
-            if option['value'] == veteran_owned.id:
-                self.assertTrue(option['state'])
-            else:
-                self.assertFalse(option['state'])
+        self.assertNotIn('product_forms', [item.get('facet') for item in context['filters']])
+        valid_filters = [{'key': 'identities', 'value': [veteran_owned.id]}]
+        expected_request = self.filter_request(valid_filters)
+        invalid_filter_request = self.filter_request(valid_filters + [{'key': 'product_forms', 'value': [fresh_carrots.pk]}])
+        self.assertEqual(
+            sorted(provider['id'] for provider in expected_request['providers']),
+            sorted(provider['id'] for provider in invalid_filter_request['providers']),
+        )
 
 
